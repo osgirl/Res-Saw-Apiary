@@ -1,0 +1,1275 @@
+FORMAT: 1A
+HOST: https://dev01-res.meccabingo.com/
+
+# RES.API.Mecca.SAW - Draft
+
+#Introduction
+Rank Enterprise Services API is a collection of business services exposed over a RESTful inteface. The following RES API methods will be hosted with in a Cloud environment.
+
+#Security
+## Network Security
+The RES API facade is currently made available to server-side client application. RES resources are not currently intended to be accessed from the browser or client device. 
+All RES resources are encrypted using SSL.
+
+## Authentication
+RES API authentication uses OpenID connect for identity, aligned with the [OAuth2](http://oauth.net/2/) protocol. 
+
+## Clients
+Each client application integrating with RES API must be pre-registered with the RES authorization service. The client will be issued with a `client_id` and `client_secret` that must be provided for token requests. The type of the application and how it will authenticate with RES API needs to be defined when its registered. This is to support multiple permissions and authentication types for given clients.
+
+## Tokens
+All requests to RES resources require the client application to provide an appropriate access token. These tokens are provided in the Authorization header as Bearer tokens. e.g.
+
+```
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSIsImtpZCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSJ9.eyJjbGllbnRfaWQiOiJiZWRlLWdyb3N2ZW5vci1jbXMiLCJzY29wZSI6InJlYWRfZ3Jvc3Zlbm9ybG95YWx0eSIsImlzcyI6Imh0dHBzOi8vaWRzcnYzLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRzcnYzLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE0MzU5Mzk5NzQsIm5iZiI6MTQzNTkzOTYxNH0.nGLoo8B_enlzdY2OX_sf0d1IEGbAUOL8E_-Dl94owI_rnxRrtvumz6fIGx8L5hTXzl8-GlM0Edfb3fe9cD49JDUbWuh0fYnBTjj4SnALv6DSmYSFHeDBkbbbzwI4QVuERblfeGB04ZAEDCjZlLoL4uly-lE8Oq2E150R83u43i8zDfYqKpPp1D5rvhOvdnOg4q3coICHqGkFzsg_0wfEwaYUgc2AWCuyy7ry4pEnV8cg7BVA3GOldkY5jsE062SP4T-N-UjzKd3Lz1KG0bBYZPfJ2CwV2oTgTnwEAkubIqdfYLm_bXMz8sQwm4I_V22qMDhavYwYBhFp1vQdWoYD2A
+```
+
+Only one access token flow is enabled on RES API currently:
+
+* Client Credentials Token - Obtained by a client application by requesting a token and supplying only `client_id` and `client_secret`. The provided token is utilised for resources where no player session is required, currently this token flow is used for all API end points.
+
+* Resource Owner Token - In addition to supplying the `client_id` and `client_secret`, the client application also supplies `username` and `password` details for an existing user on the platform. Resource owner tokens are utilised for resources where a user session is required. The provided token can be used to access player data oriented the API resources or launch content on the Platform.
+
+### Token validation
+Access tokens are fully signed [Json Web Tokens](http://jwt.io/) and should be validated by the client. Many libraries exist for all platforms that support validating tokens. The details of RES's authentication certificates used to sign token are documented below under the core resoure.
+
+## Client Credentials Access Token
+Client credentials are supplied to integration partners for accessing appropriate resources.
+
+**Example request**
+
+`client_id:client_secret` Base64 encoded, e.g. `YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==` and passed in the `Authorization` header
+
+```
+POST /api/core/connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==
+Body: grant_type=client_credentials&scope=read_grosvenorloyalty
+```
+
+**Example response**
+
+```
+{
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSIsImtpZCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSJ9.eyJjbGllbnRfaWQiOiJiZWRlLWdyb3N2ZW5vci1jbXMiLCJzY29wZSI6InJlYWRfZ3Jvc3Zlbm9ybG95YWx0eSIsImlzcyI6Imh0dHBzOi8vaWRzcnYzLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRzcnYzLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE0MzU5Mzk5NzQsIm5iZiI6MTQzNTkzOTYxNH0.nGLoo8B_enlzdY2OX_sf0d1IEGbAUOL8E_-Dl94owI_rnxRrtvumz6fIGx8L5hTXzl8-GlM0Edfb3fe9cD49JDUbWuh0fYnBTjj4SnALv6DSmYSFHeDBkbbbzwI4QVuERblfeGB04ZAEDCjZlLoL4uly-lE8Oq2E150R83u43i8zDfYqKpPp1D5rvhOvdnOg4q3coICHqGkFzsg_0wfEwaYUgc2AWCuyy7ry4pEnV8cg7BVA3GOldkY5jsE062SP4T-N-UjzKd3Lz1KG0bBYZPfJ2CwV2oTgTnwEAkubIqdfYLm_bXMz8sQwm4I_V22qMDhavYwYBhFp1vQdWoYD2A",
+    "expires_in": 600,
+    "token_type": "bearer"
+}
+```
+
+### Token expiration
+
+The access tokens have an expiration time defined in the token claims and duplicated for simplicity in the response body. After `expires_in` seconds, clients applications will need to make another client credentials request to get a new access token for subsequent operations requiring a client access token.
+
+## Resource Owner Access Token
+Resource owner access tokens are required to access resources where an authenticated customer is expected. Note that to generate a resource owner access token, client credentials should also be supplied using the Authorization header as shown. 
+
+**Example request**
+
+`client_id:client_secret` Base64 encoded, e.g. 98712389abc and passed in the Authorization header
+
+**username** - The username of the resource owner (customer)
+
+**password** - The password of the resource owner (customer)
+
+**ip_address** - The IP Address of the player
+
+**device_token** - Device Token dispenced from authentication service - will be null on new devices
+
+**one_time_password** - [optional] - Confirm one time password for multi factor authentication
+
+```
+POST /api/core/connect/token
+Content-Type: application/x-www-form-urlencoded
+X-Correlation-Token: your-unique-correlation-token
+Authorization: Basic 98712389abc
+```
+
+```
+grant_type=password
+&scope=res
+&username=<cardno>
+&password=<pin>
+&ip_address=192.168.0.1
+&device_token=ace84278-5134-430b-b7ec-a72b88d2a4ea
+&one_time_password=123456
+```
+
+```
+
+**Example response**
+
+{
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.ew0KICAiY2xpZW50X2lkIjogInJlcyIsDQogICJzY29wZSI6IFsNCiAgICAic3BpbmUiLA0KICAgICJzaXRlY29kZSINCiAgXSwNCiAgInN1YiI6ICI2Mzk3MTk5MTk4MzUwMjU0MTIiLA0KICAiR2FtZVRva2VuIjogIldzMkY3a1NwMmRaWlZHWlRNWU1yRU1yYVJ5QXFwU1BDS2ZHWUl6SFhFbXVjNUM5dzdVYlM0dk5zZFIwa01LUlV1SDVpRWdwSWI2LVd0REpVMkMwQlliTDROZXlGRGpTVW9namtiMjY5RGF3MSIsDQogICJhbXIiOiAicGFzc3dvcmQiLA0KICAiYXV0aF90aW1lIjogMTQyOTI4NjE5NywNCiAgImlkcCI6ICJpZHNydiIsDQogICJpc3MiOiAiaHR0cDovL2V3MS1xYTAxLTUwMS5jbG91ZGFwcC5uZXQ6ODg4OC9jb3JlIiwNCiAgImF1ZCI6ICJodHRwOi8vZXcxLXFhMDEtNTAxLmNsb3VkYXBwLm5ldDo4ODg4L2NvcmUvcmVzb3VyY2VzIiwNCiAgImV4cCI6IDE0MjkyODY3OTgsDQogICJuYmYiOiAxNDI5Mjg2MTk4DQp9.eqvm-4vOF6s7Iwpqfd01qa4ZkwSMkQiVgNFNCqdjX-hX843pUtGTM2XdEIBwvwf4OxldptRtYl5gdAcChXJcZf2TLXhxnznP4uPMQsvEXlm3qy44uHXj8phlEsQELC2CydcVUa-C6sZV0RXJ-QNfUo2sGQQwnX7rWP19Byf-Z6QzmaJFkSWU8yOl45qxfSu3XDmf4GyQpBPnn5YBi8FWuK7R2QSBdK3JFlQ9VvHyk7QeDQhfMg1OJdP1JfbXbi_V3WN3cD700hx_f2f_mVS6o_VYEHBh9IPb7wsCcSfR33BKKlXFUraKdttIwYjQL-frEmpOzI2mQDGg2de_PodU-w",
+    "expires_in": 600,
+    "token_type": "bearer",
+    "refresh_token": "1cf75ed7e40723b64bbe29eb2f2654b8"
+}
+```
+
+## Resource Owner Access Token Refresh
+
+Resource owner access tokens have an expiration time defined both in the response above and inside the token claims, shown in seconds. Unlike the client credentials access token, resource owner tokens provide a specific refresh operation to allow the client application to extend the life of the session without requiring customer authentication details to be resupplied.
+
+**Example Request**
+
+```
+POST /api/connect/token
+Content-Type: application/x-www-form-urlencoded
+X-Correlation-Token: your-unique-correlation-token
+Authorization: Basic 98712389abc
+```
+
+```
+grant_type=refresh_token
+&refresh_token=1cf75ed7e40723b64bbe29eb2f2654b8
+
+**Example Response**
+{
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5kcnRheVk3c0tuSjZSY3ZCRjlLZl9BU3B0SSIsImtpZCI6Im5kcnRheVk3c0tuSjZSY3ZCRjlLZl9BU3B0SSJ9.eyJjbGllbnRfaWQiOiJ0Y3MiLCJzY29wZSI6WyJnYW1lVG9rZW4iLCJvZmZsaW5lX2FjY2VzcyIsInNpdGVjb2RlIiwic3BpbmUiXSwic3ViIjoiNjQ0MTM5MTk1ODYxOTY2ODQ4IiwiYW1yIjoicGFzc3dvcmQiLCJhdXRoX3RpbWUiOjE0NDI1MDQxMTUsImlkcCI6Imlkc3J2IiwiZ2FtZVRva2VuIjoiRExlZS0zNHhuNDBxcEowVWpZUzRWV1VIdFQzY2Zmb05oOU1qVjcxRVNocWJ6QVBBRjUyWWdnX2I4ZmZjT0JvbUVaRDdScnVzNlg3X3YxZ0dHeXNlNnRvNWIwTEs2S2otWmhZa2xjMGlSelkxIiwic2l0ZWNvZGUiOiJncm9zdmVub3JjYXNpbm9zLmNvbSIsImlzcyI6Imh0dHA6Ly9ldzEtcWEwMS01MDEtaWxiLmFkLmJlZGVnYW1pbmcuY29tOjg4ODgvY29yZSIsImF1ZCI6Imh0dHA6Ly9ldzEtcWEwMS01MDEtaWxiLmFkLmJlZGVnYW1pbmcuY29tOjg4ODgvY29yZS9yZXNvdXJjZXMiLCJleHAiOjE0NDI1MDQ0MTUsIm5iZiI6MTQ0MjUwNDExNX0.NW3YVYwmdibBYkRgx1TveOVBDA3-x7W9D_R3tkL5-DOgiTEbirVeDH6kC4Pwy2oBbJyZhxK4pzyIbynm2LjeWtf36qn_JW40UX0POJX7WTv4J-HHja2ExB2xCmvPMpQtv1V9GnuHz7yuxMr_IdNrBfedfFiwtmf2j2AILQsgjvsDLjr2U7MSyyGozwRRvtbU6ZkOm6zNxAonblDtmlPZmFvlJ8p8EZ-f37s9Vyc_-oDgF8qm5AQpvjrII7OsIMeWbaJtjmf6EgSjzeDnXaIvmdlo_RNozIcLDCmndXbLRmhLiJ5_r1aEGJXqvmZPXU1J5Sx7i2XbS2q5koLfVmYRNA",
+    "expires_in": 600,
+    "token_type": "bearer",
+    "refresh_token": "2cd75ed7e40723b64bbe29eb2f2654b8"
+}
+```
+
+# Error Responses
+
+For each business service endpoints there will be standardised formats of 4XX and 5XX error codes:
+
+```
++ Response 400 (application/json)
+
+  {
+    "Reason" : "Bad Request"
+    "MoreInfo" : "Invalid parameter supplied."
+  }
+
++ Response 403 (application/json)
+
+  {
+    "Reason" : "Unauthorised Request"
+    "MoreInfo" : "Valid token has not been provided"
+  }
+  
++ Response 500 (application/json)
+
+  {
+    "Reason" : "Internal Server Error"
+    "MoreInfo" : "Failed while accessing the database."
+  }
+```
+
+# Group Customer Service V 1.0
+This end point is a dedicated aggregated endpoint for Customer services.
+
+# Profile [/customer/v1/profile]
+Model for the resource if defined below:
+
+```
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    }
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk"
+                "DateOfBirth" : "1955-01-30",
+                "ClubNumber" : "45611",
+                "CustomerNumber" : "12345678",
+                "MembershipCardNumber" : 67890,
+                "AccountStatus" : {
+                    "IsBarred": true,
+                    "IsVerified" : true,
+                    "DigitalSelfExclude": true,
+                    "DigitalSelfExcludeDurationInDays": 180,
+                    "RetailSelfExclude": true,
+                    "RetailSelfExcludeDurationInDays": 180
+                }
+            }
+```
+
+| Name                  | Type      | Required       | Description                                                                          |Example        |
+|:---                   |:---       |:---            |:---                                                                                  |:---           |
+|Name.Title             |string[25] |**yes**         |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
+|Name.Forename          |string[40] |**yes**         |                                                                                      |"John"         |
+|Name.MiddleName        |string[40] |**optional**    |                                                                                      |"Dan"          |
+|Name.Surname           |string[40] |**yes**         |                                                                                      |"Jackson"      |
+|Address.Address1       |string[?]  |**yes**         |                                                                                      |"Flat 2, 10 Downing Street"         |
+|Address.Town           |string[?]  |**yes**         |                                                                                      |"London"       |
+|Address.Postcode       |string[?]  |**yes**         |                                                                                      |"WC2B 4AA"     |
+|Address.County         |string[?]  |**optional**         |                                                                                      |"Greater London"         |
+|Address.Country        |string[2]  |**yes**         |ISO 2 digit country code ie. AU, NZ, ZA, GB, US                                       |"GB"           |
+|ContactDetails.HomePhone                        |string[?]  |**optional**         |                                                             |"01234567890"  |
+|ContactDetails.BusinessPhone                    |string[?]  |**optional**         |                                                             |"01234567890"  |
+|ContactDetails.MobilePhone                      |string[?]  |**optional** Either Mobile or Email must be supplied            |           |"01234567890"  |
+|ContactDetails.Email                       |string[?]  |**optional** Either Mobile or Email must be supplied             |           |"john@email.com"         |
+|ContactDetails.IsHomeContactallowed        |bool  |**optional**         |Allow postal communication channel                            |true           |
+|ContactDetails.IsMobileContactAllowed      |bool  |**optional**         |Allow mobile phone communication channel                          |true           |
+|ContactDetails.IsEmailContactAllowed       |bool  |**optional**         |Allow email communication channel                                 |true           |
+|ContactDetails.IsSMSContactAllowed         |bool  |**optional**         |Allow SMS communication channel                                   |true           |
+|Nationality                                |string[2]  |**yes**        |ISO 2 digit country code ie. AU, NZ, ZA, GB, US                                         |"ZA"           |
+|Gender                                     |string[7]  |**yes**        |Values are Unknown, Female and Male                                                     |"Male"           |
+|Occupation                                 |string[40] |**optional**   |                                                                                        |"Clerk"           |
+|DateOfBirth                                |string     |**yes**        |                                                                                        |"1955-01-30"           |
+|ClubNumber                                 |int        |**yes**        |                                                                                        |"123"           |
+|IsVerified                                 |bool       |**yes**        |                                                                                        |true           |
+|IsBarred                                   |bool       |**optional**   |if customer is barred from the casino                                                   |true           |
+|DigitalSelfExclude                         |bool       |**optional**   |if customer has decided to self-exclude from the digital channel                       |true           |
+|DigitalSelfExcludeDurationInDays           |int        |**optional**   |number of days self-excluded from the digital channel                                  |180            |
+|RetailSelfExclude                          |bool       |**optional**   |if customer has decided to self-exclude from the retail channel                        |true           |
+|RetailSelfExcludeDurationInDays            |int        |**optional**   |number of days self-excluded from the digital channel                                  |180            |
+|CustomerNumber                             |string[?]  |**yes**        |                                                                                        |"0123456789"           |
+|MembershipCardNumber                                     |string[?]  |**yes**        |                                                                                        |"0123456789"           |
+
+For registration following input validation in place
+
+**Following fields must follow a valid format**
+- Email address - valid email format
+- ContactDetails.Home & TelephoneNumber - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 078 8602 8945, +44 78 8602 9845, etc)
+- Address.Postcode - valid UK postcode for UK addresses
+- DateOfBirth - must be of legal age (18)
+- ClubNumber - Club number must be a valid Grosvenor casino.
+
+**On Post:**
+
+## Register [POST  /customer/v1/profile/retailOnly]
+    
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+    
+    + Body
+    
+             {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    },
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk",
+                "DateOfBirth" : "1955-01-30",
+                "ClubNumber" : "45611",
+                "AccountStatus" : {
+                    "IsVerified" : true
+                },
+                "CustomerNumber" : "12345678",
+                "MembershipCardNumber" : 67890
+            }
+            
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+            
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Upgrade [POST /customer/v1/multichannel/{customernumber}]
+This API will be called by Neon when customer sets a PIN either after registration or wanting to upgrade to SAW project. If the customer has identified to the casino staff that they have a digital identity, then Neon will send playerId in digitalProfile, otherwise Neon will send the profile information for the customer to be registered on the BEDE platform.
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
+    + Body
+    
+            {
+                "DigitalProfile": {
+                    "PlayerId": "123456789",
+                    "Name" : {
+                        "Title" : "Mr",
+                        "Forename" : "John",
+                        "MiddleName" : "Dan",
+                        "Surname" : "Jackson"
+                    },
+                     "Address" : {
+                        "Address1" : "10 Downing Street",
+                        "Town" : "London",
+                        "Postcode" : "WC2B 4AA",
+                        "County" : "Greater London",
+                        "Country"  : "UK"
+                    },
+                    "ContactDetails" : {
+                        "HomePhone" : "01234567890",
+                        "BusinessPhone" : "01234567890",
+                        "MobilePhone" : "01234567890",
+                        "Email" : "john@email.com",
+                        "IsHomeContactallowed" : true,
+                        "IsMobileContactAllowed" : true,
+                        "IsEmailContactAllowed" : true,
+                        "IsSMSContactAllowed" : true
+                    },
+                    "Nationality": "GB",
+                    "Gender": "Male",
+                    "Occupation": "Clerk",
+                    "DateOfBirth": "1955-01-30",
+                    "ClubNumber": "45611",
+                    "AccountStatus" : {
+                        "IsVerified" : true
+                    },
+                    "MembershipCardNumber" : 67890
+                },
+                "Security": {
+                    "Pin": 1234
+                }
+            }
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+            
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+## Update - to be removed  [PUT /customer/v1/profile/{customernumber}]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
+    + Body
+    
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    },
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk",
+                "DateOfBirth" : "1955-01-30",
+                "AccountStatus" : {
+                    "IsBarred": true,
+                    "DigitalSelfExclude": true,
+                    "DigitalSelfExcludeDurationInDays": 180,
+                    "RetailSelfExclude": true,
+                    "RetailSelfExcludeDurationInDays": 180
+                },
+                "MembershipCardNumber" : 67890
+            }
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Update Personal Details [PATCH /customer/v1/profile/{customernumber}/personal]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
+    + Body
+    
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                },
+                "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com"
+                },
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk",
+                "DateOfBirth" : "1955-01-30"
+            }
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Update Communication Peferences [PATCH /customer/v1/profile/{customernumber}/communication]
+
+Placeholder for service endpoint for updating a customers communication preferences
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+ 
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)   
+    
+    + Body
+    
++ Response 200 (application/json)    
+
+## Update PoPF [PATCH /customer/v1/profile/{customernumber}/popf]
+
+This API will be used to update Protection of Player Funds flag as an when is required by the terms.
+Neon will get the information about the current PoPF status for the customer in lookup API call (above)
+This functionality requires cusotmer to authorise in form of entering their correct PIN for the SAW account. Neon application will be required to generate a Resource owner token for the customer to be able to call this API.
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
++ Response 204 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
+## Update Customer barred status [PATCH /customer/v1/profile/{customernumber}/updateBarredStatus]
+
+This API will be used in two scenarios 
+1. To update customer profile as barred by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred, and how long the barring will exist for.
+2. To update customer profile by removing the barred status
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
+    + Body  
+            
+            {
+                "Barred" : {
+                "CustomerBarredReason" : "Reason for barred from dropdownlist",
+                "CustomerBarredAdditionalNotes" : "Additional Notes if any",
+                "BarredFromDate": "10/10/2016",
+                "BarredEndDate": "09/01/2017",
+                }
+                "AccountStatus" : {
+                    "IsBarred": true
+                }
+            }
+           
+            
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+ 
+ 
+## Register New Card [PUT /customer/v1/profile/{customernumber}/replacecard]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+  
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+    + Body
+    
+            {
+                "NewMembershipCardNumber" : 123123123
+            }
+            
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Request PIN Reset [PUT /customer/v1/profile/{customernumber}/resetpin]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+   
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Account Locked"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+## Change PIN [PUT /customer/v1/profile/{customernumber}/changepin]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    
+   
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+    + Body 
+    
+            {
+                "previousPin" : 1234,
+                "newPin" : 4321
+            }
+
++ Response 201 (application/json)
+
++ Response 403
+
+    + Body
+    
+            {
+              "Message": "PIN Insecure. The PIN must not consist of consecutive digits or digits repeated 4 times"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Account Locked"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Lookup [GET /customer/v1/profile/{customernumber}]
+
++ Parameters
+    + customernumber: 123456 (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 200 (application/json)
+
+             {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    },
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk",
+                "DateOfBirth" : "1955-01-30",
+                "ClubNumber" : "45611",
+                "AccountStatus" : {
+                    "IsVerified": true,
+                    "IsBarred": true,
+                    "IsSuspended": false,
+                    "DigitalSelfExclude": false,
+                    "RetailSelfExclude": false
+                },
+                "CustomerNumber" : "12345678",
+                "MembershipCardNumber" : 67890
+            }
+            
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+## Search Username [GET /customer/v1/profile/{Username}]
+
++ Parameters
+    + Username: 123456 (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 200 (application/json)
+
+             {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    },
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk",
+                "DateOfBirth" : "1955-01-30",
+                "ClubNumber" : "45611",
+                "AccountStatus" : {
+                    "IsVerified": true,
+                    "IsBarred": true,
+                    "IsSuspended": false,
+                    "DigitalSelfExclude": false,
+                    "RetailSelfExclude": false
+                },
+                "CustomerNumber" : "12345678",
+                "MembershipCardNumber" : 67890
+            }
+            
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+## Search [GET /customer/v1/profile/?{surname}=Jackson&{dateOfBirth}=1955-01-03&{email}=jack@johnson.com&{postcode}=WC2B+4AA&{mobile}=07123456789&{max}=10]
+
++ Parameters
+    + surname: `Jackson` (string, required)
+    + dateOfBirth: `1955-01-30` (dateTime, required) - Date of birth of the Customer
+    + postcode: `WC2B 4AA` (string, optional) - Customers' postcode
+    + email: `jack@johnson.com` (string, optional) - Customers' email address
+    + mobile: `07123456789` (string, optional) - Customers mobile number
+    + max: 10 (int, optional) - Max records to return
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 200 (application/json)
+
+            [
+                {
+                    "MembershipNo" : "123456789",
+                    "Name" : {
+                        "Forename" : "John",
+                        "Surname" : "Jackson"
+                    },
+                    "Postcode" : "WC2B 4AA",
+                    "DateOfBirth" : "1955-01-30",
+                    "Age" : 61,
+                    "EmailAddress" : "jack@rank.com",
+                    "Gender" : "Male",
+                    "AccountStatus": {
+                        "IsVerified": true,
+                        "IsBarred": true,
+                        "IsSuspended": false,
+                        "DigitalSelfExclude": false,
+                        "RetailSelfExclude": false
+                    },
+                    "IsOmniChannelAccount" : true,
+                    "IsDigital" : true
+                },
+                {
+                    "MembershipNo" : "987654322",
+                    "Name" : {
+                        "Forename" : "Will",
+                        "Surname" : "Jackson"
+                    },
+                    "Postcode" : "WC2B 1BD",
+                    "DateOfBirth" : "1955-01-30",
+                    "Age" : 61,
+                    "EmailAddress" : "jackson@rank.com",
+                    "Gender" : "Male",
+                    "AccountStatus": {
+                        "IsVerified": true,
+                        "IsBarred": false,
+                        "IsSuspended": false,
+                        "DigitalSelfExclude": true,
+                        "RetailSelfExclude": true
+                    },
+                    "IsOmniChannelAccount" : false,
+                    "IsDigital" : true
+                }
+            ]
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+
+# Retail Profile [/customer/v1/profile/retail]
+
+This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
+
+## Lookup [GET /customer/v1/profile/retail/{cardNo}{?dateOfBirth}{?checkAlreadyUsed}]
+
++ Parameters
+    + cardNo: `12345` (number, required) - Card number (Number found on the back of the card) of the Customer in form of an integer
+    + dateOfBirth: `1955-01-30` (dateTime, required) - Date of birth of the Customer
+    + checkAlreadyUsed: true (boolean, optional) - Enables Customer Spine registration check. 
+        The flag modifies response entity according to the following rules:
+        - customer registered on Spine, adds _IsAlreadyUsedOnDigital_ property with value _true_
+        - customer not registered - adds _IsAlreadyUsedOnDigital_ property with value _false_
+        - Spine check failed - no changes to response
+        
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 200 (application/json)
+
+        {
+            "Name" : {
+                "Title" : "Mr",
+                "Forename" : "John",
+                "Surname" : "Jackson"
+            },
+            "Address" : {
+                "Address1" : "10",
+                "Address2" : "Downing Street",
+                "Town" : "London",
+                "Postcode" : "WC2B 4AA",
+                "County" : "Greater London"
+            },         
+            "TelephoneNumber" : "01234567890",
+            "MobileNumber" : "01234567890",
+            "DateOfBirth" : "1955-01-30",
+            "EmailAddress" : "jack@johnson.com",
+            "Club" : {
+                "ClubNumber" : "45611"
+            },
+            "AffId" : "2728",
+            "MembershipNo" : "67890",
+            "CardNo" : 12345,
+            "IsAlreadyUsedOnDigital" : true,
+            "IsSawCustomer":  true
+        }
+
+# Group Wallet Service V 1.0
+This end point is a dedicated aggregated endpoint for Wallet services. Wallet balance and transactions requires integration to SafeCharge (tactical F&P/AML solution), which requires some additional customer information.
+NEON is expected to send this information in the request as "TransactionMetadata"
+
+# Balance [/wallet/v1/balance/]
+
+This API will be return balance from all SAW wallets and their current PoPF status(in BEDE). It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical solution. The wallet detail balance breakdown is only available for debugging purposes.
+This API will be used by Neon CashDesk staff prior to performing any wallet transaction. 
+
+## Request Balance [POST /wallet/v1/balance/{customernumber}]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+            
+    + Body
+    
+            {
+                "TransactionMetaData": 
+                {
+                    "CustomerFirstName": "John",
+                    "CustomerLastName": "Smith",
+                    "CustomerEmail": "john.smith@aol.com",
+                    "CustomerVipStatus": true,
+                    "Location": "Grosvenor Casino Blackpool"
+                }
+            }
+
++ Response 200 (application/json)
+
+            {
+                "FundsAvailable": {
+                    "ToWithdraw": 500,
+                    "ToDeposit": 500
+                },
+                "WalletBalance": {
+                    "ForRetail": 66,
+                    "ForDigital": 116,
+                    "Details": {
+                        "DigitalPlayableCash": 106,
+                        "RetailPlayableCash": 56,
+                        "Unplayable": 10
+                    }
+                },
+                "PopfAgreementDate": "1955-01-30 or null"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+# Transaction [/wallet/v1/transaction/]
+
+All transactions will need to be authorised by customer in the form of entering correct PIN for the wallet. Neon will have to generate a resource token (see the security section) for the customer. RES will reject any request that doesn't match the customer number and the resource token supplied.
+The token must be supplied as an "Authorization" header value. Once the transaction is completed, Neon system must clear the resource token so that it can't be reused for malicious purposes.
+Each transaction will generate guid for the transaction. RES will endavour to store the transaction log and allow to Neon to query the status in case of failure to resolve the issue manually.
+
+## Migrate [POST /wallet/v1/transaction/migrate/{customernumber}/]
+
+This API will be used by Neon application when a customer has just created SAW account and want to "migrate" funds from Neon's local/retail wallet to the SAW Wallet.
+This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet and will not effect any deposit limits.
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
+            Authorization: Bearer (client credential token)
+
+    + Body
+    
+            {
+                "Amount": 10000
+            }
+
++ Response 200 (application/json)
+
+            {
+                "Message": "Migrated 10000 into debit wallet"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "couldn't process the transaction. BEDE unavailable"
+            }
+
+## Deposit [POST /wallet/v1/transaction/deposit/{customernumber}/]
+
+This API will be used by Neon application that will be utilised CashDesk application and the slot machine. Customer authentication is not required for this transaction, Neon will use RES application authentication token to perform this operation.  
+If the transaction breaches the responsible gambling limits set by customer, then the transaction would faile and RES will return an error message. 
+If current request breaches any AML/Fraud deposit limit, RES will store overflow funds to "pending" wallet, this will be mentioned in the response message.
+If no limits are set or request within the limits, RES will process the transaction with BEDE, AML/Fraud engine (TBC) and limits/balance engine in "all-or-nothing" fashion. 
+Any failure will be reported back 500 - server error. Neon can retry this transaction. RES will consider applying some retry mechanism before failing the transaction.
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
+            Authorization: Bearer (resource owner token)
+
+    + Body
+    
+            {
+                "Amount": 10000,
+                "TransactionMetaData": 
+                {
+                    "CustomerFirstName": "John",
+                    "CustomerLastName": "Smith",
+                    "CustomerEmail": "john.smith@aol.com",
+                    "CustomerVipStatus": true,
+                    "Location": "Grosvenor Casino Blackpool"
+                }
+            }
+
++ Response 200 (application/json)
+
+            {
+                "Message": "deposited 10000 into debit wallet. OR deposited 2000 into debit wallet and 8000 into pending wallet"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "couldn't process the transaction. BEDE unavailable"
+            }
+
+## Register Winnings [POST /wallet/v1/transaction/winnings/{customernumber}/]
+
+Our current understanding is that Neon/Casino staff will record the winnings for a customer in a seperate system.
+CashDesk staff will receive these winnings at later on time.
+This API will allow CashDesk staff to record these winnings (using Neon), so that customer's funds can be transferred from their "pending" wallet to their debit wallet.
+Neon will need to provide approximate date/time (UTC) of the winnings, so that the "winnings" transaction can be placed before the deposit transaction in the transactions log, for the audit and debugging purposes.
+This transaction will not be subject to any deposit limits. This API will utilise BEDE's "transfer funds" API
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
+            Authorization: Bearer (client credential token)
+
+    + Body
+    
+            {
+                "EventTime": "2016-06-01T20:44:55Z",
+                "Amount": 1000,
+                "TransactionMetaData": 
+                {
+                    "CustomerFirstName": "John",
+                    "CustomerLastName": "Smith",
+                    "CustomerEmail": "john.smith@aol.com",
+                    "CustomerVipStatus": true,
+                    "Location": "Grosvenor Casino Blackpool"
+                }
+            }
+
++ Response 200 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "winning amount is invalid OR not a SAW customer"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "couldn't process the transaction. BEDE unavailable"
+            }
+
+## Withdrawal [POST /wallet/v1/transaction/withdraw/{customernumber}/]
+
+CashDesk staff will used Neon to withdraw cash from customer to their SAW debit wallet. 
+Customer will be asked to authenticate the transaction by entering the PIN number. 
+If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
+If no limits are set or request within the limits, RES will process the transaction with BEDE, AML/Fraud engine (TBC) and limits/balance engine in "all-or-nothing" fashion. 
+Any failure will be reported back 500 - server error. Neon can retry this transaction. RES should consider applying some retry mechanism before failing the transaction.
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
+            Authorization: Bearer (resource owner token)
+
+    + Body
+    
+            {
+                "Amount": 1000,
+                "TransactionMetaData": 
+                {
+                    "CustomerFirstName": "John",
+                    "CustomerLastName": "Smith",
+                    "CustomerEmail": "john.smith@aol.com",
+                    "CustomerVipStatus": true,
+                    "Location": "Grosvenor Casino Blackpool"
+                }
+            }
+
++ Response 200 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "exceeds current VIP/Blanket/Manual withdrawal limit. Current max withdrawal allowance = {xxx} OR deposit amount is invalid OR not a SAW customer"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "couldn't process the transaction. BEDE unavailable"
+            }
+
+## Transaction status [GET /wallet/v1/transaction/status?{trasactionId}]
+
+This api will provide some sort of log for the recent transaction performed by Neon. RES is not planning to persist these transaction logs, so if the transaction is too old, RES will return 404 - transaction not found.
+
++ Parameters
+    + trasactionId: "d5e7bbd8-c2a0-4b70-8af8-6dbce273b922" (string, required)
+
++ Response 200 (application/json)
+
+            {
+                "Log": "date/time: BEDE: some form update message. date/time: MDM: blah blah"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Trasaction Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "couldn't process the request"
+            }
