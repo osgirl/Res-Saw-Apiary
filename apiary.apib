@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://dev01-res.meccabingo.com/
 
-# RES.API.Mecca.SAW - Draft
+# RES.API.SAW - Draft
 
 #Introduction
 Rank Enterprise Services API is a collection of business services exposed over a RESTful inteface. The following RES API methods will be hosted with in a Cloud environment.
@@ -583,11 +583,11 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "Message": "Not a SAW customer"
             }
 
-## Update Customer barred status [PATCH /customer/v1/profile/{customernumber}/updateBarredStatus]
+## Update Customer barred status [POST /customer/v1/profile/{customernumber}/barredStatus]
 
 This API will be used in two scenarios 
 1. To update customer profile as barred by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred, and how long the barring will exist for.
-2. To update customer profile by removing the barred status
+(2. To update customer profile by removing the barred status)
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -596,19 +596,17 @@ This API will be used in two scenarios
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credential token)
 
     + Body  
             
             {
-                "Barred" : {
-                "CustomerBarredReason" : "Reason for barred from dropdownlist",
-                "CustomerBarredAdditionalNotes" : "Additional Notes if any",
-                "BarredFromDate": "10/10/2016",
-                "BarredEndDate": "09/01/2017",
-                }
                 "AccountStatus" : {
-                    "IsBarred": true
+                    "IsGlobal": true,
+                    "CasinoNumber": 123345,
+                    "Reason": "Bad behaviour",
+                    "From": "2016-01-30",
+                    "To": "2016-01-30"
                 }
             }
            
@@ -773,10 +771,28 @@ This API will be used in two scenarios
                 "ClubNumber" : "45611",
                 "AccountStatus" : {
                     "IsVerified": true,
-                    "IsBarred": true,
                     "IsSuspended": false,
                     "DigitalSelfExclude": false,
-                    "RetailSelfExclude": false
+                    "RetailSelfExclude": false,
+                    "BarredGlobally" : {
+                        "Reason": "Bad behaviour",
+                        "From": "2016-09-01",
+                        "To": "2016-10-01"
+                    },
+                    "BarredLocally" : [
+                        {
+                            "CasinoNumber": 123345,
+                            "Reason": "Bad behaviour",
+                            "From": "2016-01-01",
+                            "To": "2016-01-07"
+                        },
+                        {
+                            "CasinoNumber": 456789,
+                            "Reason": "Has yellow jumper",
+                            "From": "2016-01-30",
+                            "To": "2016-02-30"
+                        }
+                    ]
                 },
                 "CustomerNumber" : "12345678",
                 "MembershipCardNumber" : 67890
