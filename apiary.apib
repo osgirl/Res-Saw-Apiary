@@ -95,10 +95,9 @@ grant_type=password
 &one_time_password=123456
 ```
 
-```
-
 **Example response**
 
+```
 {
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.ew0KICAiY2xpZW50X2lkIjogInJlcyIsDQogICJzY29wZSI6IFsNCiAgICAic3BpbmUiLA0KICAgICJzaXRlY29kZSINCiAgXSwNCiAgInN1YiI6ICI2Mzk3MTk5MTk4MzUwMjU0MTIiLA0KICAiR2FtZVRva2VuIjogIldzMkY3a1NwMmRaWlZHWlRNWU1yRU1yYVJ5QXFwU1BDS2ZHWUl6SFhFbXVjNUM5dzdVYlM0dk5zZFIwa01LUlV1SDVpRWdwSWI2LVd0REpVMkMwQlliTDROZXlGRGpTVW9namtiMjY5RGF3MSIsDQogICJhbXIiOiAicGFzc3dvcmQiLA0KICAiYXV0aF90aW1lIjogMTQyOTI4NjE5NywNCiAgImlkcCI6ICJpZHNydiIsDQogICJpc3MiOiAiaHR0cDovL2V3MS1xYTAxLTUwMS5jbG91ZGFwcC5uZXQ6ODg4OC9jb3JlIiwNCiAgImF1ZCI6ICJodHRwOi8vZXcxLXFhMDEtNTAxLmNsb3VkYXBwLm5ldDo4ODg4L2NvcmUvcmVzb3VyY2VzIiwNCiAgImV4cCI6IDE0MjkyODY3OTgsDQogICJuYmYiOiAxNDI5Mjg2MTk4DQp9.eqvm-4vOF6s7Iwpqfd01qa4ZkwSMkQiVgNFNCqdjX-hX843pUtGTM2XdEIBwvwf4OxldptRtYl5gdAcChXJcZf2TLXhxnznP4uPMQsvEXlm3qy44uHXj8phlEsQELC2CydcVUa-C6sZV0RXJ-QNfUo2sGQQwnX7rWP19Byf-Z6QzmaJFkSWU8yOl45qxfSu3XDmf4GyQpBPnn5YBi8FWuK7R2QSBdK3JFlQ9VvHyk7QeDQhfMg1OJdP1JfbXbi_V3WN3cD700hx_f2f_mVS6o_VYEHBh9IPb7wsCcSfR33BKKlXFUraKdttIwYjQL-frEmpOzI2mQDGg2de_PodU-w",
     "expires_in": 600,
@@ -118,13 +117,14 @@ POST /api/connect/token
 Content-Type: application/x-www-form-urlencoded
 X-Correlation-Token: your-unique-correlation-token
 Authorization: Basic 98712389abc
-```
 
-```
 grant_type=refresh_token
 &refresh_token=1cf75ed7e40723b64bbe29eb2f2654b8
+```
 
 **Example Response**
+
+```
 {
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5kcnRheVk3c0tuSjZSY3ZCRjlLZl9BU3B0SSIsImtpZCI6Im5kcnRheVk3c0tuSjZSY3ZCRjlLZl9BU3B0SSJ9.eyJjbGllbnRfaWQiOiJ0Y3MiLCJzY29wZSI6WyJnYW1lVG9rZW4iLCJvZmZsaW5lX2FjY2VzcyIsInNpdGVjb2RlIiwic3BpbmUiXSwic3ViIjoiNjQ0MTM5MTk1ODYxOTY2ODQ4IiwiYW1yIjoicGFzc3dvcmQiLCJhdXRoX3RpbWUiOjE0NDI1MDQxMTUsImlkcCI6Imlkc3J2IiwiZ2FtZVRva2VuIjoiRExlZS0zNHhuNDBxcEowVWpZUzRWV1VIdFQzY2Zmb05oOU1qVjcxRVNocWJ6QVBBRjUyWWdnX2I4ZmZjT0JvbUVaRDdScnVzNlg3X3YxZ0dHeXNlNnRvNWIwTEs2S2otWmhZa2xjMGlSelkxIiwic2l0ZWNvZGUiOiJncm9zdmVub3JjYXNpbm9zLmNvbSIsImlzcyI6Imh0dHA6Ly9ldzEtcWEwMS01MDEtaWxiLmFkLmJlZGVnYW1pbmcuY29tOjg4ODgvY29yZSIsImF1ZCI6Imh0dHA6Ly9ldzEtcWEwMS01MDEtaWxiLmFkLmJlZGVnYW1pbmcuY29tOjg4ODgvY29yZS9yZXNvdXJjZXMiLCJleHAiOjE0NDI1MDQ0MTUsIm5iZiI6MTQ0MjUwNDExNX0.NW3YVYwmdibBYkRgx1TveOVBDA3-x7W9D_R3tkL5-DOgiTEbirVeDH6kC4Pwy2oBbJyZhxK4pzyIbynm2LjeWtf36qn_JW40UX0POJX7WTv4J-HHja2ExB2xCmvPMpQtv1V9GnuHz7yuxMr_IdNrBfedfFiwtmf2j2AILQsgjvsDLjr2U7MSyyGozwRRvtbU6ZkOm6zNxAonblDtmlPZmFvlJ8p8EZ-f37s9Vyc_-oDgF8qm5AQpvjrII7OsIMeWbaJtjmf6EgSjzeDnXaIvmdlo_RNozIcLDCmndXbLRmhLiJ5_r1aEGJXqvmZPXU1J5Sx7i2XbS2q5koLfVmYRNA",
     "expires_in": 600,
@@ -137,23 +137,27 @@ grant_type=refresh_token
 
 For each business service endpoints there will be standardised formats of 4XX and 5XX error codes:
 
-```
 + Response 400 (application/json)
 
+```
   {
     "Reason" : "Bad Request"
     "MoreInfo" : "Invalid parameter supplied."
   }
+```
 
 + Response 403 (application/json)
 
+```
   {
     "Reason" : "Unauthorised Request"
     "MoreInfo" : "Valid token has not been provided"
   }
+```
   
 + Response 500 (application/json)
 
+```
   {
     "Reason" : "Internal Server Error"
     "MoreInfo" : "Failed while accessing the database."
@@ -583,11 +587,11 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "Message": "Not a SAW customer"
             }
 
-## Update Customer barred status [POST /customer/v1/profile/{customernumber}/barredStatus]
+## Update Customer suspended status [POST /customer/v1/profile/{customernumber}/suspendedStatus]
 
 This API will be used in two scenarios 
-1. To update customer profile as barred by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred, and how long the barring will exist for.
-(2. To update customer profile by removing the barred status)
+1. To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
+(2. To update customer profile by removing the barred/suspended status)
 
 + Parameters
     + customernumber: 12345678 (string, required)
