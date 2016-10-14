@@ -227,7 +227,7 @@ Model for the resource if defined below:
 |ContactDetails.HomePhone                        |string[?]  |**optional**         |                                                             |"01234567890"  |
 |ContactDetails.BusinessPhone                    |string[?]  |**optional**         |                                                             |"01234567890"  |
 |ContactDetails.MobilePhone                      |string[?]  |**optional** Either Mobile or Email must be supplied            |           |"01234567890"  |
-|ContactDetails.Email                       |string[?]  |**optional** Either Mobile or Email must be supplied             |           |"john@email.com"         |
+|ContactDetails.Email                       |string[?]  |**optional** Either Mobile or Email must be supplied             |           |"<john@email.com>"         |
 |ContactDetails.IsHomeContactallowed        |bool  |**optional**         |Allow postal communication channel                            |true           |
 |ContactDetails.IsMobileContactAllowed      |bool  |**optional**         |Allow mobile phone communication channel                          |true           |
 |ContactDetails.IsEmailContactAllowed       |bool  |**optional**         |Allow email communication channel                                 |true           |
@@ -589,9 +589,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
 
 ## Update Customer suspended status [POST /customer/v1/profile/{customernumber}/suspendedStatus]
 
-This API will be used in two scenarios 
-1. To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
-(2. To update customer profile by removing the barred/suspended status)
+To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -624,6 +622,37 @@ This API will be used in two scenarios
             }
  
  
+## Remove Customer suspended status [POST /customer/v1/profile/{customernumber}/removeSuspension]
+
+To update customer profile by removing the barred/suspended status
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
+    + Body  
+            
+            {
+                "AccountStatus" : {
+                    "IsGlobal": false,
+                    "CasinoNumber": 123345,
+                }
+            }
+           
+            
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+            
 ## Register New Card [PUT /customer/v1/profile/{customernumber}/replacecard]
 
 Allows the registered customers card to be replaced with a new card number
