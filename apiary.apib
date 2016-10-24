@@ -630,11 +630,9 @@ To update customer profile as barred/suspended by the SAW staff member by select
     + Body  
             
             {
-                "AccountStatus" : {
-                    "Reason": "Bad behaviour",
-                    "From": "2016-01-30",
-                    "To": "2016-01-30"
-                }
+                "Reason": "Bad behaviour",
+                "From": "2016-01-30",
+                "To": "2016-01-30"
             }
            
             
@@ -654,6 +652,55 @@ To update customer profile by removing the barred/suspended status
 + Parameters
     + customernumber: 12345678 (string, required)
     + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
+## Set or Update Customer self-exclusion [PUT /customer/v1/profile/{customernumber}/selfExclusion/{target}]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
+    + Body  
+            
+            {
+                "From": "2016-01-30",
+                "To": "2016-01-30"
+            }
+           
+            
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+ 
+ 
+## Remove Customer self-exclusion [DELETE /customer/v1/profile/{customernumber}/selfExclusion/{target}]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
 
 + Request
 
