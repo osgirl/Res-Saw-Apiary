@@ -757,6 +757,22 @@ Allows the registered customers card to be replaced with a new card number
     + Body
     
             {
+              "Message": "Current PIN is incorrect"
+            }
+            
++ Response 409
+
+    + Body
+    
+            {
+              "Message": "The new PIN has been used before"
+            }
+
++ Response 412
+
+    + Body
+    
+            {
               "Message": "PIN Insecure. The PIN must not consist of consecutive digits or digits repeated 4 times"
             }
 
