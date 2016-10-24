@@ -203,12 +203,38 @@ Model for the resource if defined below:
                 "CustomerNumber" : "12345678",
                 "MembershipCardNumber" : 67890,
                 "AccountStatus" : {
-                    "IsBarred": true,
                     "IsVerified" : true,
-                    "DigitalSelfExclude": true,
-                    "DigitalSelfExcludeDurationInDays": 180,
-                    "RetailSelfExclude": true,
-                    "RetailSelfExcludeDurationInDays": 180
+                    "SelfExclusion" : {
+                        "Digital" : {
+                            "From" : "2016-01-01",
+                            "To" : "2016-06-01"
+                        },
+                        "Retail" : {
+                            "From" : "2010-03-10",
+                            "To" : "2010-09-10"
+                        }
+                    },
+                    "Suspension" : {
+                        "Global" : {
+                            "Reason": "Bad behaviour",
+                            "From" : "2016-09-01",
+                            "To" : "2016-11-01"
+                        },
+                        "Local" : [
+                            {
+                                "CasinoId" : 55000,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-01-30",
+                                "To" : "2016-02-28"
+                            },
+                            {
+                                "CasinoId" : 55001,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-06-15",
+                                "To" : "2016-06-30"
+                            }
+                        ]
+                    }
                 }
             }
 ```
@@ -587,12 +613,13 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "Message": "Not a SAW customer"
             }
 
-## Update Customer suspended status [POST /customer/v1/profile/{customernumber}/suspendedStatus]
+## Update Customer suspended status [PUT /customer/v1/profile/{customernumber}/suspension/{target}]
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
 + Parameters
     + customernumber: 12345678 (string, required)
+    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
 
 + Request
 
@@ -604,8 +631,6 @@ To update customer profile as barred/suspended by the SAW staff member by select
             
             {
                 "AccountStatus" : {
-                    "IsGlobal": true,
-                    "CasinoNumber": 123345,
                     "Reason": "Bad behaviour",
                     "From": "2016-01-30",
                     "To": "2016-01-30"
@@ -622,12 +647,13 @@ To update customer profile as barred/suspended by the SAW staff member by select
             }
  
  
-## Remove Customer suspended status [POST /customer/v1/profile/{customernumber}/removeSuspension]
+## Remove Customer suspended status [DELETE /customer/v1/profile/{customernumber}/suspension/{target}]
 
 To update customer profile by removing the barred/suspended status
 
 + Parameters
     + customernumber: 12345678 (string, required)
+    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
 
 + Request
 
@@ -635,16 +661,6 @@ To update customer profile by removing the barred/suspended status
             
             Authorization: Bearer (client credential token)
 
-    + Body  
-            
-            {
-                "AccountStatus" : {
-                    "IsGlobal": false,
-                    "CasinoNumber": 123345,
-                }
-            }
-           
-            
 + Response 204 (application/json)
 
 + Response 400 (application/json)
@@ -716,7 +732,7 @@ Allows the registered customers card to be replaced with a new card number
                 "Message": "Internal Error"
             }
             
-## Change PIN [PUT /customer/v1/profile/{customernumber}/changepin]
+## Change PIN [POST /customer/v1/profile/{customernumber}/changepin]
 
 + Parameters
     + customernumber: 12345678 (string, required)
