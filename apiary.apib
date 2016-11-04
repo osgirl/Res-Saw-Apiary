@@ -1263,7 +1263,9 @@ This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet 
 + Response 200 (application/json)
 
             {
-                "Message": "Migrated 10000 into debit wallet"
+                "WalletUpdates" : {
+                    "NonCredit" : 10000
+                }
             }
 
 + Response 404 (application/json)
@@ -1275,7 +1277,7 @@ This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet 
 + Response 500 (application/json)
 
             {
-                "Message": "couldn't process the transaction. BEDE unavailable"
+                "Message": "Couldn't process the transaction. SPINE is unavailable."
             }
 
 ## Deposit [POST /wallet/v1/transaction/deposit/{customernumber}/]
