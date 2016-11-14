@@ -491,9 +491,9 @@ This API will be called by Neon when customer sets a PIN either after registrati
                 "Message": "Internal Error"
             }
 
-## Update Communication Peferences [PATCH /customer/v1/profile/{customernumber}/communication]
+## Update Communication Permissions [PATCH /customer/v1/profile/{customernumber}/communication]
 
-Placeholder for service endpoint for updating a customers communication preferences
+Placeholder for service endpoint for updating a customers communication permissions
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -505,6 +505,13 @@ Placeholder for service endpoint for updating a customers communication preferen
             Authorization: Bearer (resource owner token)   
     
     + Body
+    
+            {
+                "CommPermissionMobile": false,
+                "CommPermissionSMS": true,
+                "CommPermissionEmail": true,
+                "CommPermissionPost": false
+            }
     
 + Response 200 (application/json)    
 
