@@ -635,6 +635,11 @@ To update customer profile by removing the barred/suspended status
                 "Message": "Not a SAW customer"
             }
  
++ Response 412 (application/json)
+
+            {
+                "Message": "Invalid start date or duration"
+            }
  
 ## Remove Customer self-exclusion [DELETE /customer/v1/profile/{customernumber}/selfExclusion/{target}]
 
