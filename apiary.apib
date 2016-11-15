@@ -68,15 +68,13 @@ Resource owner access tokens are required to access resources where an authentic
 
 `client_id:client_secret` Base64 encoded, e.g. 98712389abc and passed in the Authorization header
 
-**username** - The username of the resource owner (customer)
+**username** - The username of the resource owner (customer).
 
-**password** - The password of the resource owner (customer)
+**password** - The password of the resource owner (customer).
 
-**ip_address** - The IP Address of the player
+**venue_id** - Identifier of a venue calling RES. Required only when a member of staff acesses a resource on behalf of a resource owner (customer).
 
-**device_token** - Device Token dispenced from authentication service - will be null on new devices
-
-**one_time_password** - [optional] - Confirm one time password for multi factor authentication
+**staff_id** - Identifier of a member of staff calling RES. Required only when a member of staff acesses a resource on behalf of a resource owner (customer).
 
 ```
 POST /api/core/connect/token
@@ -90,9 +88,8 @@ grant_type=password
 &scope=res
 &username=<cardno>
 &password=<pin>
-&ip_address=192.168.0.1
-&device_token=ace84278-5134-430b-b7ec-a72b88d2a4ea
-&one_time_password=123456
+&venue_id=50601
+&staff_id=320
 ```
 
 **Example response**
@@ -132,6 +129,19 @@ grant_type=refresh_token
     "refresh_token": "2cd75ed7e40723b64bbe29eb2f2654b8"
 }
 ```
+
+## Scopes
+
+In order to access any resource provided by RES, the client should provide a token of a certain type obtained for appropriate scopes.
+The relation between resources and allowed scopes is reflected in each endpoint's description.
+The following table explains what should be supplied as a part of auth server request in order to get a token with a particular scope issued.
+
+|Authentication type|Token type|Required parameters|Available scopes|
+|-------------------|----------|-------------------|----------------|
+|Read-only operations|Client Credentials Token|clientId <br/>clientSecret|readonlyCustomerLookup <br/>readonlyCustomerSearch|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>casinoId <br/>staffId|staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletMigrateFunds <br/>staffWalletRegisterWinnings <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer|
+|Customer performing action themselves|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin|clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin <br/>casinoId <br/>staffId|onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
 # Error Responses
 
