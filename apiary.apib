@@ -493,7 +493,7 @@ This API will be called by Neon when customer sets a PIN either after registrati
 
 ## Update Communication Permissions [PATCH /customer/v1/profile/{customernumber}/communication]
 
-Placeholder for service endpoint for updating a customers communication permissions
+Service endpoint for updating a customers communication permissions, which indicates how Rank may contact them for marketing purposes
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -598,7 +598,7 @@ To update customer profile by removing the barred/suspended status
                 "Message": "Not a SAW customer"
             }
 
-## Set or Update Customer self-exclusion [PUT /customer/v1/profile/{customernumber}/selfExclusion/{target}]
+## Set Customer self-exclusion [POST /customer/v1/profile/{customernumber}/selfExclusion/{target}]
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -679,7 +679,7 @@ Allows the registered customers card to be replaced with a new card number
                 "Message": "Internal Error"
             }
 
-## Request PIN Reset [POST /customer/v1/profile/{customernumber}/resetpin]
+## Request PIN Change [POST /customer/v1/profile/{customernumber}/resetpin]
 
 + Parameters
     + customernumber: 12345678 (string, required)
