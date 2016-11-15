@@ -200,8 +200,17 @@ Model for the resource if defined below:
                 "Occupation" : "Clerk"
                 "DateOfBirth" : "1955-01-30",
                 "CustomerNumber" : "12345678",
-                "MembershipCardNumber" : 67890,
                 "PopfAcceptanceDate" : "2016-09-12",
+                "MembershipCards" : [
+                            {
+                                "CardNumber" : 123456789,
+                                "Status": "Active",
+                            },
+                            {
+                                "CardNumber" : 789456123,
+                                "Status": "Lost",
+                            }
+                        ],
                 "AccountStatus" : {
                     "IsVerified" : true,
                     "SelfExclusion" : {
@@ -647,9 +656,9 @@ To update customer profile by removing the barred/suspended status
                 "Message": "Not a SAW customer"
             }
             
-## Register New Card [PUT /customer/v1/profile/{customernumber}/replacecard]
+## Register New Card [POST /customer/v1/profile/{customernumber}/membershipCards]
 
-Allows the registered customers card to be replaced with a new card number
+Allows registered customers to add new or additional cards
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -678,7 +687,42 @@ Allows the registered customers card to be replaced with a new card number
             {
                 "Message": "Internal Error"
             }
+            
+            
+## Update Card Status [PUT /customer/v1/profile/{customernumber}/membershipCards/{cardnumber}]
 
+Allows registered customers to update the card status
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + cardnumber: 123123123 (string, required)
+  
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+    + Body
+    
+            {
+                "Status" : "Lost"
+            }
+            
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+            
 ## Request PIN Change [POST /customer/v1/profile/{customernumber}/resetpin]
 
 + Parameters
