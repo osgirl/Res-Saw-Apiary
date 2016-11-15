@@ -1442,7 +1442,7 @@ Dedicated API endpoints for all customer comms using channels like Email and SMS
 | Name          | Type      | Required  | Description                                       | Example           |
 |:---           |:---       |:---       |:---                                               |:---               |
 |Type           |string     |yes        |Type of Email, possible values are: "WelcomeNonClub", "WelcomeClub", "ForgotUsername", "ForgotPassword"|"ForgotUsername"          |
-|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in Email templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
+|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in Email templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted. If they are still specified then auto-extracted values will be overriden.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
 
 + Parameters
 
@@ -1487,7 +1487,7 @@ Dedicated API endpoints for all customer comms using channels like Email and SMS
 | Name          | Type      | Required  | Description                                       | Example           |
 |:---           |:---       |:---       |:---                                               |:---               |
 |Type           |string     |yes        |Type of SMS|"ForgottenPinChange"          |
-|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in SMS templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
+|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in SMS templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted. If they are still specified then auto-extracted values will be overriden.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
 
 + Parameters
 
