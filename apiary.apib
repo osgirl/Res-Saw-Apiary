@@ -1435,10 +1435,10 @@ This api will provide some sort of log for the recent transaction performed by N
                 "Message": "couldn't process the request"
             }
             
-# Group Customer Communication V 1.0
+# Group Customer Communication V 2.0
 Dedicated API endpoints for all customer comms using channels like Email and SMS.
 
-## Send Email [POST /communication/v1/customers/digital/{playerId}/sendEmail]
+## Send Email [POST /communication/v2/customers/digital/{playerId}/sendEmail]
 | Name          | Type      | Required  | Description                                       | Example           |
 |:---           |:---       |:---       |:---                                               |:---               |
 |Type           |string     |yes        |Type of Email, possible values are: "WelcomeNonClub", "WelcomeClub", "ForgotUsername", "ForgotPassword"|"ForgotUsername"          |
@@ -1483,7 +1483,7 @@ Dedicated API endpoints for all customer comms using channels like Email and SMS
                 "Message": "Internal Error"
             }
             
-## Send SMS [POST /communication/v1/customers/digital/{playerId}/sendSms]
+## Send SMS [POST /communication/v2/customers/digital/{playerId}/sendSms]
 | Name          | Type      | Required  | Description                                       | Example           |
 |:---           |:---       |:---       |:---                                               |:---               |
 |Type           |string     |yes        |Type of SMS|"ForgottenPinChange"          |
