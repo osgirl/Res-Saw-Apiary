@@ -139,7 +139,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret|readonlyCustomerLookup <br/>readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>casinoId <br/>staffId|staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletMigrateFunds <br/>staffWalletRegisterWinnings <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>casinoId <br/>staffId|staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletMigrateFunds <br/>staffWalletRegisterWinnings <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
 |Customer performing action themselves|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin|clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin <br/>casinoId <br/>staffId|onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
@@ -293,17 +293,18 @@ Model for the resource if defined below:
 
 For registration following input validation in place
 
-**Following fields must follow a valid format**
+**Following fields must follow a valid format:**
 - Email address - valid email format
 - ContactDetails.Home & TelephoneNumber - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 078 8602 8945, +44 78 8602 9845, etc)
 - Address.Postcode - valid UK postcode for UK addresses
 - DateOfBirth - must be of legal age (18)
 - ClubNumber - Club number must be a valid Grosvenor casino.
 
-**On Post:**
 
-## Register [POST  /customer/v1/profile/retailOnly]
-    
+## Register [POST /customer/v1/profile/retailOnly]
+
+Required scope: `staffRegisterRetailCustomer`
+
 + Request (application/json)
 
     + Headers 
@@ -370,6 +371,9 @@ For registration following input validation in place
             }
 
 ## Upgrade [POST /customer/v1/multichannel/{customernumber}]
+
+Required scope: `staffUpgradeCustomer`
+
 This API will be called by Neon when customer sets a PIN either after registration or wanting to upgrade to SAW project. If the customer has identified to the casino staff that they have a digital identity, then Neon will send playerId in digitalProfile, otherwise Neon will send the profile information for the customer to be registered on the BEDE platform.
 
 + Parameters
@@ -447,6 +451,8 @@ This API will be called by Neon when customer sets a PIN either after registrati
 
 ## Update Personal Details [PATCH /customer/v1/profile/{customernumber}/personal]
 
+Required scope: `staffUpdateCustomerPersonal`
+
 + Parameters
     + customernumber: 12345678 (string, required)
     
@@ -512,6 +518,8 @@ This API will be called by Neon when customer sets a PIN either after registrati
 
 ## Update Communication Permissions [PATCH /customer/v1/profile/{customernumber}/communication]
 
+Required scope: `staffUpdateCustomerComms`
+
 Service endpoint for updating a customers communication permissions, which indicates how Rank may contact them for marketing purposes
 
 + Parameters
@@ -565,6 +573,8 @@ This functionality requires cusotmer to authorise in form of entering their corr
 
 ## Update Customer suspended status [PUT /customer/v1/profile/{customernumber}/suspension/{target}]
 
+Required scope: `staffSetAccountSuspension`
+
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
 + Parameters
@@ -597,6 +607,8 @@ To update customer profile as barred/suspended by the SAW staff member by select
  
 ## Remove Customer suspended status [DELETE /customer/v1/profile/{customernumber}/suspension/{target}]
 
+Required scope: `staffRemoveAccountSuspension`
+
 To update customer profile by removing the barred/suspended status
 
 + Parameters
@@ -618,6 +630,8 @@ To update customer profile by removing the barred/suspended status
             }
 
 ## Set Customer self-exclusion [POST /customer/v1/profile/{customernumber}/selfExclusion/{target}]
+
+Required scope: `onbehalfSetSelfExclusion`
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -653,6 +667,8 @@ To update customer profile by removing the barred/suspended status
  
 ## Remove Customer self-exclusion [DELETE /customer/v1/profile/{customernumber}/selfExclusion/{target}]
 
+Required scope: `staffRemoveSelfExclusion`
+
 + Parameters
     + customernumber: 12345678 (string, required)
     + target: 'retail' or 'digital' or 'crossChannel' (string, required)
@@ -672,6 +688,8 @@ To update customer profile by removing the barred/suspended status
             }
             
 ## Register New Card [POST /customer/v1/profile/{customernumber}/membershipCards]
+
+Required scope: `onbehalfAddCard`
 
 Allows registered customers to add new or additional cards
 
@@ -705,6 +723,8 @@ Allows registered customers to add new or additional cards
             
             
 ## Update Card Status [PUT /customer/v1/profile/{customernumber}/membershipCards/{cardnumber}]
+
+Required scope: `onbehalfUpdateCard`
 
 Allows registered customers to update the card status
 
@@ -740,6 +760,8 @@ Allows registered customers to update the card status
             
 ## Request PIN Change [POST /customer/v1/profile/{customernumber}/resetpin]
 
+Required scope: `onbehalfRequestChangePin`
+
 + Parameters
     + customernumber: 12345678 (string, required)
    
@@ -770,6 +792,8 @@ Allows registered customers to update the card status
             }
             
 ## Change PIN [POST /customer/v1/profile/{customernumber}/changepin]
+
+Required scope: `clientChangePin`
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -832,6 +856,8 @@ Allows registered customers to update the card status
             }
 
 ## Lookup [GET /customer/v1/profile/{customernumber}]
+
+Required scope: `readonlyCustomerLookup`
 
 + Parameters
     + customernumber: 123456 (string, required)
@@ -922,6 +948,8 @@ Allows registered customers to update the card status
             }
             
 ## Search Username [GET /customer/v1/profile/{Username}]
+
+Required scope: `readonlyCustomerSearch`
 
 + Parameters
     + Username: 123456 (string, required)
@@ -1014,6 +1042,8 @@ Allows registered customers to update the card status
             }
             
 ## Search [GET /customer/v1/profile/?{surname}=Jackson&{dateOfBirth}=1955-01-03&{email}=jack@johnson.com&{postcode}=WC2B+4AA&{mobile}=07123456789&{max}=10]
+
+Required scope: `readonlyCustomerSearch`
 
 + Parameters
     + surname: `Jackson` (string, required)
@@ -1123,6 +1153,8 @@ This endpoint is a replacement for the existing Grosvenor Customer look service 
 
 ## Lookup [GET /customer/v1/profile/retail/{cardNo}{?dateOfBirth}{?checkAlreadyUsed}]
 
+Required scope: `readonlyCustomerLookup`
+
 + Parameters
     + cardNo: `12345` (number, required) - Card number (Number found on the back of the card) of the Customer in form of an integer
     + dateOfBirth: `1955-01-30` (dateTime, required) - Date of birth of the Customer
@@ -1184,6 +1216,8 @@ This API will be return balance from all SAW wallets and their current PoPF stat
 This API will be used by Neon CashDesk staff prior to performing any wallet transaction. 
 
 ## Request Balance [POST /wallet/v1/balance/{customernumber}]
+
+Required scope: `clientWalletGetBalance`, `staffWalletGetBalance`
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -1252,6 +1286,8 @@ Each transaction will generate guid for the transaction. RES will endavour to st
 
 ## Migrate [POST /wallet/v1/transaction/migrate/{customernumber}/]
 
+Required scope: `staffWalletMigrateFunds`
+
 This API will be used by Neon application when a customer has just created SAW account and want to "migrate" funds from Neon's local/retail wallet to the SAW Wallet.
 This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet and will not effect any deposit limits.
 
@@ -1292,6 +1328,8 @@ This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet 
             }
 
 ## Deposit [POST /wallet/v1/transaction/deposit/{customernumber}/]
+
+Required scope: `clientWalletDeposit`, `onbehalfWalletDeposit`
 
 This API will be used by Neon application that will be utilised CashDesk application and the slot machine. Customer authentication is not required for this transaction, Neon will use RES application authentication token to perform this operation.  
 If the transaction breaches the responsible gambling limits set by customer, then the transaction would faile and RES will return an error message. 
@@ -1342,6 +1380,8 @@ Any failure will be reported back 500 - server error. Neon can retry this transa
             }
 
 ## Register Winnings [POST /wallet/v1/transaction/winnings/{customernumber}/]
+
+Required scope: `staffWalletRegisterWinnings`
 
 Our current understanding is that Neon/Casino staff will record the winnings for a customer in a seperate system.
 CashDesk staff will receive these winnings at later on time.
@@ -1396,6 +1436,8 @@ This transaction will not be subject to any deposit limits. This API will utilis
 
 ## Withdrawal [POST /wallet/v1/transaction/withdraw/{customernumber}/]
 
+Required scope: `clientWalletWithdraw`, `onbehalfWalletWithdraw`
+
 CashDesk staff will used Neon to withdraw cash from customer to their SAW debit wallet. 
 Customer will be asked to authenticate the transaction by entering the PIN number. 
 If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
@@ -1447,6 +1489,8 @@ Any failure will be reported back 500 - server error. Neon can retry this transa
             }
 
 ## Transaction status [GET /wallet/v1/transaction/status?{trasactionId}]
+
+Required scope: `staffWalletGetTransactionStatus`
 
 This api will provide some sort of log for the recent transaction performed by Neon. RES is not planning to persist these transaction logs, so if the transaction is too old, RES will return 404 - transaction not found.
 
