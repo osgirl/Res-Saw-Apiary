@@ -1434,3 +1434,99 @@ This api will provide some sort of log for the recent transaction performed by N
             {
                 "Message": "couldn't process the request"
             }
+            
+# Group Customer Communication V 1.0
+This end point is a dedicated aggregated endpoint for Wallet services. Wallet balance and transactions requires integration to SafeCharge (tactical F&P/AML solution), which requires some additional customer information.
+NEON is expected to send this information in the request as "TransactionMetadata"
+
+# Comm [/wallet/v1/balance2/]
+
+## Send Email [POST /communication/v1/customers/digital/{playerId}/sendEmail]
+| Name          | Type      | Required  | Description                                       | Example           |
+|:---           |:---       |:---       |:---                                               |:---               |
+|Type           |string     |yes        |Type of Email, possible values are: "WelcomeNonClub", "WelcomeClub", "ForgotUsername", "ForgotPassword"|"ForgotUsername"          |
+|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in Email templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
+
++ Parameters
+
+    + playerId: 570515106383925248 (long,required) - Customer identifier from the digital platform
+
++ Request WelcomeClub (application/json)
+
+    + Body
+    
+            {
+                "Type" : "WelcomeClub"
+            }
+
++ Response 200
+
++ Request ForgotPassword (application/json)
+    
+    + Body
+    
+            {
+                "Type" : "ForgotPassword",
+                "DynamicFields" : {
+                    "Password_URL": "https://www.grosvenorcasionos.com/forgot?af34b28dea4"
+                }
+            }
+
++ Response 200
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+## Send SMS [POST /communication/v1/customers/digital/{playerId}/sendSms]
+| Name          | Type      | Required  | Description                                       | Example           |
+|:---           |:---       |:---       |:---                                               |:---               |
+|Type           |string     |yes        |Type of SMS|"ForgottenPinChange"          |
+|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in SMS templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
+
++ Parameters
+
+    + playerId: 570515106383925248 (long,required) - Customer identifier from the digital platform
+
++ Request WelcomeClub (application/json)
+
+    + Body
+    
+            {
+                "Type" : "WelcomeClub"
+            }
+
++ Response 200
+
++ Request ForgotPassword (application/json)
+    
+    + Body
+    
+            {
+                "Type" : "ForgotPassword",
+                "DynamicFields" : {
+                    "Password_URL": "https://www.grosvenorcasionos.com/forgot?af34b28dea4"
+                }
+            }
+
++ Response 200
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
