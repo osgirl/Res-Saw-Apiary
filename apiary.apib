@@ -544,6 +544,8 @@ Service endpoint for updating a customers communication permissions, which indic
 
 ## Update PoPF [PATCH /customer/v1/profile/{customernumber}/popf]
 
+Required scope: `staffUpdateCustomerPopf`
+
 This API will be used to update Protection of Player Funds flag as an when is required by the terms.
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
 This functionality requires cusotmer to authorise in form of entering their correct PIN for the SAW account. Neon application will be required to generate a Resource owner token for the customer to be able to call this API.
