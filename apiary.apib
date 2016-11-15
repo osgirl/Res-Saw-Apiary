@@ -279,7 +279,7 @@ Model for the resource if defined below:
 |RetailSelfExclude                          |bool       |**optional**   |if customer has decided to self-exclude from the retail channel                        |true           |
 |RetailSelfExcludeDurationInDays            |int        |**optional**   |number of days self-excluded from the digital channel                                  |180            |
 |CustomerNumber                             |string[?]  |**yes**        |                                                                                        |"0123456789"           |
-|MembershipCardNumber                                     |string[?]  |**yes**        |                                                                                        |"0123456789"           |
+|MembershipCards                            |array[?][?]|**yes**        | 2 dimentional array, holds CardNumber and Status                                                                                        |"0123456789"           |
 
 For registration following input validation in place
 
@@ -889,7 +889,14 @@ Allows registered customers to update the card status
                     ]
                 },
                 "CustomerNumber" : "12345678",
-                "MembershipCardNumber" : 67890
+                "MembershipCards" : [
+                            {
+                                "CardNumber" : 123456789
+                            },
+                            {
+                                "CardNumber" : 789456123
+                            }
+                        ]
             }
             
 + Response 404 (application/json)
@@ -1016,7 +1023,14 @@ Allows registered customers to update the card status
 
             [
                 {
-                    "MembershipNo" : "123456789",
+                    "MembershipCards" : [
+                            {
+                                "CardNumber" : 123456789
+                            },
+                            {
+                                "CardNumber" : 789456123
+                            }
+                        ],
                     "Name" : {
                         "Forename" : "John",
                         "Surname" : "Jackson"
@@ -1137,7 +1151,14 @@ This endpoint is a replacement for the existing Grosvenor Customer look service 
                 "ClubNumber" : "45611"
             },
             "AffId" : "2728",
-            "MembershipNo" : "67890",
+            "MembershipCards" : [
+                            {
+                                "CardNumber" : 123456789
+                            },
+                            {
+                                "CardNumber" : 789456123
+                            }
+                        ],
             "CardNo" : 12345,
             "IsAlreadyUsedOnDigital" : true,
             "IsSawCustomer":  true
