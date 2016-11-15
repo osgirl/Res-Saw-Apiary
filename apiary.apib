@@ -671,7 +671,7 @@ Allows registered customers to add new or additional cards
     + Body
     
             {
-                "NewMembershipCardNumber" : 123123123
+                "CardNumber" : 123123123
             }
             
 + Response 200 (application/json)
@@ -768,8 +768,8 @@ Allows registered customers to update the card status
     + Body 
     
             {
-                "previousPin" : 1234,
-                "newPin" : 4321
+                "PreviousPin" : 1234,
+                "NewPin" : 4321
             }
 
 + Response 201 (application/json)
