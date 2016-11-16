@@ -4,37 +4,34 @@ HOST: https://dev01-res.meccabingo.com/
 # RES.API.SAW - Draft
 
 #Introduction
-Rank Enterprise Services API is a collection of business services exposed over a RESTful inteface. The following RES API methods will be hosted with in a Cloud environment.
+Rank Enterprise Services API is a collection of business services exposed over a RESTful inteface.
 
-# Security
+# Authentication and Security
+
 ## Network Security
-The RES API facade is currently made available to server-side client application. RES resources are not currently intended to be accessed from the browser or client device. 
-All RES resources are encrypted using SSL.
+
+The RES API is currently made available to server-side client application with all RES resources encrypted using SSL.
 
 ## Authentication
+
 RES API authentication uses OpenID connect for identity, aligned with the [OAuth2](http://oauth.net/2/) protocol. 
 
-## Clients
-Each client application integrating with RES API must be pre-registered with the RES authorization service. The client will be issued with a `client_id` and `client_secret` that must be provided for token requests. The type of the application and how it will authenticate with RES API needs to be defined when its registered. This is to support multiple permissions and authentication types for given clients.
+Clients will be issued with a `client_id` and `client_secret` that must be provided for token requests. 
 
 ## Tokens
+
 All requests to RES resources require the client application to provide an appropriate access token. These tokens are provided in the Authorization header as Bearer tokens. e.g.
 
 ```
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSIsImtpZCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSJ9.eyJjbGllbnRfaWQiOiJiZWRlLWdyb3N2ZW5vci1jbXMiLCJzY29wZSI6InJlYWRfZ3Jvc3Zlbm9ybG95YWx0eSIsImlzcyI6Imh0dHBzOi8vaWRzcnYzLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRzcnYzLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE0MzU5Mzk5NzQsIm5iZiI6MTQzNTkzOTYxNH0.nGLoo8B_enlzdY2OX_sf0d1IEGbAUOL8E_-Dl94owI_rnxRrtvumz6fIGx8L5hTXzl8-GlM0Edfb3fe9cD49JDUbWuh0fYnBTjj4SnALv6DSmYSFHeDBkbbbzwI4QVuERblfeGB04ZAEDCjZlLoL4uly-lE8Oq2E150R83u43i8zDfYqKpPp1D5rvhOvdnOg4q3coICHqGkFzsg_0wfEwaYUgc2AWCuyy7ry4pEnV8cg7BVA3GOldkY5jsE062SP4T-N-UjzKd3Lz1KG0bBYZPfJ2CwV2oTgTnwEAkubIqdfYLm_bXMz8sQwm4I_V22qMDhavYwYBhFp1vQdWoYD2A
 ```
 
-Only one access token flow is enabled on RES API currently:
-
-* Client Credentials Token - Obtained by a client application by requesting a token and supplying only `client_id` and `client_secret`. The provided token is utilised for resources where no player session is required, currently this token flow is used for all API end points.
-
-* Resource Owner Token - In addition to supplying the `client_id` and `client_secret`, the client application also supplies `username` and `password` details for an existing user on the platform. Resource owner tokens are utilised for resources where a user session is required. The provided token can be used to access player data oriented the API resources or launch content on the Platform.
-
 ### Token validation
 Access tokens are fully signed [Json Web Tokens](http://jwt.io/) and should be validated by the client. Many libraries exist for all platforms that support validating tokens. The details of RES's authentication certificates used to sign token are documented below under the core resoure.
 
 ## Client Credentials Access Token
 Client credentials are supplied to integration partners for accessing appropriate resources.
+The provided token is utilised for resources where no player session is required, currently this token flow is used for all API end points.
 
 **Example request**
 
@@ -63,6 +60,7 @@ The access tokens have an expiration time defined in the token claims and duplic
 
 ## Resource Owner Access Token
 Resource owner access tokens are required to access resources where an authenticated customer is expected. Note that to generate a resource owner access token, client credentials should also be supplied using the Authorization header as shown. 
+Resource owner tokens are utilised for resources where a user session is required. The provided token can be used to access player data oriented the API resources or launch content on the Platform.
 
 **Example request**
 
