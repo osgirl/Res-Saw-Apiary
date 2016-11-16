@@ -141,36 +141,6 @@ The following table explains what should be supplied as a part of auth server re
 |Customer performing action themselves|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin|clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin <br/>venue_id <br/>staff_id|onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
-# Error Responses
-
-For each business service endpoints there will be standardised formats of 4XX and 5XX error codes:
-
-+ Response 400 (application/json)
-
-```
-  {
-    "Reason" : "Bad Request"
-    "MoreInfo" : "Invalid parameter supplied."
-  }
-```
-
-+ Response 403 (application/json)
-
-```
-  {
-    "Reason" : "Unauthorised Request"
-    "MoreInfo" : "Valid token has not been provided"
-  }
-```
-  
-+ Response 500 (application/json)
-
-```
-  {
-    "Reason" : "Internal Server Error"
-    "MoreInfo" : "Failed while accessing the database."
-  }
-```
 
 # Group Customer Service V 1.0
 This end point is a dedicated aggregated endpoint for Customer services.
