@@ -8,12 +8,6 @@ Rank Enterprise Services API is a collection of business services exposed over a
 
 # Authentication and Security
 
-## Network Security
-
-The RES API is currently made available to server-side client application with all RES resources encrypted using SSL.
-
-## Authentication
-
 RES API authentication uses OpenID connect for identity, aligned with the [OAuth2](http://oauth.net/2/) protocol. 
 
 Clients will be issued with a `client_id` and `client_secret` that must be provided for token requests. 
@@ -1483,97 +1477,4 @@ This api will provide some sort of log for the recent transaction performed by N
 
             {
                 "Message": "couldn't process the request"
-            }
-            
-# Group Customer Communication V 2.0
-Dedicated API endpoints for all customer comms using channels like Email and SMS.
-
-## Send Email [POST /communication/v2/customers/digital/{playerId}/sendEmail]
-| Name          | Type      | Required  | Description                                       | Example           |
-|:---           |:---       |:---       |:---                                               |:---               |
-|Type           |string     |yes        |Type of Email, possible values are: "WelcomeNonClub", "WelcomeClub", "ForgotUsername", "ForgotPassword"|"ForgotUsername"          |
-|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in Email templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted. If they are still specified then auto-extracted values will be overriden.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
-
-+ Parameters
-
-    + playerId: 570515106383925248 (long,required) - Customer identifier from the digital platform
-
-+ Request WelcomeClub (application/json)
-
-    + Body
-    
-            {
-                "Type" : "WelcomeClub"
-            }
-
-+ Response 200
-
-+ Request ForgotPassword (application/json)
-    
-    + Body
-    
-            {
-                "Type" : "ForgotPassword",
-                "DynamicFields" : {
-                    "Password_URL": "https://www.grosvenorcasionos.com/forgot?af34b28dea4"
-                }
-            }
-
-+ Response 200
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
-## Send SMS [POST /communication/v2/customers/digital/{playerId}/sendSms]
-| Name          | Type      | Required  | Description                                       | Example           |
-|:---           |:---       |:---       |:---                                               |:---               |
-|Type           |string     |yes        |Type of SMS|"ForgottenPinChange"          |
-|DynamicFields  |JSON       |no         |JSON Key-Value collection used for providing dynamic fields that needs mapping in SMS templates. Excludes any fields available on customer profile (e.g. FirstName, LastName, Email), which will be automatically extracted. If they are still specified then auto-extracted values will be overriden.                          |"DynamicFields" : { "Password_URL" : "https://www.grosvenorcasinos.com/forgot?af34b28dea4" }      |
-
-+ Parameters
-
-    + playerId: 570515106383925248 (long,required) - Customer identifier from the digital platform
-
-+ Request WelcomeClub (application/json)
-
-    + Body
-    
-            {
-                "Type" : "WelcomeClub"
-            }
-
-+ Response 200
-
-+ Request ForgotPassword (application/json)
-    
-    + Body
-    
-            {
-                "Type" : "ForgotPassword",
-                "DynamicFields" : {
-                    "Password_URL": "https://www.grosvenorcasionos.com/forgot?af34b28dea4"
-                }
-            }
-
-+ Response 200
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
             }
