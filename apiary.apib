@@ -24,7 +24,6 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImEzck1VZ01Gdj
 Access tokens are fully signed [Json Web Tokens](http://jwt.io/) and should be validated by the client. Many libraries exist for all platforms that support validating tokens. The details of RES's authentication certificates used to sign token are documented below under the core resoure.
 
 ## Client Credentials Access Token
-Client credentials are supplied to integration partners for accessing appropriate resources.
 The provided token is utilised for resources where no player session is required, currently this token flow is used for all API end points.
 
 **Example request**
@@ -54,7 +53,6 @@ The access tokens have an expiration time defined in the token claims and duplic
 
 ## Resource Owner Access Token
 Resource owner access tokens are required to access resources where an authenticated customer is expected. Note that to generate a resource owner access token, client credentials should also be supplied using the Authorization header as shown. 
-Resource owner tokens are utilised for resources where a user session is required. The provided token can be used to access player data oriented the API resources or launch content on the Platform.
 
 **Example request**
 
