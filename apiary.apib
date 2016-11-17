@@ -138,6 +138,7 @@ The following table explains what should be supplied as a part of auth server re
 This end point is a dedicated aggregated endpoint for Customer services.
 
 # Profile [/customer/v1/profile]
+
 Model for the resource if defined below:
 
 ```
@@ -260,566 +261,68 @@ For registration following input validation in place
 - DateOfBirth - must be of legal age (18)
 - ClubNumber - Club number must be a valid Grosvenor casino.
 
+# Retail Profile [/customer/v1/profile/retail]
 
-## Register [POST /customer/v1/profile/retailOnly]
+This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
-Required scope: `staffRegisterRetailCustomer`
+## Lookup [/customer/v1/profile/retail/{cardNo}{?dateOfBirth}{?checkAlreadyUsed}]
 
-+ Request (application/json)
+### Scope: readonlyCustomerLookup [GET]
+
++ Parameters
+    + cardNo: `12345` (number, required) - Card number (Number found on the back of the card) of the Customer in form of an integer
+    + dateOfBirth: `1955-01-30` (dateTime, required) - Date of birth of the Customer
+    + checkAlreadyUsed: true (boolean, optional) - Enables Customer Spine registration check. 
+        The flag modifies response entity according to the following rules:
+        - customer registered on Spine, adds _IsAlreadyUsedOnDigital_ property with value _true_
+        - customer not registered - adds _IsAlreadyUsedOnDigital_ property with value _false_
+        - Spine check failed - no changes to response
+        
++ Request
 
     + Headers 
             
             Authorization: Bearer (client credential token)
-    
-    + Body
-    
-             {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                    },
-                 "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                    },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                    },
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk",
-                "DateOfBirth" : "1955-01-30",
-                "ClubNumber" : "45611",
-                "AccountStatus" : {
-                    "IsVerified" : true
-                },
-                "CustomerNumber" : "12345678",
-                "MembershipCardNumber" : 67890
-            }
-            
-
-+ Response 201 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-            
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-## Upgrade [POST /customer/v1/multichannel/{customernumber}]
-
-Required scope: `staffUpgradeCustomer`
-
-This API will be called by Neon when customer sets a PIN either after registration or wanting to upgrade to SAW project. If the customer has identified to the casino staff that they have a digital identity, then Neon will send playerId in digitalProfile, otherwise Neon will send the profile information for the customer to be registered on the BEDE platform.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-
-    + Body
-    
-            {
-                "DigitalProfile": {
-                    "PlayerId": "123456789",
-                    "Name" : {
-                        "Title" : "Mr",
-                        "Forename" : "John",
-                        "MiddleName" : "Dan",
-                        "Surname" : "Jackson"
-                    },
-                     "Address" : {
-                        "Address1" : "10 Downing Street",
-                        "Town" : "London",
-                        "Postcode" : "WC2B 4AA",
-                        "County" : "Greater London",
-                        "Country"  : "UK"
-                    },
-                    "ContactDetails" : {
-                        "HomePhone" : "01234567890",
-                        "BusinessPhone" : "01234567890",
-                        "MobilePhone" : "01234567890",
-                        "Email" : "john@email.com",
-                        "IsHomeContactallowed" : true,
-                        "IsMobileContactAllowed" : true,
-                        "IsEmailContactAllowed" : true,
-                        "IsSMSContactAllowed" : true
-                    },
-                    "Nationality": "GB",
-                    "Gender": "Male",
-                    "Occupation": "Clerk",
-                    "DateOfBirth": "1955-01-30",
-                    "ClubNumber": "45611",
-                    "AccountStatus" : {
-                        "IsVerified" : true
-                    },
-                    "MembershipCardNumber" : 67890
-                },
-                "Security": {
-                    "Pin": 1234
-                }
-            }
-
-+ Response 201 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-            
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
-
-## Update Personal Details [PATCH /customer/v1/profile/{customernumber}/personal]
-
-Required scope: `staffUpdateCustomerPersonal`
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-
-    + Body
-    
-            {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                },
-                "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com"
-                },
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk",
-                "DateOfBirth" : "1955-01-30"
-            }
 
 + Response 200 (application/json)
 
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-## Update Communication Permissions [PATCH /customer/v1/profile/{customernumber}/communication]
-
-Required scope: `staffUpdateCustomerComms`
-
-Service endpoint for updating a customers communication permissions, which indicates how Rank may contact them for marketing purposes
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
- 
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)   
-    
-    + Body
-    
-            {
-                "CommPermissionMobile": false,
-                "CommPermissionSMS": true,
-                "CommPermissionEmail": true,
-                "CommPermissionPost": false
-            }
-    
-+ Response 200 (application/json)    
-
-## Update PoPF [PATCH /customer/v1/profile/{customernumber}/popf]
-
-Required scope: `staffUpdateCustomerPopf`
-
-This API will be used to update Protection of Player Funds flag as an when is required by the terms.
-Neon will get the information about the current PoPF status for the customer in lookup API call (above)
-This functionality requires cusotmer to authorise in form of entering their correct PIN for the SAW account. Neon application will be required to generate a Resource owner token for the customer to be able to call this API.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-
-+ Response 204 (application/json)
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-## Update Customer suspended status [PUT /customer/v1/profile/{customernumber}/suspension/{target}]
-
-Required scope: `staffSetAccountSuspension`
-
-To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-
-    + Body  
-            
-            {
-                "Reason": "Bad behaviour",
-                "From": "2016-01-30",
-                "To": "2016-01-30"
-            }
-           
-            
-+ Response 204 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
- 
- 
-## Remove Customer suspended status [DELETE /customer/v1/profile/{customernumber}/suspension/{target}]
-
-Required scope: `staffRemoveAccountSuspension`
-
-To update customer profile by removing the barred/suspended status
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-
-+ Response 204 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-## Set Customer self-exclusion [POST /customer/v1/profile/{customernumber}/selfExclusion/{target}]
-
-Required scope: `onbehalfSetSelfExclusion`
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-
-    + Body  
-            
-            {
-                "From": "2016-01-30",
-                "To": "2016-01-30"
-            }
-           
-            
-+ Response 204 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
- 
-+ Response 412 (application/json)
-
-            {
-                "Message": "Invalid start date or duration"
-            }
- 
-## Remove Customer self-exclusion [DELETE /customer/v1/profile/{customernumber}/selfExclusion/{target}]
-
-Required scope: `staffRemoveSelfExclusion`
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-
-+ Response 204 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-            
-## Register New Card [POST /customer/v1/profile/{customernumber}/membershipCards]
-
-Required scope: `onbehalfAddCard`
-
-Allows registered customers to add new or additional cards
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-  
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-    + Body
-    
-            {
-                "CardNumber" : 123123123
-            }
-            
-+ Response 200 (application/json)
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
-            
-## Update Card Status [PUT /customer/v1/profile/{customernumber}/membershipCards/{cardnumber}]
-
-Required scope: `onbehalfUpdateCard`
-
-Allows registered customers to update the card status
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + cardnumber: 123123123 (string, required)
-  
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-    + Body
-    
-            {
-                "Status" : "Lost"
-            }
-            
-+ Response 200 (application/json)
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
-            
-## Request PIN Change [POST /customer/v1/profile/{customernumber}/resetpin]
-
-Required scope: `onbehalfRequestChangePin`
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-   
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-
-+ Response 201 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Account Locked"
-            }
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
-## Change PIN [POST /customer/v1/profile/{customernumber}/changepin]
-
-Required scope: `clientChangePin`
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    
-   
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-    + Body 
-    
-            {
-                "PreviousPin" : 1234,
-                "NewPin" : 4321
-            }
-
-+ Response 201 (application/json)
-
-+ Response 403
-
-    + Body
-    
-            {
-              "Message": "Current PIN is incorrect"
-            }
-            
-+ Response 409
-
-    + Body
-    
-            {
-              "Message": "The new PIN has been used before"
-            }
-
-+ Response 412
-
-    + Body
-    
-            {
-              "Message": "PIN Insecure. The PIN must not consist of consecutive digits or digits repeated 4 times"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Account Locked"
-            }
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-## Lookup [GET /customer/v1/profile/{customernumber}]
-
-Required scope: `readonlyCustomerLookup`
+        {
+            "Name" : {
+                "Title" : "Mr",
+                "Forename" : "John",
+                "Surname" : "Jackson"
+            },
+            "Address" : {
+                "Address1" : "10",
+                "Address2" : "Downing Street",
+                "Town" : "London",
+                "Postcode" : "WC2B 4AA",
+                "County" : "Greater London"
+            },         
+            "TelephoneNumber" : "01234567890",
+            "MobileNumber" : "01234567890",
+            "DateOfBirth" : "1955-01-30",
+            "EmailAddress" : "jack@johnson.com",
+            "Club" : {
+                "ClubNumber" : "45611"
+            },
+            "AffId" : "2728",
+            "MembershipCards" : [
+                            {
+                                "CardNumber" : 123456789
+                            },
+                            {
+                                "CardNumber" : 789456123
+                            }
+                        ],
+            "CardNo" : 12345,
+            "IsAlreadyUsedOnDigital" : true,
+            "IsSawCustomer":  true
+        }
+
+## Lookup [/customer/v1/profile/{customernumber}]
+
+### Scope: readonlyCustomerLookup [GET]
 
 + Parameters
     + customernumber: 123456 (string, required)
@@ -909,9 +412,9 @@ Required scope: `readonlyCustomerLookup`
                 "Message": "Internal Error"
             }
             
-## Search Username [GET /customer/v1/profile/{Username}]
+## Search Username [/customer/v1/profile/{Username}]
 
-Required scope: `readonlyCustomerSearch`
+### Scope: readonlyCustomerSearch [GET]
 
 + Parameters
     + Username: 123456 (string, required)
@@ -1003,9 +506,9 @@ Required scope: `readonlyCustomerSearch`
                 "Message": "Internal Error"
             }
             
-## Search [GET /customer/v1/profile/?{surname}=Jackson&{dateOfBirth}=1955-01-03&{email}=jack@johnson.com&{postcode}=WC2B+4AA&{mobile}=07123456789&{max}=10]
+## Search [/customer/v1/profile/?{surname}=Jackson&{dateOfBirth}=1955-01-03&{email}=jack@johnson.com&{postcode}=WC2B+4AA&{mobile}=07123456789&{max}=10]
 
-Required scope: `readonlyCustomerSearch`
+### Scope: readonlyCustomerSearch [GET]
 
 + Parameters
     + surname: `Jackson` (string, required)
@@ -1108,78 +611,566 @@ Required scope: `readonlyCustomerSearch`
                 "Message": "Internal Error"
             }
 
+## Register [/customer/v1/profile/retailOnly]
 
-# Retail Profile [/customer/v1/profile/retail]
 
-This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
+### Scope: staffRegisterRetailCustomer [POST]
 
-## Lookup [GET /customer/v1/profile/retail/{cardNo}{?dateOfBirth}{?checkAlreadyUsed}]
++ Request (application/json)
 
-Required scope: `readonlyCustomerLookup`
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+    
+    + Body
+    
+             {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    },
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk",
+                "DateOfBirth" : "1955-01-30",
+                "ClubNumber" : "45611",
+                "AccountStatus" : {
+                    "IsVerified" : true
+                },
+                "CustomerNumber" : "12345678",
+                "MembershipCardNumber" : 67890
+            }
+            
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+            
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Upgrade [/customer/v1/multichannel/{customernumber}]
+
+### Scope: staffUpgradeCustomer [POST]
+
+This API will be called by Neon when customer sets a PIN either after registration or wanting to upgrade to SAW project. If the customer has identified to the casino staff that they have a digital identity, then Neon will send playerId in digitalProfile, otherwise Neon will send the profile information for the customer to be registered on the BEDE platform.
 
 + Parameters
-    + cardNo: `12345` (number, required) - Card number (Number found on the back of the card) of the Customer in form of an integer
-    + dateOfBirth: `1955-01-30` (dateTime, required) - Date of birth of the Customer
-    + checkAlreadyUsed: true (boolean, optional) - Enables Customer Spine registration check. 
-        The flag modifies response entity according to the following rules:
-        - customer registered on Spine, adds _IsAlreadyUsedOnDigital_ property with value _true_
-        - customer not registered - adds _IsAlreadyUsedOnDigital_ property with value _false_
-        - Spine check failed - no changes to response
-        
+    + customernumber: 12345678 (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
+    + Body
+    
+            {
+                "DigitalProfile": {
+                    "PlayerId": "123456789",
+                    "Name" : {
+                        "Title" : "Mr",
+                        "Forename" : "John",
+                        "MiddleName" : "Dan",
+                        "Surname" : "Jackson"
+                    },
+                     "Address" : {
+                        "Address1" : "10 Downing Street",
+                        "Town" : "London",
+                        "Postcode" : "WC2B 4AA",
+                        "County" : "Greater London",
+                        "Country"  : "UK"
+                    },
+                    "ContactDetails" : {
+                        "HomePhone" : "01234567890",
+                        "BusinessPhone" : "01234567890",
+                        "MobilePhone" : "01234567890",
+                        "Email" : "john@email.com",
+                        "IsHomeContactallowed" : true,
+                        "IsMobileContactAllowed" : true,
+                        "IsEmailContactAllowed" : true,
+                        "IsSMSContactAllowed" : true
+                    },
+                    "Nationality": "GB",
+                    "Gender": "Male",
+                    "Occupation": "Clerk",
+                    "DateOfBirth": "1955-01-30",
+                    "ClubNumber": "45611",
+                    "AccountStatus" : {
+                        "IsVerified" : true
+                    },
+                    "MembershipCardNumber" : 67890
+                },
+                "Security": {
+                    "Pin": 1234
+                }
+            }
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+            
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+
+## Update Personal Details [/customer/v1/profile/{customernumber}/personal]
+
+### Scope: staffUpdateCustomerPersonal [PATCH]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
+    + Body
+    
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                },
+                "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com"
+                },
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk",
+                "DateOfBirth" : "1955-01-30"
+            }
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Update Communication Permissions [/customer/v1/profile/{customernumber}/communication]
+
+### Scope: staffUpdateCustomerComms [PATCH]
+
+Service endpoint for updating a customers communication permissions, which indicates how Rank may contact them for marketing purposes
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+ 
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)   
+    
+    + Body
+    
+            {
+                "CommPermissionMobile": false,
+                "CommPermissionSMS": true,
+                "CommPermissionEmail": true,
+                "CommPermissionPost": false
+            }
+    
++ Response 200 (application/json)    
+
+## Update PoPF [/customer/v1/profile/{customernumber}/popf]
+
+### Scope: staffUpdateCustomerPopf [PATCH]
+
+This API will be used to update Protection of Player Funds flag as an when is required by the terms.
+Neon will get the information about the current PoPF status for the customer in lookup API call (above)
+This functionality requires cusotmer to authorise in form of entering their correct PIN for the SAW account. Neon application will be required to generate a Resource owner token for the customer to be able to call this API.
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
++ Response 204 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
+## Customer suspended status [/customer/v1/profile/{customernumber}/suspension/{target}]
+
+### Scope: staffSetAccountSuspension [PUT]
+
+To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
+
 + Request
 
     + Headers 
             
             Authorization: Bearer (client credential token)
 
+    + Body  
+            
+            {
+                "Reason": "Bad behaviour",
+                "From": "2016-01-30",
+                "To": "2016-01-30"
+            }
+           
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+ 
+### Scope: staffRemoveAccountSuspension [DELETE]
+
+To update customer profile by removing the barred/suspended status
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
+## Set Customer self-exclusion [/customer/v1/profile/{customernumber}/selfExclusion/{target}]
+
+### Scope: onbehalfSetSelfExclusion [POST]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
+    + Body  
+            
+            {
+                "From": "2016-01-30",
+                "To": "2016-01-30"
+            }
+           
+            
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+ 
++ Response 412 (application/json)
+
+            {
+                "Message": "Invalid start date or duration"
+            }
+ 
+### Scope: staffRemoveSelfExclusion [DELETE]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+            
+## Register New Card [/customer/v1/profile/{customernumber}/membershipCards]
+
+### Scope: onbehalfAddCard [POST]
+
+Allows registered customers to add new or additional cards
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+  
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+    + Body
+    
+            {
+                "CardNumber" : 123123123
+            }
+            
 + Response 200 (application/json)
 
-        {
-            "Name" : {
-                "Title" : "Mr",
-                "Forename" : "John",
-                "Surname" : "Jackson"
-            },
-            "Address" : {
-                "Address1" : "10",
-                "Address2" : "Downing Street",
-                "Town" : "London",
-                "Postcode" : "WC2B 4AA",
-                "County" : "Greater London"
-            },         
-            "TelephoneNumber" : "01234567890",
-            "MobileNumber" : "01234567890",
-            "DateOfBirth" : "1955-01-30",
-            "EmailAddress" : "jack@johnson.com",
-            "Club" : {
-                "ClubNumber" : "45611"
-            },
-            "AffId" : "2728",
-            "MembershipCards" : [
-                            {
-                                "CardNumber" : 123456789
-                            },
-                            {
-                                "CardNumber" : 789456123
-                            }
-                        ],
-            "CardNo" : 12345,
-            "IsAlreadyUsedOnDigital" : true,
-            "IsSawCustomer":  true
-        }
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+            
+## Update Card Status [/customer/v1/profile/{customernumber}/membershipCards/{cardnumber}]
+
+### Scope: onbehalfUpdateCard [PUT]
+
+Allows registered customers to update the card status
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    + cardnumber: 123123123 (string, required)
+  
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+    + Body
+    
+            {
+                "Status" : "Lost"
+            }
+            
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+            
+## Request PIN Change [/customer/v1/profile/{customernumber}/resetpin]
+
+### Scope: onbehalfRequestChangePin [POST]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+   
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Account Locked"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+## Change PIN [/customer/v1/profile/{customernumber}/changepin]
+
+### Scope: clientChangePin [POST]
+
++ Parameters
+    + customernumber: 12345678 (string, required)
+    
+   
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+    + Body 
+    
+            {
+                "PreviousPin" : 1234,
+                "NewPin" : 4321
+            }
+
++ Response 201 (application/json)
+
++ Response 403
+
+    + Body
+    
+            {
+              "Message": "Current PIN is incorrect"
+            }
+            
++ Response 409
+
+    + Body
+    
+            {
+              "Message": "The new PIN has been used before"
+            }
+
++ Response 412
+
+    + Body
+    
+            {
+              "Message": "PIN Insecure. The PIN must not consist of consecutive digits or digits repeated 4 times"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Account Locked"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+
 
 # Group Wallet Service V 1.0
-This end point is a dedicated aggregated endpoint for Wallet services. Wallet balance and transactions requires integration to SafeCharge (tactical F&P/AML solution), which requires some additional customer information.
-NEON is expected to send this information in the request as "TransactionMetadata"
+This end point is a dedicated aggregated endpoint for Wallet services. 
 
-# Balance [/wallet/v1/balance/]
+## Request Balance [/wallet/v1/balance/{customernumber}]
+This API will be return balance from all SAW wallets and their current PoPF status. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical solution. 
 
-This API will be return balance from all SAW wallets and their current PoPF status(in BEDE). It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical solution. The wallet detail balance breakdown is only available for debugging purposes.
-This API will be used by Neon CashDesk staff prior to performing any wallet transaction. 
-
-## Request Balance [POST /wallet/v1/balance/{customernumber}]
-
-Required scope: `clientWalletGetBalance`, `staffWalletGetBalance`
+### Scope: clientWalletGetBalance, staffWalletGetBalance [POST]
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -1193,14 +1184,7 @@ Required scope: `clientWalletGetBalance`, `staffWalletGetBalance`
     + Body
     
             {
-                "TransactionMetaData": 
-                {
-                    "CustomerFirstName": "John",
-                    "CustomerLastName": "Smith",
-                    "CustomerEmail": "john.smith@aol.com",
-                    "CustomerVipStatus": true,
-                    "Location": "Grosvenor Casino Blackpool"
-                }
+                
             }
 
 + Response 200 (application/json)
@@ -1240,17 +1224,11 @@ Required scope: `clientWalletGetBalance`, `staffWalletGetBalance`
                 "Message": "Internal Error"
             }
 
-# Transaction [/wallet/v1/transaction/]
+## Migrate [/wallet/v1/transaction/migrate/{customernumber}/]
 
-All transactions will need to be authorised by customer in the form of entering correct PIN for the wallet. Neon will have to generate a resource token (see the security section) for the customer. RES will reject any request that doesn't match the customer number and the resource token supplied.
-The token must be supplied as an "Authorization" header value. Once the transaction is completed, Neon system must clear the resource token so that it can't be reused for malicious purposes.
-Each transaction will generate guid for the transaction. RES will endavour to store the transaction log and allow to Neon to query the status in case of failure to resolve the issue manually.
+### Scope: staffWalletMigrateFunds [POST]
 
-## Migrate [POST /wallet/v1/transaction/migrate/{customernumber}/]
-
-Required scope: `staffWalletMigrateFunds`
-
-This API will be used by Neon application when a customer has just created SAW account and want to "migrate" funds from Neon's local/retail wallet to the SAW Wallet.
+This API will be used when a customer has just created SAW account and want to "migrate" funds from local/retail wallet to the SAW Wallet.
 This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet and will not effect any deposit limits.
 
 + Parameters
@@ -1289,15 +1267,14 @@ This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet 
                 "Message": "Couldn't process the transaction. SPINE is unavailable."
             }
 
-## Deposit [POST /wallet/v1/transaction/deposit/{customernumber}/]
+# Deposit [/wallet/v1/transaction/deposit/{customernumber}/]
 
-Required scope: `clientWalletDeposit`, `onbehalfWalletDeposit`
+### Scope: clientWalletDeposit, onbehalfWalletDeposit [POST]
 
-This API will be used by Neon application that will be utilised CashDesk application and the slot machine. Customer authentication is not required for this transaction, Neon will use RES application authentication token to perform this operation.  
 If the transaction breaches the responsible gambling limits set by customer, then the transaction would faile and RES will return an error message. 
 If current request breaches any AML/Fraud deposit limit, RES will store overflow funds to "pending" wallet, this will be mentioned in the response message.
-If no limits are set or request within the limits, RES will process the transaction with BEDE, AML/Fraud engine (TBC) and limits/balance engine in "all-or-nothing" fashion. 
-Any failure will be reported back 500 - server error. Neon can retry this transaction. RES will consider applying some retry mechanism before failing the transaction.
+If no limits are set or request within the limits, RES will process the transaction with AML/Fraud engine and limits/balance engine in "all-or-nothing" fashion. 
+Any failure will be reported back 500 - server error. 
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -1341,70 +1318,15 @@ Any failure will be reported back 500 - server error. Neon can retry this transa
                 "Message": "couldn't process the transaction. BEDE unavailable"
             }
 
-## Register Winnings [POST /wallet/v1/transaction/winnings/{customernumber}/]
 
-Required scope: `staffWalletRegisterWinnings`
+# Withdrawal [/wallet/v1/transaction/withdraw/{customernumber}/]
 
-Our current understanding is that Neon/Casino staff will record the winnings for a customer in a seperate system.
-CashDesk staff will receive these winnings at later on time.
-This API will allow CashDesk staff to record these winnings (using Neon), so that customer's funds can be transferred from their "pending" wallet to their debit wallet.
-Neon will need to provide approximate date/time (UTC) of the winnings, so that the "winnings" transaction can be placed before the deposit transaction in the transactions log, for the audit and debugging purposes.
-This transaction will not be subject to any deposit limits. This API will utilise BEDE's "transfer funds" API
+###Scope: clientWalletWithdraw, onbehalfWalletWithdraw [POST]
 
-+ Parameters
-    + customernumber: 12345678 (string, required)
-
-+ Request (application/json)
-
-    + Headers 
-            
-            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
-            Authorization: Bearer (client credential token)
-
-    + Body
-    
-            {
-                "EventTime": "2016-06-01T20:44:55Z",
-                "Amount": 1000,
-                "TransactionMetaData": 
-                {
-                    "CustomerFirstName": "John",
-                    "CustomerLastName": "Smith",
-                    "CustomerEmail": "john.smith@aol.com",
-                    "CustomerVipStatus": true,
-                    "Location": "Grosvenor Casino Blackpool"
-                }
-            }
-
-+ Response 200 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "winning amount is invalid OR not a SAW customer"
-            }
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "couldn't process the transaction. BEDE unavailable"
-            }
-
-## Withdrawal [POST /wallet/v1/transaction/withdraw/{customernumber}/]
-
-Required scope: `clientWalletWithdraw`, `onbehalfWalletWithdraw`
-
-CashDesk staff will used Neon to withdraw cash from customer to their SAW debit wallet. 
 Customer will be asked to authenticate the transaction by entering the PIN number. 
 If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
-If no limits are set or request within the limits, RES will process the transaction with BEDE, AML/Fraud engine (TBC) and limits/balance engine in "all-or-nothing" fashion. 
-Any failure will be reported back 500 - server error. Neon can retry this transaction. RES should consider applying some retry mechanism before failing the transaction.
+If no limits are set or request within the limits, RES will process the transaction with AML/Fraud engine and limits/balance engine in "all-or-nothing" fashion. 
+Any failure will be reported back 500 - server error. 
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -1450,11 +1372,11 @@ Any failure will be reported back 500 - server error. Neon can retry this transa
                 "Message": "couldn't process the transaction. BEDE unavailable"
             }
 
-## Transaction status [GET /wallet/v1/transaction/status?{trasactionId}]
+## Transaction status [/wallet/v1/transaction/status?{trasactionId}]
 
-Required scope: `staffWalletGetTransactionStatus`
+###Scope: staffWalletGetTransactionStatus [GET]
 
-This api will provide some sort of log for the recent transaction performed by Neon. RES is not planning to persist these transaction logs, so if the transaction is too old, RES will return 404 - transaction not found.
+This api returns log information for the recent transaction based on the transaction id. 
 
 + Parameters
     + trasactionId: "d5e7bbd8-c2a0-4b70-8af8-6dbce273b922" (string, required)
