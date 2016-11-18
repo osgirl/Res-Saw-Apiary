@@ -132,7 +132,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret|readonlyCustomerLookup <br/>readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>staff_id|staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletMigrateFunds <br/>staffWalletRegisterWinnings <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>staff_id|staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletMigrateFunds <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
 |Customer performing action themselves|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin|clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin <br/>venue_id <br/>staff_id|onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
@@ -164,9 +164,7 @@ If token is expired, compromised or revoked then the result will be negative, ot
 This end point is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
-## Profile [/customer/v1/profile]
-
-### Basic Profile [GET]
+## Basic Profile [/customer/v1/profile]
 
 Model for the resource if defined below:
 | Name                  | Type      | Required       | Description                                                                          |Example        |
@@ -221,6 +219,8 @@ For registration following input validation in place
 - DateOfBirth - must be of legal age (18)
 - ClubNumber - Club number must be a valid Grosvenor casino.
 
+### Basic Profile [GET]
+
 + Response 200 
 
             {
@@ -247,12 +247,43 @@ For registration following input validation in place
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
                     }
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk"
-                "DateOfBirth" : "1955-01-30",
                 "CustomerNumber" : "12345678",
-                "PopfAcceptanceDate" : "2016-09-12",
+                }
+            }
+            
+### Profile with Membership Cards [GET /customer/v1/profile/?{expand}=cards]
+
++ Parameters
+    + expand: `cards` - provides profile along with membership cards
+
+    
++ Response 200 
+
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    }
+                "CustomerNumber" : "12345678",
                 "MembershipCards" : [
                             {
                                 "CardNumber" : 123456789,
@@ -262,7 +293,117 @@ For registration following input validation in place
                                 "CardNumber" : 789456123,
                                 "Status": "Lost",
                             }
-                        ],
+                        ]
+                    }
+                }
+            }
+            
+
+### Profile with Account Status [GET /customer/v1/profile/?{expand}=status]
+
++ Parameters
+    + expand:`status` - provides profile along with account status
+    
++ Response 200 
+
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    }
+                "CustomerNumber" : "12345678",
+                "AccountStatus" : {
+                    "IsVerified" : true,
+                    "SelfExclusion" : {
+                        "Digital" : {
+                            "From" : "2016-01-01",
+                            "To" : "2016-06-01"
+                        },
+                        "Retail" : {
+                            "From" : "2010-03-10",
+                            "To" : "2010-09-10"
+                        }
+                    },
+                    "Suspension" : {
+                        "Global" : {
+                            "Reason": "Bad behaviour",
+                            "From" : "2016-09-01",
+                            "To" : "2016-11-01"
+                        },
+                        "Local" : [
+                            {
+                                "CasinoId" : 55000,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-01-30",
+                                "To" : "2016-02-28"
+                            },
+                            {
+                                "CasinoId" : 55001,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-06-15",
+                                "To" : "2016-06-30"
+                            }
+                        ]
+                    }
+                }
+            }   
+
+### Profile with Additional Details [GET /customer/v1/profile/?{expand}=additional]
+
++ Parameters
+    + expand:`status` - provides profile along with additional details
+    
++ Response 200 
+
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    }
+                "CustomerNumber" : "12345678",
+                "Nationality" : "GB",
+                "Gender" : "Male",
+                "Occupation" : "Clerk"
+                "DateOfBirth" : "1955-01-30",
+                "PopfAcceptanceDate" : "2016-09-12",
                 "AccountStatus" : {
                     "IsVerified" : true,
                     "SelfExclusion" : {
@@ -299,7 +440,7 @@ For registration following input validation in place
                 }
             }
 
-
+            
 ## Lookup Retail [/customer/v1/profile/retail/{cardNo}{?dateOfBirth}{?checkAlreadyUsed}]
 
 ### Scope: readonlyCustomerLookup [GET]
@@ -342,6 +483,38 @@ For registration following input validation in place
                 "ClubNumber" : "45611"
             },
             "AffId" : "2728",
+            "AccountStatus" : {
+                    "IsVerified" : true,
+                    "SelfExclusion" : {
+                        "Digital" : {
+                            "From" : "2016-01-01",
+                            "To" : "2016-06-01"
+                        },
+                        "Retail" : {
+                            "From" : "2010-03-10",
+                            "To" : "2010-09-10"
+                        }
+                    },
+                    "Suspension" : {
+                        "Global" : {
+                            "Reason": "Bad behaviour",
+                            "From" : "2016-09-01",
+                            "To" : "2016-11-01"
+                        },
+                        "Local" : [
+                            {
+                                "CasinoId" : 55000,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-01-30",
+                                "To" : "2016-02-28"
+                            },
+                            {
+                                "CasinoId" : 55001,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-06-15",
+                                "To" : "2016-06-30"
+                            }
+                        ],
             "MembershipCards" : [
                             {
                                 "CardNumber" : 123456789
@@ -350,7 +523,6 @@ For registration following input validation in place
                                 "CardNumber" : 789456123
                             }
                         ],
-            "CardNo" : 12345,
             "IsAlreadyUsedOnDigital" : true,
             "IsSawCustomer":  true
         }
@@ -425,6 +597,38 @@ For registration following input validation in place
                     ]
                 },
                 "CustomerNumber" : "12345678",
+                "AccountStatus" : {
+                    "IsVerified" : true,
+                    "SelfExclusion" : {
+                        "Digital" : {
+                            "From" : "2016-01-01",
+                            "To" : "2016-06-01"
+                        },
+                        "Retail" : {
+                            "From" : "2010-03-10",
+                            "To" : "2010-09-10"
+                        }
+                    },
+                    "Suspension" : {
+                        "Global" : {
+                            "Reason": "Bad behaviour",
+                            "From" : "2016-09-01",
+                            "To" : "2016-11-01"
+                        },
+                        "Local" : [
+                            {
+                                "CasinoId" : 55000,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-01-30",
+                                "To" : "2016-02-28"
+                            },
+                            {
+                                "CasinoId" : 55001,
+                                "Reason": "Bad behaviour",
+                                "From" : "2016-06-15",
+                                "To" : "2016-06-30"
+                            }
+                        ],
                 "MembershipCards" : [
                             {
                                 "CardNumber" : 123456789
@@ -526,7 +730,6 @@ For registration following input validation in place
                     }
                 },
                 "CustomerNumber" : "12345678",
-                "MembershipCardNumber" : 67890
             }
             
 + Response 404 (application/json)
@@ -563,14 +766,6 @@ For registration following input validation in place
 
             [
                 {
-                    "MembershipCards" : [
-                            {
-                                "CardNumber" : 123456789
-                            },
-                            {
-                                "CardNumber" : 789456123
-                            }
-                        ],
                     "Name" : {
                         "Forename" : "John",
                         "Surname" : "Jackson"
@@ -580,45 +775,10 @@ For registration following input validation in place
                     "Age" : 61,
                     "EmailAddress" : "jack@rank.com",
                     "Gender" : "Male",
-                    "AccountStatus": {
-                        "IsVerified": true,
-                        "SelfExclusion" : {
-                        "Digital" : {
-                            "From" : "2016-01-01",
-                            "To" : "2016-06-01"
-                        },
-                        "Retail" : {
-                            "From" : "2010-03-10",
-                            "To" : "2010-09-10"
-                        }
-                    },
-                    "Suspension" : {
-                        "Global" : {
-                            "Reason": "Bad behaviour",
-                            "From" : "2016-09-01",
-                            "To" : "2016-11-01"
-                        },
-                        "Local" : [
-                            {
-                                "CasinoId" : 55000,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-01-30",
-                                "To" : "2016-02-28"
-                            },
-                            {
-                                "CasinoId" : 55001,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-06-15",
-                                "To" : "2016-06-30"
-                            }
-                        ]
-                    }
-                    },
                     "IsOmniChannelAccount" : true,
                     "IsDigital" : true
                 },
                 {
-                    "MembershipNo" : "987654322",
                     "Name" : {
                         "Forename" : "Will",
                         "Surname" : "Jackson"
@@ -628,13 +788,6 @@ For registration following input validation in place
                     "Age" : 61,
                     "EmailAddress" : "jackson@rank.com",
                     "Gender" : "Male",
-                    "AccountStatus": {
-                        "IsVerified": true,
-                        "IsBarred": false,
-                        "IsSuspended": false,
-                        "DigitalSelfExclude": true,
-                        "RetailSelfExclude": true
-                    },
                     "IsOmniChannelAccount" : false,
                     "IsDigital" : true
                 }
