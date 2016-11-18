@@ -370,7 +370,7 @@ For registration following input validation in place
 ### Profile with Additional Details [GET /customer/v1/profile/?{expand}=additional]
 
 + Parameters
-    + expand:`status` - provides profile along with additional details
+    + expand:`additional` - provides profile along with additional details
     
 + Response 200 
 
@@ -404,39 +404,6 @@ For registration following input validation in place
                 "Occupation" : "Clerk"
                 "DateOfBirth" : "1955-01-30",
                 "PopfAcceptanceDate" : "2016-09-12",
-                "AccountStatus" : {
-                    "IsVerified" : true,
-                    "SelfExclusion" : {
-                        "Digital" : {
-                            "From" : "2016-01-01",
-                            "To" : "2016-06-01"
-                        },
-                        "Retail" : {
-                            "From" : "2010-03-10",
-                            "To" : "2010-09-10"
-                        }
-                    },
-                    "Suspension" : {
-                        "Global" : {
-                            "Reason": "Bad behaviour",
-                            "From" : "2016-09-01",
-                            "To" : "2016-11-01"
-                        },
-                        "Local" : [
-                            {
-                                "CasinoId" : 55000,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-01-30",
-                                "To" : "2016-02-28"
-                            },
-                            {
-                                "CasinoId" : 55001,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-06-15",
-                                "To" : "2016-06-30"
-                            }
-                        ]
-                    }
                 }
             }
 
@@ -482,47 +449,6 @@ For registration following input validation in place
             "Club" : {
                 "ClubNumber" : "45611"
             },
-            "AffId" : "2728",
-            "AccountStatus" : {
-                    "IsVerified" : true,
-                    "SelfExclusion" : {
-                        "Digital" : {
-                            "From" : "2016-01-01",
-                            "To" : "2016-06-01"
-                        },
-                        "Retail" : {
-                            "From" : "2010-03-10",
-                            "To" : "2010-09-10"
-                        }
-                    },
-                    "Suspension" : {
-                        "Global" : {
-                            "Reason": "Bad behaviour",
-                            "From" : "2016-09-01",
-                            "To" : "2016-11-01"
-                        },
-                        "Local" : [
-                            {
-                                "CasinoId" : 55000,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-01-30",
-                                "To" : "2016-02-28"
-                            },
-                            {
-                                "CasinoId" : 55001,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-06-15",
-                                "To" : "2016-06-30"
-                            }
-                        ],
-            "MembershipCards" : [
-                            {
-                                "CardNumber" : 123456789
-                            },
-                            {
-                                "CardNumber" : 789456123
-                            }
-                        ],
             "IsAlreadyUsedOnDigital" : true,
             "IsSawCustomer":  true
         }
@@ -566,77 +492,8 @@ For registration following input validation in place
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
                     },
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk",
-                "DateOfBirth" : "1955-01-30",
                 "ClubNumber" : "45611",
-                "AccountStatus" : {
-                    "IsVerified": true,
-                    "IsSuspended": false,
-                    "DigitalSelfExclude": false,
-                    "RetailSelfExclude": false,
-                    "BarredGlobally" : {
-                        "Reason": "Bad behaviour",
-                        "From": "2016-09-01",
-                        "To": "2016-10-01"
-                    },
-                    "BarredLocally" : [
-                        {
-                            "CasinoNumber": 123345,
-                            "Reason": "Bad behaviour",
-                            "From": "2016-01-01",
-                            "To": "2016-01-07"
-                        },
-                        {
-                            "CasinoNumber": 456789,
-                            "Reason": "Has yellow jumper",
-                            "From": "2016-01-30",
-                            "To": "2016-02-30"
-                        }
-                    ]
-                },
                 "CustomerNumber" : "12345678",
-                "AccountStatus" : {
-                    "IsVerified" : true,
-                    "SelfExclusion" : {
-                        "Digital" : {
-                            "From" : "2016-01-01",
-                            "To" : "2016-06-01"
-                        },
-                        "Retail" : {
-                            "From" : "2010-03-10",
-                            "To" : "2010-09-10"
-                        }
-                    },
-                    "Suspension" : {
-                        "Global" : {
-                            "Reason": "Bad behaviour",
-                            "From" : "2016-09-01",
-                            "To" : "2016-11-01"
-                        },
-                        "Local" : [
-                            {
-                                "CasinoId" : 55000,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-01-30",
-                                "To" : "2016-02-28"
-                            },
-                            {
-                                "CasinoId" : 55001,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-06-15",
-                                "To" : "2016-06-30"
-                            }
-                        ],
-                "MembershipCards" : [
-                            {
-                                "CardNumber" : 123456789
-                            },
-                            {
-                                "CardNumber" : 789456123
-                            }
-                        ]
             }
             
 + Response 404 (application/json)
@@ -690,45 +547,7 @@ For registration following input validation in place
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
                     },
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk",
-                "DateOfBirth" : "1955-01-30",
                 "ClubNumber" : "45611",
-                "AccountStatus" : {
-                    "IsVerified": true,
-                    "SelfExclusion" : {
-                        "Digital" : {
-                            "From" : "2016-01-01",
-                            "To" : "2016-06-01"
-                        },
-                        "Retail" : {
-                            "From" : "2010-03-10",
-                            "To" : "2010-09-10"
-                        }
-                    },
-                    "Suspension" : {
-                        "Global" : {
-                            "Reason": "Bad behaviour",
-                            "From" : "2016-09-01",
-                            "To" : "2016-11-01"
-                        },
-                        "Local" : [
-                            {
-                                "CasinoId" : 55000,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-01-30",
-                                "To" : "2016-02-28"
-                            },
-                            {
-                                "CasinoId" : 55001,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-06-15",
-                                "To" : "2016-06-30"
-                            }
-                        ]
-                    }
-                },
                 "CustomerNumber" : "12345678",
             }
             
