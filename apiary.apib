@@ -140,7 +140,7 @@ The following table explains what should be supplied as a part of auth server re
 
 The following diagram depicts the sequence of interactions between client and the main RES components in context of authentication process:
 
-![Authentication flow](https://rankgroup.atlassian.net/wiki/download/attachments/102989835/Authentication%20flow.png?version=3&modificationDate=1479470588145&cacheVersion=1&api=v2)
+![Authentication flow](https://rankgroup.atlassian.net/wiki/download/attachments/102989835/Authentication%20flow.png?api=v2)
 
 (1) - The client requests [an access token](#tokens) from Identity Provider (IDP).
 The type of the token (see [Client Credentials Access Token](#client-credentials-access-token),
@@ -164,7 +164,7 @@ If token is expired, compromised or revoked then the result will be negative, ot
 This end point is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
-## Basic Profile [/customer/v1/profile]
+## Profile [/customer/v1/profile]
 
 Model for the resource if defined below:
 | Name                  | Type      | Required       | Description                                                                          |Example        |
@@ -229,14 +229,14 @@ For registration following input validation in place
                     "Forename" : "John",
                     "MiddleName" : "Dan",
                     "Surname" : "Jackson"
-                    },
-                 "Address" : {
+                },
+                "Address" : {
                     "Address1" : "10 Downing Street",
                     "Town" : "London",
                     "Postcode" : "WC2B 4AA",
                     "County" : "Greater London",
                     "Country"  : "UK"
-                    },
+                },
                 "ContactDetails" : {
                     "HomePhone" : "01234567890",
                     "BusinessPhone" : "01234567890",
@@ -246,9 +246,8 @@ For registration following input validation in place
                     "IsMobileContactAllowed" : true,
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
-                    }
-                "CustomerNumber" : "12345678",
-                }
+                },
+                "CustomerNumber" : "12345678"
             }
             
 ### Profile with Membership Cards [GET /customer/v1/profile/?{expand}=cards]
@@ -265,14 +264,14 @@ For registration following input validation in place
                     "Forename" : "John",
                     "MiddleName" : "Dan",
                     "Surname" : "Jackson"
-                    },
+                },
                  "Address" : {
                     "Address1" : "10 Downing Street",
                     "Town" : "London",
                     "Postcode" : "WC2B 4AA",
                     "County" : "Greater London",
                     "Country"  : "UK"
-                    },
+                },
                 "ContactDetails" : {
                     "HomePhone" : "01234567890",
                     "BusinessPhone" : "01234567890",
@@ -282,20 +281,18 @@ For registration following input validation in place
                     "IsMobileContactAllowed" : true,
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
-                    }
+                },
                 "CustomerNumber" : "12345678",
                 "MembershipCards" : [
-                            {
-                                "CardNumber" : 123456789,
-                                "Status": "Active",
-                            },
-                            {
-                                "CardNumber" : 789456123,
-                                "Status": "Lost",
-                            }
-                        ]
+                    {
+                        "CardNumber" : 123456789,
+                        "Status": "Active",
+                    },
+                    {
+                        "CardNumber" : 789456123,
+                        "Status": "Lost",
                     }
-                }
+                ]
             }
             
 
@@ -312,14 +309,14 @@ For registration following input validation in place
                     "Forename" : "John",
                     "MiddleName" : "Dan",
                     "Surname" : "Jackson"
-                    },
-                 "Address" : {
+                },
+                "Address" : {
                     "Address1" : "10 Downing Street",
                     "Town" : "London",
                     "Postcode" : "WC2B 4AA",
                     "County" : "Greater London",
                     "Country"  : "UK"
-                    },
+                },
                 "ContactDetails" : {
                     "HomePhone" : "01234567890",
                     "BusinessPhone" : "01234567890",
@@ -329,7 +326,7 @@ For registration following input validation in place
                     "IsMobileContactAllowed" : true,
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
-                    }
+                },
                 "CustomerNumber" : "12345678",
                 "AccountStatus" : {
                     "IsVerified" : true,
@@ -380,14 +377,14 @@ For registration following input validation in place
                     "Forename" : "John",
                     "MiddleName" : "Dan",
                     "Surname" : "Jackson"
-                    },
-                 "Address" : {
+                },
+                "Address" : {
                     "Address1" : "10 Downing Street",
                     "Town" : "London",
                     "Postcode" : "WC2B 4AA",
                     "County" : "Greater London",
                     "Country"  : "UK"
-                    },
+                },
                 "ContactDetails" : {
                     "HomePhone" : "01234567890",
                     "BusinessPhone" : "01234567890",
@@ -397,17 +394,15 @@ For registration following input validation in place
                     "IsMobileContactAllowed" : true,
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
-                    }
+                },
                 "CustomerNumber" : "12345678",
                 "Nationality" : "GB",
                 "Gender" : "Male",
                 "Occupation" : "Clerk"
                 "DateOfBirth" : "1955-01-30",
-                "PopfAcceptanceDate" : "2016-09-12",
-                }
+                "PopfAcceptanceDate" : "2016-09-12"
             }
 
-            
 ## Lookup Retail [/customer/v1/profile/retail/{cardNo}{?dateOfBirth}{?checkAlreadyUsed}]
 
 ### Scope: readonlyCustomerLookup [GET]
