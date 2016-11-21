@@ -216,7 +216,7 @@ For registration following input validation in place
 
 **Following fields must follow a valid format:**
 - Email address - valid email format
-- ContactDetails.Home & TelephoneNumber - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 078 8602 8945, +44 78 8602 9845, etc)
+- ContactDetails.HomePhone,BusinessPhone & MobilePhone - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 078 8602 8945, +44 78 8602 9845, etc)
 - Address.Postcode - valid UK postcode for UK addresses
 - DateOfBirth - must be of legal age (18)
 
@@ -430,23 +430,30 @@ For registration following input validation in place
             "Name" : {
                 "Title" : "Mr",
                 "Forename" : "John",
+                "MiddleName" : "Dan",
                 "Surname" : "Jackson"
             },
             "Address" : {
-                "Address1" : "10",
-                "Address2" : "Downing Street",
+                "Address1" : "10 Downing Street",
                 "Town" : "London",
                 "Postcode" : "WC2B 4AA",
-                "County" : "Greater London"
-            },         
-            "TelephoneNumber" : "01234567890",
-            "MobileNumber" : "01234567890",
+                "County" : "Greater London",
+                "Country"  : "UK"
+            }, 
+            "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                    },
             "DateOfBirth" : "1955-01-30",
-            "EmailAddress" : "jack@johnson.com",
-            "Club" : {
-                "ClubNumber" : "45611"
-            },
-            "IsAlreadyUsedOnDigital" : true,
+            "Email" : "jack@johnson.com",
+            "ClubNumber" : "45611",
+            "CustomerNumber" : "12345678",
             "IsSawCustomer":  true
         }
 
@@ -583,29 +590,61 @@ For registration following input validation in place
             [
                 {
                     "Name" : {
+                        "Title" : "Mr",
                         "Forename" : "John",
+                        "MiddleName" : "Dan",
                         "Surname" : "Jackson"
                     },
-                    "Postcode" : "WC2B 4AA",
+                    "Address": {
+                        "Address1": "10 Downing Street",
+                        "Town": "London",
+                        "Postcode": "WC2B 4AA",
+                        "County": "Greater London",
+                        "Country": "UK"
+                     },
+                     "ContactDetails" : {
+                        "HomePhone" : "01234567890",
+                        "BusinessPhone" : "01234567890",
+                        "MobilePhone" : "01234567890",
+                        "Email" : "jack@rank.com",
+                        "IsHomeContactallowed" : true,
+                        "IsMobileContactAllowed" : true,
+                        "IsEmailContactAllowed" : true,
+                        "IsSMSContactAllowed" : true
+                     },
                     "DateOfBirth" : "1955-01-30",
-                    "Age" : 61,
-                    "EmailAddress" : "jack@rank.com",
                     "Gender" : "Male",
-                    "IsOmniChannelAccount" : true,
-                    "IsDigital" : true
+                    "ClubNumber" : "45611",
+                    "CustomerNumber" : "12345678",
                 },
                 {
                     "Name" : {
+                        "Title" : "Mr",
                         "Forename" : "Will",
-                        "Surname" : "Jackson"
+                        "MiddleName" : "Sam",
+                        "Surname" : "Smith"
                     },
-                    "Postcode" : "WC2B 1BD",
+                    "Address": {
+                        "Address1": "10 Grosvenor Street",
+                        "Town": "London",
+                        "Postcode": "WC2B 1BD",
+                        "County": "Greater London",
+                        "Country": "UK"
+                     },
+                     "ContactDetails" : {
+                        "HomePhone" : "01234567890",
+                        "BusinessPhone" : "01234567890",
+                        "MobilePhone" : "01234567890",
+                        "Email" : "jack@rank.com",
+                        "IsHomeContactallowed" : true,
+                        "IsMobileContactAllowed" : true,
+                        "IsEmailContactAllowed" : true,
+                        "IsSMSContactAllowed" : true
+                     },
                     "DateOfBirth" : "1955-01-30",
-                    "Age" : 61,
-                    "EmailAddress" : "jackson@rank.com",
                     "Gender" : "Male",
-                    "IsOmniChannelAccount" : false,
-                    "IsDigital" : true
+                    "ClubNumber" : "45631",
+                    "CustomerNumber" : "32145678",
                 }
             ]
 
