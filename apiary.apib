@@ -173,42 +173,44 @@ Model for the resource if defined below:
 |Name.Forename          |string[40] |**yes**         |                                                                                      |"John"         |
 |Name.MiddleName        |string[40] |**optional**    |                                                                                      |"Dan"          |
 |Name.Surname           |string[40] |**yes**         |                                                                                      |"Jackson"      |
-|Address.Address1       |string[?]  |**yes**         |                                                                                      |"Flat 2, 10 Downing Street"         |
+|Address.Address1       |string[?]  |**yes**         |                                                                                      |"Flat 2, 10 Downing Street"        |
 |Address.Town           |string[?]  |**yes**         |                                                                                      |"London"       |
 |Address.Postcode       |string[?]  |**yes**         |                                                                                      |"WC2B 4AA"     |
-|Address.County         |string[?]  |**optional**         |                                                                                      |"Greater London"         |
+|Address.County         |string[?]  |**optional**    |                                                                                      |"Greater London"                   |
 |Address.Country        |string[2]  |**yes**         |ISO 2 digit country code ie. AU, NZ, ZA, GB, US                                       |"GB"           |
-|ContactDetails.HomePhone                        |string[?]  |**optional**         |                                                             |"01234567890"  |
-|ContactDetails.BusinessPhone                    |string[?]  |**optional**         |                                                             |"01234567890"  |
-|ContactDetails.MobilePhone                      |string[?]  |**optional** Either Mobile or Email must be supplied            |           |"01234567890"  |
-|ContactDetails.Email                       |string[?]  |**optional** Either Mobile or Email must be supplied             |           |"<john@email.com>"         |
-|ContactDetails.IsHomeContactallowed        |bool  |**optional**         |Allow postal communication channel                            |true           |
-|ContactDetails.IsMobileContactAllowed      |bool  |**optional**         |Allow mobile phone communication channel                          |true           |
-|ContactDetails.IsEmailContactAllowed       |bool  |**optional**         |Allow email communication channel                                 |true           |
-|ContactDetails.IsSMSContactAllowed         |bool  |**optional**         |Allow SMS communication channel                                   |true           |
-|Nationality                                |string[2]  |**yes**        |ISO 2 digit country code ie. AU, NZ, ZA, GB, US                                         |"ZA"           |
-|Gender                                     |string[7]  |**yes**        |Values are Unknown, Female and Male                                                     |"Male"           |
-|Occupation                                 |string[40] |**optional**   |                                                                                        |"Clerk"           |
-|DateOfBirth                                |string     |**yes**        |                                                                                        |"1955-01-30"           |
-|ClubNumber                                 |int        |**yes**        |                                                                                        |"123"           |
-|IsVerified                                 |bool       |**yes**        |                                                                                        |true           |
-|IsBarred                                   |bool       |**optional**   |if customer is barred from the casino                                                   |true           |
-|DigitalSelfExclude                         |bool       |**optional**   |if customer has decided to self-exclude from the digital channel                       |true           |
-|DigitalSelfExcludeDurationInDays           |int        |**optional**   |number of days self-excluded from the digital channel                                  |180            |
-|Suspension.Global.From                     |datetime   |**optional**   |if customer is suspended from the casino globally                                      |true
-|Suspension.Global.To                       |datetime   |**optional**   |if customer is suspended from the casino globally                                      |true
-|Suspension.Global.Reason                   |string     |**optional**   |if customer is suspended from the casino globally                                      |true
-|Suspension.Local                           |array      |**optional**   |if customer is suspended from the casino locally                                       |true
-|Suspension.Local.CasinoId                  |long       |**optional**   |                                                                                       |true
-|Suspension.Local.Reason                    |string     |**optional**   |                                                                                       |true
-|Suspension.Local.From                      |datetime   |**optional**   |                                                                                       |true
-|Suspension.Local.To                        |datetime   |**optional**   |                                                                                       |true
-|RetailSelfExclude                          |bool       |**optional**   |if customer has decided to self-exclude from the retail channel                        |true           |
-|RetailSelfExcludeDurationInDays            |int        |**optional**   |number of days self-excluded from the digital channel                                  |180            |
-|CustomerNumber                             |string[?]  |**yes**        |                                                                                       |
-|MembershipCards                            |array      |**yes**        | 2 dimentional array, holds CardNumber and Status                                                                                        
-|MembershipCards.CardNumber                 |string     |**yes**        | 
-|MembershipCards.Status                     |string     |**optional**   | 
+|ContactDetails.HomePhone                   |string[?]  |**optional**                                                                       |"01234567890"  |
+|ContactDetails.BusinessPhone               |string[?]  |**optional**                                                                       |"01234567890"  |
+|ContactDetails.MobilePhone                 |string[?]  |**optional** Either Mobile or Email must be supplied                               |"01234567890"  |
+|ContactDetails.Email                       |string[?]  |**optional** Either Mobile or Email must be supplied                               |"<john@email.com>"                 |
+|ContactDetails.IsHomeContactallowed        |bool       |**optional**   |Allow postal communication channel                                 |true           |
+|ContactDetails.IsMobileContactAllowed      |bool       |**optional**   |Allow mobile phone communication channel                           |true           |
+|ContactDetails.IsEmailContactAllowed       |bool       |**optional**   |Allow email communication channel                                  |true           |
+|ContactDetails.IsSMSContactAllowed         |bool       |**optional**   |Allow SMS communication channel                                    |true           |
+|Nationality                                |string[2]  |**yes**        |ISO 2 digit country code ie. AU, NZ, ZA, GB, US                                        |"ZA"           |
+|Gender                                     |string[7]  |**yes**        |Values are Unknown, Female and Male                                                    |"Male"         |
+|Occupation                                 |string[40] |**optional**   |                                                                                       |"Clerk"        |
+|DateOfBirth                                |string     |**yes**        |                                                                                       |"1955-01-30"   |
+|PopfAcceptanceDate                         |datetime   |**optional**   |                                                                                       |"2016-04-23"   |
+|IsVerified                                 |bool       |**yes**        |                                                                                       |true           |
+|SelfExclusion.Digital                      |array      |**optional**   |if customer has decided to self-exclude from the digital channel                       |true           |
+|SelfExclusion.Digital.From                 |datetime   |**optional**   |if customer has decided to self-exclude from the digital channel                       |true           |
+|SelfExclusion.Digital.To                   |datetime   |**optional**   |if customer has decided to self-exclude from the digital channel                       |true           |
+|SelfExclusion.Retail                       |array      |**optional**   |if customer has decided to self-exclude from the digital channel                       |true           |
+|SelfExclusion.Retail.From                  |datetime   |**optional**   |if customer has decided to self-exclude from the retail channel                        |true           |
+|SelfExclusion.Retail.To                    |datetime   |**optional**   |if customer has decided to self-exclude from the retail channel                        |true           |
+|Suspension.Global                          |array      |**optional**   |if customer is suspended from the casino globally                                      |true           |
+|Suspension.Global.Reason                   |string     |**optional**   |if customer is suspended from the casino globally                                      |true           |
+|Suspension.Global.From                     |datetime   |**optional**   |if customer is suspended from the casino globally                                      |true           |
+|Suspension.Global.To                       |datetime   |**optional**   |if customer is suspended from the casino globally                                      |true           |
+|Suspension.Local                           |array      |**optional**   |if customer is suspended from the casino locally                                       |true           |
+|Suspension.Local.CasinoId                  |long       |**optional**   |                                                                                       |true           |
+|Suspension.Local.Reason                    |string     |**optional**   |                                                                                       |true           |
+|Suspension.Local.From                      |datetime   |**optional**   |                                                                                       |true           |
+|Suspension.Local.To                        |datetime   |**optional**   |                                                                                       |true           |
+|CustomerNumber                             |string[?]  |**yes**        |                                                                                       
+|MembershipCards                            |array      |**yes**        | 2 dimentional array, holds membership CardNumber and Status                                                                                        
+|MembershipCards.CardNumber                 |string     |**yes**        | 123456789
+|MembershipCards.Status                     |string     |**optional**   | Active
 
 For registration following input validation in place
 
@@ -217,7 +219,7 @@ For registration following input validation in place
 - ContactDetails.Home & TelephoneNumber - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 078 8602 8945, +44 78 8602 9845, etc)
 - Address.Postcode - valid UK postcode for UK addresses
 - DateOfBirth - must be of legal age (18)
-- ClubNumber - Club number must be a valid Grosvenor casino.
+
 
 ### Basic Profile [GET]
 
