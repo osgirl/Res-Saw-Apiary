@@ -890,10 +890,10 @@ Service endpoint for updating a customers communication permissions, which indic
     + Body
     
             {
-                "CommPermissionMobile": false,
-                "CommPermissionSMS": true,
-                "CommPermissionEmail": true,
-                "CommPermissionPost": false
+                "IsMobileContactAllowed": false,
+                "IsSMSContactAllowed": true,
+                "IsEmailContactAllowed": true,
+                "IsHomeContactallowed": false
             }
     
 + Response 200 (application/json)    
