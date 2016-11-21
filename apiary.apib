@@ -687,7 +687,7 @@ For registration following input validation in place
 
 ### Scope: staffUpgradeCustomer [POST]
 
-This API will be called by Neon when customer sets a PIN either after registration or wanting to upgrade to SAW project. If the customer has identified to the casino staff that they have a digital identity, then Neon will send playerId in digitalProfile, otherwise Neon will send the profile information for the customer to be registered on the BEDE platform.
+This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -765,6 +765,8 @@ This API will be called by Neon when customer sets a PIN either after registrati
 ## Update Personal Details [/customer/v1/profile/{customernumber}/personal]
 
 ### Scope: staffUpdateCustomerPersonal [PATCH]
+
+Api to update an existing customers information once they have been identified as a SAW customer.
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -944,6 +946,8 @@ To update customer profile by removing the barred/suspended status
 
 ### Scope: onbehalfSetSelfExclusion [POST]
 
+This endpoint is for the purpose of Customer self-exlusion. The minimum amount of time a customer can self exclude is 180days, and they can choose to exclude themselves from digital, retail or the Grosvenor brand
+
 + Parameters
     + customernumber: 12345678 (string, required)
     + target: 'retail' or 'digital' or 'crossChannel' (string, required)
@@ -977,6 +981,8 @@ To update customer profile by removing the barred/suspended status
             }
  
 ### Scope: staffRemoveSelfExclusion [DELETE]
+
+This will remove a customers self exclusion and should only be performed by Admin staff.
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -1071,6 +1077,8 @@ Allows registered customers to update the card status
 
 ### Scope: onbehalfRequestChangePin [POST]
 
+Allows a member of staff to request a pin change on behalf of the customer. This is for when the customer has forgotten thier current pin. Once requested the customer will complete the journey on their own device.
+
 + Parameters
     + customernumber: 12345678 (string, required)
    
@@ -1103,6 +1111,8 @@ Allows registered customers to update the card status
 ## Change PIN [/customer/v1/profile/{customernumber}/changepin]
 
 ### Scope: clientChangePin [POST]
+
+Allows a customer to change there known pin to a new one.
 
 + Parameters
     + customernumber: 12345678 (string, required)
