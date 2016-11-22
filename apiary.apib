@@ -221,40 +221,65 @@ For registration following input validation in place
 - DateOfBirth - must be of legal age (18)
 
 
-### Basic Profile [GET]
+## Lookup Customer Profile
+### Scope: readonlyCustomerLookup [GET /customer/v1/profile/{customernumber}]
+This customer endpoint can be expanded with Membership cards, Account status and Additional details. Multiple expands can be included, for example /profile/12345?expand=cards,status,additional
++ Parameters
+    + customernumber: 123456 (string, required)
 
-+ Response 200 
++ Request
 
-            {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                },
-                "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                },
-                "CustomerNumber" : "12345678"
-            }
+    + Headers 
             
-### Profile with Membership Cards [GET /customer/v1/profile/?{expand}=cards]
+            Authorization: Bearer (client credential token)
+
++ Response 200 (application/json)
+
+        {
+            "Name" : {
+                "Title" : "Mr",
+                "Forename" : "John",
+                "MiddleName" : "Dan",
+                "Surname" : "Jackson"
+                },
+             "Address" : {
+                "Address1" : "10 Downing Street",
+                "Town" : "London",
+                "Postcode" : "WC2B 4AA",
+                "County" : "Greater London",
+                "Country"  : "UK"
+                },
+            "ContactDetails" : {
+                "HomePhone" : "01234567890",
+                "BusinessPhone" : "01234567890",
+                "MobilePhone" : "01234567890",
+                "Email" : "john@email.com",
+                "IsHomeContactallowed" : true,
+                "IsMobileContactAllowed" : true,
+                "IsEmailContactAllowed" : true,
+                "IsSMSContactAllowed" : true
+                },
+            "ClubNumber" : "45611",
+            "CustomerNumber" : "12345678",
+        }
+            
++ Response 404 (application/json)
+
+        {
+            "Message": "Customer Not Found"
+        }
+            
++ Response 500 (application/json)
+
+        {
+            "Message": "Internal Error"
+        }
+
+
+### Profile with Membership Cards [GET /customer/v1/profile/{customernumber}?{expand}=cards]
 
 + Parameters
+    + customernumber: 123456 (string, required)
     + expand: `cards` - provides profile along with membership cards
 
     
@@ -298,9 +323,10 @@ For registration following input validation in place
             }
             
 
-### Profile with Account Status [GET /customer/v1/profile/?{expand}=status]
+### Profile with Account Status [GET /customer/v1/profile/{customernumber}?{expand}=status]
 
 + Parameters
+    + customernumber: 123456 (string, required)
     + expand:`status` - provides profile along with account status
     
 + Response 200 
@@ -366,9 +392,10 @@ For registration following input validation in place
                 }
             }   
 
-### Profile with Additional Details [GET /customer/v1/profile/?{expand}=additional]
+### Profile with Additional Details [GET /customer/v1/profile/{customernumber}?{expand}=additional]
 
 + Parameters
+    + customernumber: 123456 (string, required)
     + expand:`additional` - provides profile along with additional details
     
 + Response 200 
@@ -405,113 +432,6 @@ For registration following input validation in place
                 "PopfAcceptanceDate" : "2016-09-12"
             }
 
-## Lookup Retail [/customer/v1/profile/retail/{cardNo}{?dateOfBirth}{?checkAlreadyUsed}]
-
-### Scope: readonlyCustomerLookup [GET]
-
-+ Parameters
-    + cardNo: `12345` (number, required) - Card number (Number found on the back of the card) of the Customer in form of an integer
-    + dateOfBirth: `1955-01-30` (dateTime, required) - Date of birth of the Customer
-    + checkAlreadyUsed: true (boolean, optional) - Enables Customer Spine registration check. 
-        The flag modifies response entity according to the following rules:
-        - customer registered on Spine, adds _IsAlreadyUsedOnDigital_ property with value _true_
-        - customer not registered - adds _IsAlreadyUsedOnDigital_ property with value _false_
-        - Spine check failed - no changes to response
-        
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-
-+ Response 200 (application/json)
-
-        {
-            "Name" : {
-                "Title" : "Mr",
-                "Forename" : "John",
-                "MiddleName" : "Dan",
-                "Surname" : "Jackson"
-            },
-            "Address" : {
-                "Address1" : "10 Downing Street",
-                "Town" : "London",
-                "Postcode" : "WC2B 4AA",
-                "County" : "Greater London",
-                "Country"  : "UK"
-            }, 
-            "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                    },
-            "DateOfBirth" : "1955-01-30",
-            "Email" : "jack@johnson.com",
-            "ClubNumber" : "45611",
-            "CustomerNumber" : "12345678",
-            "IsSawCustomer":  true
-        }
-
-## Lookup Customer [/customer/v1/profile/{customernumber}]
-
-### Scope: readonlyCustomerLookup [GET]
-
-+ Parameters
-    + customernumber: 123456 (string, required)
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-
-+ Response 200 (application/json)
-
-             {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                    },
-                 "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                    },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                    },
-                "ClubNumber" : "45611",
-                "CustomerNumber" : "12345678",
-            }
-            
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
 ## Search Username [/customer/v1/profile/{Username}]
 
 ### Scope: readonlyCustomerSearch [GET]
@@ -527,48 +447,48 @@ For registration following input validation in place
 
 + Response 200 (application/json)
 
-             {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                    },
-                 "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                    },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                    },
-                "ClubNumber" : "45611",
-                "CustomerNumber" : "12345678",
-            }
+         {
+            "Name" : {
+                "Title" : "Mr",
+                "Forename" : "John",
+                "MiddleName" : "Dan",
+                "Surname" : "Jackson"
+                },
+             "Address" : {
+                "Address1" : "10 Downing Street",
+                "Town" : "London",
+                "Postcode" : "WC2B 4AA",
+                "County" : "Greater London",
+                "Country"  : "UK"
+                },
+            "ContactDetails" : {
+                "HomePhone" : "01234567890",
+                "BusinessPhone" : "01234567890",
+                "MobilePhone" : "01234567890",
+                "Email" : "john@email.com",
+                "IsHomeContactallowed" : true,
+                "IsMobileContactAllowed" : true,
+                "IsEmailContactAllowed" : true,
+                "IsSMSContactAllowed" : true
+                },
+            "ClubNumber" : "45611",
+            "CustomerNumber" : "12345678",
+        }
             
 + Response 404 (application/json)
 
-            {
-                "Message": "Customer Not Found"
-            }
+        {
+            "Message": "Customer Not Found"
+        }
             
 + Response 500 (application/json)
 
-            {
-                "Message": "Internal Error"
-            }
-            
-## Open Search [/customer/v1/profile/?{surname}=Jackson&{dateOfBirth}=1955-01-03&{email}=jack@johnson.com&{postcode}=WC2B+4AA&{mobile}=07123456789&{max}=10]
-
+        {
+            "Message": "Internal Error"
+        }
+           
+          
+## Open Search [/customer/v1/profile/?{surname}=Jackson&{dateOfBirth}=1955-01-03&{email}=jack@johnson.com&{postcode}=WC2B+4AA&{mobile}=07123456789&{cardNo}=12345&{checkAlreadyUsed}=true&{max}=10]
 ### Scope: readonlyCustomerSearch [GET]
 
 + Parameters
@@ -577,6 +497,12 @@ For registration following input validation in place
     + postcode: `WC2B 4AA` (string, optional) - Customers' postcode
     + email: `jack@johnson.com` (string, optional) - Customers' email address
     + mobile: `07123456789` (string, optional) - Customers mobile number
+    + cardNo: `12345` (number, required) - Card number (Number found on the back of the card) of the Customer in form of an integer
+    + checkAlreadyUsed: true (boolean, optional) - Enables Customer Spine registration check. 
+        The flag modifies response entity according to the following rules:
+        - customer registered on Spine, adds _IsAlreadyUsedOnDigital_ property with value _true_
+        - customer not registered - adds _IsAlreadyUsedOnDigital_ property with value _false_
+        - Spine check failed - no changes to response
     + max: 10 (int, optional) - Max records to return
 
 + Request
@@ -587,73 +513,73 @@ For registration following input validation in place
 
 + Response 200 (application/json)
 
-            [
-                {
-                    "Name" : {
-                        "Title" : "Mr",
-                        "Forename" : "John",
-                        "MiddleName" : "Dan",
-                        "Surname" : "Jackson"
-                    },
-                    "Address": {
-                        "Address1": "10 Downing Street",
-                        "Town": "London",
-                        "Postcode": "WC2B 4AA",
-                        "County": "Greater London",
-                        "Country": "UK"
-                     },
-                     "ContactDetails" : {
-                        "HomePhone" : "01234567890",
-                        "BusinessPhone" : "01234567890",
-                        "MobilePhone" : "01234567890",
-                        "Email" : "jack@rank.com",
-                        "IsHomeContactallowed" : true,
-                        "IsMobileContactAllowed" : true,
-                        "IsEmailContactAllowed" : true,
-                        "IsSMSContactAllowed" : true
-                     },
-                    "DateOfBirth" : "1955-01-30",
-                    "Gender" : "Male",
-                    "ClubNumber" : "45611",
-                    "CustomerNumber" : "12345678",
+        [
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
                 },
-                {
-                    "Name" : {
-                        "Title" : "Mr",
-                        "Forename" : "Will",
-                        "MiddleName" : "Sam",
-                        "Surname" : "Smith"
-                    },
-                    "Address": {
-                        "Address1": "10 Grosvenor Street",
-                        "Town": "London",
-                        "Postcode": "WC2B 1BD",
-                        "County": "Greater London",
-                        "Country": "UK"
-                     },
-                     "ContactDetails" : {
-                        "HomePhone" : "01234567890",
-                        "BusinessPhone" : "01234567890",
-                        "MobilePhone" : "01234567890",
-                        "Email" : "jack@rank.com",
-                        "IsHomeContactallowed" : true,
-                        "IsMobileContactAllowed" : true,
-                        "IsEmailContactAllowed" : true,
-                        "IsSMSContactAllowed" : true
-                     },
-                    "DateOfBirth" : "1955-01-30",
-                    "Gender" : "Male",
-                    "ClubNumber" : "45631",
-                    "CustomerNumber" : "32145678",
-                }
-            ]
+                "Address": {
+                    "Address1": "10 Downing Street",
+                    "Town": "London",
+                    "Postcode": "WC2B 4AA",
+                    "County": "Greater London",
+                    "Country": "UK"
+                 },
+                 "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "jack@rank.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                 },
+                "DateOfBirth" : "1955-01-30",
+                "Gender" : "Male",
+                "ClubNumber" : "45611",
+                "CustomerNumber" : "12345678",
+            },
+            {
+                "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "Will",
+                    "MiddleName" : "Sam",
+                    "Surname" : "Smith"
+                },
+                "Address": {
+                    "Address1": "10 Grosvenor Street",
+                    "Town": "London",
+                    "Postcode": "WC2B 1BD",
+                    "County": "Greater London",
+                    "Country": "UK"
+                 },
+                 "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "jack@rank.com",
+                    "IsHomeContactallowed" : true,
+                    "IsMobileContactAllowed" : true,
+                    "IsEmailContactAllowed" : true,
+                    "IsSMSContactAllowed" : true
+                 },
+                "DateOfBirth" : "1955-01-30",
+                "Gender" : "Male",
+                "ClubNumber" : "45631",
+                "CustomerNumber" : "32145678",
+            }
+        ]
 
 + Response 500 (application/json)
 
-            {
-                "Message": "Internal Error"
-            }
-
+        {
+            "Message": "Internal Error"
+        }
+        
 ## Register [/customer/v1/profile/retailOnly]
 
 
