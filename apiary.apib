@@ -435,7 +435,7 @@ This customer endpoint can be expanded with Membership cards, Account status and
                     "IsEmailContactAllowed" : true,
                     "IsSMSContactAllowed" : true
                 },
-                "ClubNumber" : "45611",bnumber a
+                "ClubNumber" : "45611",
                 "CustomerNumber" : "12345678",
                 "Nationality" : "GB",
                 "Gender" : "Male",
@@ -487,12 +487,8 @@ This customer endpoint can be expanded with Membership cards, Account status and
             "CustomerNumber" : "12345678",
         }
             
-+ Response 404 (application/json)
++ Response 204 (application/json)
 
-        {
-            "Message": "Customer Not Found"
-        }
-            
 + Response 500 (application/json)
 
         {
@@ -585,6 +581,10 @@ This customer endpoint can be expanded with Membership cards, Account status and
                 "CustomerNumber" : "32145678",
             }
         ]
+        
++ Response 200 (application/json)
+
+        []
 
 + Response 500 (application/json)
 
