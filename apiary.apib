@@ -141,7 +141,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerLookup <br/>readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/> staffWalletRegisterWinnings|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>cardNo <br/>pin |clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>cardNo <br/>pin |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
@@ -1152,10 +1152,12 @@ Allows a customer to change there known pin to a new one.
 # Group Wallet Service V 1.0
 This end point is a dedicated aggregated endpoint for Wallet services. 
 
-## Request Balance [/wallet/v1/balance/{customernumber}]
+## View Balance [/wallet/v1/customer/{customernumber}/balance]
 This API will be return balance from all SAW wallets and their current PoPF status. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical solution. 
 
-### Scope: clientWalletGetBalance, staffWalletGetBalance [POST]
+### Scope: clientWalletGetBalance, staffWalletGetBalance [GET]
+
+When Responsible Gambling limit is not accepted then RemainingResponsibleGamblingLimit equals to null.
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -1165,30 +1167,23 @@ This API will be return balance from all SAW wallets and their current PoPF stat
     + Headers 
             
             Authorization: Bearer (client credential token)
-            
-    + Body
-    
-            {
-                
-            }
 
 + Response 200 (application/json)
 
             {
-                "FundsAvailable": {
-                    "ToWithdraw": 500,
-                    "ToDeposit": 500
+                "Balances": {
+                    "TotalCash": 1000,
+                    "TotalDigital": 500,
+                    "TotalRetail": 700,
+                    "AvailableToWithdraw": 600,
+                    "AvailableToTransferToRetailGame": 0
                 },
-                "WalletBalance": {
-                    "ForRetail": 66,
-                    "ForDigital": 116,
-                    "Details": {
-                        "DigitalPlayableCash": 106,
-                        "RetailPlayableCash": 56,
-                        "Unplayable": 10
-                    }
+                "Limits": {
+                    "RemainingTacticalWithdrawalLimit": 100,
+                    "RemainingTacticalDepositLimit": 350,
+                    "RemainingResponsibleGamblingLimit": 0
                 },
-                "PopfAgreementDate": "1955-01-30 or null"
+                "LastCalculatedDateTime": "2016-03-15T14:32:22Z"
             }
 
 + Response 404 (application/json)
@@ -1206,53 +1201,10 @@ This API will be return balance from all SAW wallets and their current PoPF stat
 + Response 500 (application/json)
 
             {
-                "Message": "Internal Error"
+                "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-## Migrate [/wallet/v1/transaction/migrate/{customernumber}/]
-
-### Scope: staffWalletMigrateFunds [POST]
-
-This API will be used when a customer has just created SAW account and want to "migrate" funds from local/retail wallet to the SAW Wallet.
-This transaction will be transfer the funds to Customer's Cash/Debit SAW wallet and will not effect any deposit limits.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-
-+ Request (application/json)
-
-    + Headers 
-            
-            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
-            Authorization: Bearer (client credential token)
-
-    + Body
-    
-            {
-                "Amount": 10000
-            }
-
-+ Response 200 (application/json)
-
-            {
-                "WalletsUpdates" : {
-                    "NonCredit" : 10000
-                }
-            }
-
-+ Response 404 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Couldn't process the transaction. SPINE is unavailable."
-            }
-
-# Deposit [/wallet/v1/transaction/deposit/{customernumber}/]
+## Deposit [/wallet/v1/customer/{customernumber}/deposit/{transactionId}]
 
 ### Scope: clientWalletDeposit, onbehalfWalletDeposit [POST]
 
@@ -1262,33 +1214,33 @@ If no limits are set or request within the limits, RES will process the transact
 Any failure will be reported back 500 - server error. 
 
 + Parameters
-    + customernumber: 12345678 (string, required)
+    + customernumber: `12345678` (string, required)
+    + transactionId: `000000001-001` (string, required)
 
 + Request (application/json)
 
     + Headers 
             
-            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
             Authorization: Bearer (resource owner token)
 
     + Body
     
             {
-                "Amount": 10000,
-                "TransactionMetaData": 
-                {
-                    "CustomerFirstName": "John",
-                    "CustomerLastName": "Smith",
-                    "CustomerEmail": "john.smith@aol.com",
-                    "CustomerVipStatus": true,
-                    "Location": "Grosvenor Casino Blackpool"
-                }
+                "Amount": 100
             }
 
-+ Response 200 (application/json)
++ Response 204 (application/json)
+
++ Response 400 (application/json)
 
             {
-                "Message": "deposited 10000 into debit wallet. OR deposited 2000 into debit wallet and 8000 into pending wallet"
+                "Message": "The specified amount is invalid"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
             }
 
 + Response 404 (application/json)
@@ -1296,15 +1248,20 @@ Any failure will be reported back 500 - server error.
             {
                 "Message": "Customer Not Found"
             }
-
+            
 + Response 500 (application/json)
 
             {
-                "Message": "couldn't process the transaction. BEDE unavailable"
+                "Message": "The latest version of PoPF is not signed off"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-
-# Withdrawal [/wallet/v1/transaction/withdraw/{customernumber}/]
+## Withdraw [/wallet/v1/customer/{customernumber}/withdraw/{transactionId}]
 
 ###Scope: clientWalletWithdraw, onbehalfWalletWithdraw [POST]
 
@@ -1314,35 +1271,45 @@ If no limits are set or request within the limits, RES will process the transact
 Any failure will be reported back 500 - server error. 
 
 + Parameters
-    + customernumber: 12345678 (string, required)
+    + customernumber: `12345678` (string, required)
+    + transactionId: `000000001-001` (string, required)
 
 + Request (application/json)
 
     + Headers 
             
-            TransactionId: d5e7bbd8-c2a0-4b70-8af8-6dbce273b922
             Authorization: Bearer (resource owner token)
 
     + Body
     
             {
-                "Amount": 1000,
-                "TransactionMetaData": 
-                {
-                    "CustomerFirstName": "John",
-                    "CustomerLastName": "Smith",
-                    "CustomerEmail": "john.smith@aol.com",
-                    "CustomerVipStatus": true,
-                    "Location": "Grosvenor Casino Blackpool"
-                }
+                "Amount": 100
             }
 
-+ Response 200 (application/json)
++ Response 204 (application/json)
 
 + Response 400 (application/json)
 
             {
-                "Message": "exceeds current VIP/Blanket/Manual withdrawal limit. Current max withdrawal allowance = {xxx} OR deposit amount is invalid OR not a SAW customer"
+                "Message": "The requested amount exceeds available funds"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "The requested amount exceeds tactical withdrawal limit"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "The specified amount is invalid"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
             }
 
 + Response 404 (application/json)
@@ -1354,17 +1321,71 @@ Any failure will be reported back 500 - server error.
 + Response 500 (application/json)
 
             {
-                "Message": "couldn't process the transaction. BEDE unavailable"
+                "Message": "The latest version of PoPF is not signed off"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Couldn't process the transaction. {System X} is unavailable."
+            }
+            
+## Register Winnings [/wallet/v1/customer/{customernumber}/winnings/{transactionId}]
+
+###Scope: staffWalletRegisterWinnings [POST]
+
++ Parameters
+    + customernumber: `12345678` (string, required)
+    + transactionId: `000000001-001` (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+
+    + Body
+    
+            {
+                "ReturnedFunds": 250,
+                "Deposit": 40,
+                "Winning": 70
             }
 
-## Transaction status [/wallet/v1/transaction/status?{trasactionId}]
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "The specified amount is invalid"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Couldn't process the transaction. {System X} is unavailable."
+            }
+
+## Transaction status [/wallet/v1/transaction/{transactionId}/status]
 
 ###Scope: staffWalletGetTransactionStatus [GET]
 
 This api returns log information for the recent transaction based on the transaction id. 
 
 + Parameters
-    + trasactionId: "d5e7bbd8-c2a0-4b70-8af8-6dbce273b922" (string, required)
+    + transactionId: `000000001-001` (string, required)
 
 + Response 200 (application/json)
 
@@ -1381,5 +1402,5 @@ This api returns log information for the recent transaction based on the transac
 + Response 500 (application/json)
 
             {
-                "Message": "couldn't process the request"
+                "Message": "Internal Error"
             }
