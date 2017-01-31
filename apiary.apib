@@ -1229,6 +1229,16 @@ Any failure will be reported back 500 - server error.
 
 + Response 204 (application/json)
 
+    Transaction successfully processed
+    
+    + Body
+
++ Response 202 (application/json)
+
+    Undetermined state of transaction
+    
+    + Body
+
 + Response 400 (application/json)
 
             {
@@ -1285,6 +1295,16 @@ Any failure will be reported back 500 - server error.
             }
 
 + Response 204 (application/json)
+
+    Transaction successfully processed
+    
+    + Body
+
++ Response 202 (application/json)
+
+    Undetermined state of transaction
+    
+    + Body
 
 + Response 400 (application/json)
 
@@ -1352,6 +1372,16 @@ Any failure will be reported back 500 - server error.
 
 + Response 204 (application/json)
 
+    Transaction successfully processed
+    
+    + Body
+
++ Response 202 (application/json)
+
+    Undetermined state of transaction
+    
+    + Body
+
 + Response 400 (application/json)
 
             {
@@ -1388,7 +1418,25 @@ This api returns log information for the recent transaction based on the transac
 + Response 200 (application/json)
 
             {
-                "Log": "date/time: BEDE: some form update message. date/time: MDM: blah blah"
+                "Status": "Succeeded"
+            }
+            
++ Response 200 (application/json)
+
+            {
+                "Status": "Pending"
+            }
+            
++ Response 200 (application/json)
+
+            {
+                "Status": "Undetermined"
+            }
+            
++ Response 200 (application/json)
+
+            {
+                "Status": "Failed"
             }
 
 + Response 404 (application/json)
