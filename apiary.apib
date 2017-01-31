@@ -60,13 +60,19 @@ Resource owner access tokens are required to access resources where an authentic
 
 `client_id:client_secret` Base64 encoded, e.g. 98712389abc and passed in the Authorization header
 
-**username** - The username or card number  of the resource owner (customer).
+**channel** - One of the following values: `retail`, `digital`. If not specified then defaults to `retail`.
 
-**password** - The password or PIN of the resource owner (customer).
+**username** - Username of the resource owner (customer) for `digital` or card number for `retail`.
 
-**venue_id** - Identifier of a venue calling RES. Required only when a member of staff acesses a resource on behalf of a resource owner (customer).
+**password** - Password of the resource owner (customer) for `digital` or PIN for `retail`.
 
-**staff_id** - Identifier of a member of staff calling RES. Required only when a member of staff acesses a resource on behalf of a resource owner (customer).
+**venue_id** - Identifier of a venue where a call to RES comes from. Always required.
+
+**game_category** - The game category (e.g. slots, table game). Required for certain scopes (see [Scopes](#scopes) table below).
+
+**location_id** - Identifier of a device/machine calling RES. Always required.
+
+**staff_id** - Identifier of a member of staff calling RES. Required only when a member of staff initiates an API call (see [Scopes](#scopes) table below).
 
 ```
 POST /api/core/connect/token
@@ -78,10 +84,13 @@ Authorization: Basic 98712389abc
 ```
 grant_type=password
 &scope=res
-&username=<cardno>
-&password=<pin>
+&channel=retail
+&username=<cardno/username>
+&password=<pin/password>
 &venue_id=50601
-&staff_id=320
+&game_category=slot
+&location_id=XT101
+&staff_id=cashier4
 ```
 
 **Example response**
@@ -131,10 +140,10 @@ The following table explains what should be supplied as a part of auth server re
 
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
-|Read-only operations|Client Credentials Token|clientId <br/>clientSecret|readonlyCustomerLookup <br/>readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>staff_id|staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletMigrateFunds <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
-|Customer performing action themselves|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin|clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>cardNo <br/>pin <br/>venue_id <br/>staff_id|onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
+|Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerLookup <br/>readonlyCustomerSearch|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>cardNo <br/>pin |clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>cardNo <br/>pin |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
 ## Authentication flow
 
