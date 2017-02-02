@@ -595,7 +595,7 @@ This customer endpoint can be expanded with Membership cards, Account status and
 
 ### Scope: staffRegisterRetailCustomer [POST]
 
-This API will be called when a customer has had a new retail account created. 
+This API will be called when a customer has had a new retail account created. This will create a record within Rank systems except digital
 
 + Request (application/json)
 
@@ -660,7 +660,7 @@ This API will be called when a customer has had a new retail account created.
 
 ### Scope: staffUpgradeCustomer [POST]
 
-This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
+This API will be called when a customer has an existing retail and has an existing or requires a new digital accounts. If a customer has a digital account then the username should be supplied.
 
 + Parameters
     + customernumber: 12345678 (string, required)
@@ -692,7 +692,7 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Invalid fields"
             }
             
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -779,7 +779,7 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Invalid fields"
             }
             
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -892,7 +892,7 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Invalid fields"
             }
             
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -949,7 +949,7 @@ Api to update an existing customers information once they have been identified a
 
 + Response 200 (application/json)
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer not found"
@@ -1018,7 +1018,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
 
 + Response 204 (application/json)
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer not found"
@@ -1166,7 +1166,7 @@ Allows registered customers to add new or additional cards
             
 + Response 200 (application/json)
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -1202,7 +1202,7 @@ Allows registered customers to update the card status
             
 + Response 200 (application/json)
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -1238,7 +1238,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
                 "Message": "Account Locked"
             }
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -1304,7 +1304,7 @@ Allows a customer to change there known pin to a new one.
                 "Message": "Account Locked"
             }
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -1355,7 +1355,7 @@ When Responsible Gambling limit is not accepted then RemainingResponsibleGamblin
                 "LastCalculatedDateTime": "2016-03-15T14:32:22Z"
             }
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer not found"
@@ -1422,7 +1422,7 @@ Any failure will be reported back 500 - server error.
                 "Message": "Not a SAW customer"
             }
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -1501,7 +1501,7 @@ Any failure will be reported back 500 - server error.
                 "Message": "Not a SAW customer"
             }
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -1565,7 +1565,7 @@ Any failure will be reported back 500 - server error.
                 "Message": "Not a SAW customer"
             }
 
-+ Response 414 (application/json)
++ Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
@@ -1610,7 +1610,7 @@ This api returns log information for the recent transaction based on the transac
                 "Status": "Failed"
             }
 
-+ Response 415 (application/json)
++ Response 425 (application/json)
 
             {
                 "Message": "Trasaction Not Found"
