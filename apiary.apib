@@ -704,7 +704,7 @@ This API will be called when a customer has an existing retail and has an existi
                 "Message": "Internal Error"
             }
 
-## CanCreateSaw [/customer/v1/Upgrade/{neonid}]
+## CanCreateSaw [/customer/v1/upgrade/{neonid}]
 
 ### Scope: staffUpgradeCustomer [PUT]
 
@@ -722,10 +722,10 @@ This API will be called when a customer has an existing retail or digital accoun
     + Body
     
             {
-                "canCreateSAW" : "true",
-                "canEnterClub" : "true",
-                "digitalAccountCount" : 0,
-                "rejectionReasons" : [
+                "CanCreateSAW" : "true",
+                "CanEnterClub" : "true",
+                "DigitalAccountCount" : 0,
+                "RejectionReasons" : [
                     {
                         "Reason" : "Already SAW"
                     },
@@ -759,15 +759,15 @@ This API will be called when a customer has an existing retail or digital accoun
                     {
                         "Reason" : "Locked"
                     },
-                     {
+                    {
                         "Reason" : "Missing email"
                     },
-                     {
+                    {
                         "Reason" : "Missing mobile number"
                     },
-                     {
+                    {
                         "Reason" : "Email in use"
-                    },
+                    }
                 ]
             }
 
@@ -791,7 +791,7 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Internal Error"
             }            
 
-## CanCreateSaw [/customer/v1/Upgrade/{username}{password}]
+## CanCreateSaw [/customer/v1/upgrade/{username}/{password}]
 
 ### Scope: staffUpgradeCustomer [PUT]
 
@@ -810,35 +810,35 @@ This API will be called when a customer has an existing retail or digital accoun
     + Body
     
             {
-                "canCreateSAW" : "true",
-                "canEnterClub" : "true",
-                "digitalAccountCount" : 0,
+                "CanCreateSAW" : "true",
+                "CanEnterClub" : "true",
+                "DigitalAccountCount" : 0,
                 "NeonIds" : [
-                        12345, 
-                        67890
-                },
-                "goldenRecord" : {
+                    12345, 
+                    67890
+                ],
+                "GoldenRecord" : {
                     "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                    },
-                 "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                    },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com"
-                    },
+                        "Title" : "Mr",
+                        "Forename" : "John",
+                        "MiddleName" : "Dan",
+                        "Surname" : "Jackson"
+                        },
+                     "Address" : {
+                        "Address1" : "10 Downing Street",
+                        "Town" : "London",
+                        "Postcode" : "WC2B 4AA",
+                        "County" : "Greater London",
+                        "Country"  : "UK"
+                        },
+                    "ContactDetails" : {
+                        "HomePhone" : "01234567890",
+                        "BusinessPhone" : "01234567890",
+                        "MobilePhone" : "01234567890",
+                        "Email" : "john@email.com"
+                        }
                 },
-                "rejectionReasons" : [
+                "RejectionReasons" : [
                     {
                         "Reason" : "Already SAW"
                     },
@@ -872,15 +872,15 @@ This API will be called when a customer has an existing retail or digital accoun
                     {
                         "Reason" : "Locked"
                     },
-                     {
+                    {
                         "Reason" : "Missing email"
                     },
-                     {
+                    {
                         "Reason" : "Missing mobile number"
                     },
-                     {
+                    {
                         "Reason" : "Email in use"
-                    },
+                    }
                 ]
             }
 
