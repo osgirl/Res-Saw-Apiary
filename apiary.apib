@@ -703,7 +703,206 @@ This API will be called when a customer has an existing retail or digital accoun
             {
                 "Message": "Internal Error"
             }
+
+## CanCreateSaw [/customer/v1/Upgrade/{neonid}]
+
+### Scope: staffUpgradeCustomer [PUT]
+
+This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
+
++ Parameters
+    + neonid: 12345678 (string, required)
+
++ Request (application/json)
+
+    + Headers 
             
+            Authorization: Bearer (client credential token)
+
+    + Body
+    
+            {
+                "canCreateSAW" : "true",
+                "canEnterClub" : "true",
+                "digitalAccountCount" : 0,
+                "rejectionReasons" : [
+                    {
+                        "Reason" : "Already SAW"
+                    },
+                    {
+                        "Reason" : "Deceased"
+                    },
+                    {
+                        "Reason" : "Locally barred"
+                    },
+                    {
+                        "Reason" : "Nationally barred"
+                    },
+                    {
+                        "Reason" : "Refused membership"
+                    },
+                    {
+                        "Reason" : "Self-cancelled"
+                    },
+                    {
+                        "Reason" : "Suspended"
+                    },
+                    {
+                        "Reason" : "Self-excluded"
+                    },
+                    {
+                        "Reason" : "Take-a-break"
+                    },
+                    {
+                        "Reason" : "Closed"
+                    },
+                    {
+                        "Reason" : "Locked"
+                    },
+                     {
+                        "Reason" : "Missing email"
+                    },
+                     {
+                        "Reason" : "Missing mobile number"
+                    },
+                     {
+                        "Reason" : "Email in use"
+                    },
+                ]
+            }
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+            
++ Response 414 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }            
+
+## CanCreateSaw [/customer/v1/Upgrade/{username}{password}]
+
+### Scope: staffUpgradeCustomer [PUT]
+
+This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
+
++ Parameters
+    + username: 12345678 (string, required),
+    + password: "fsdfsdfsd" (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+
+    + Body
+    
+            {
+                "canCreateSAW" : "true",
+                "canEnterClub" : "true",
+                "digitalAccountCount" : 0,
+                "NeonIds" : [
+                        12345, 
+                        67890
+                },
+                "goldenRecord" : {
+                    "Name" : {
+                    "Title" : "Mr",
+                    "Forename" : "John",
+                    "MiddleName" : "Dan",
+                    "Surname" : "Jackson"
+                    },
+                 "Address" : {
+                    "Address1" : "10 Downing Street",
+                    "Town" : "London",
+                    "Postcode" : "WC2B 4AA",
+                    "County" : "Greater London",
+                    "Country"  : "UK"
+                    },
+                "ContactDetails" : {
+                    "HomePhone" : "01234567890",
+                    "BusinessPhone" : "01234567890",
+                    "MobilePhone" : "01234567890",
+                    "Email" : "john@email.com"
+                    },
+                },
+                "rejectionReasons" : [
+                    {
+                        "Reason" : "Already SAW"
+                    },
+                    {
+                        "Reason" : "Deceased"
+                    },
+                    {
+                        "Reason" : "Locally barred"
+                    },
+                    {
+                        "Reason" : "Nationally barred"
+                    },
+                    {
+                        "Reason" : "Refused membership"
+                    },
+                    {
+                        "Reason" : "Self-cancelled"
+                    },
+                    {
+                        "Reason" : "Suspended"
+                    },
+                    {
+                        "Reason" : "Self-excluded"
+                    },
+                    {
+                        "Reason" : "Take-a-break"
+                    },
+                    {
+                        "Reason" : "Closed"
+                    },
+                    {
+                        "Reason" : "Locked"
+                    },
+                     {
+                        "Reason" : "Missing email"
+                    },
+                     {
+                        "Reason" : "Missing mobile number"
+                    },
+                     {
+                        "Reason" : "Email in use"
+                    },
+                ]
+            }
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+            
++ Response 414 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }            
 
 ## Update Personal Details [/customer/v1/profile/{customernumber}/personal]
 
