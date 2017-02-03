@@ -660,7 +660,7 @@ This API will be called when a customer has had a new retail account created. Th
 
 ### Scope: staffUpgradeCustomer [POST]
 
-This API will be called when a customer has an existing retail and has an existing or requires a new digital accounts. If a customer has a digital account then the username should be supplied.
+This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
 
 + Parameters
     + customernumber: 12345678 (string, required)
