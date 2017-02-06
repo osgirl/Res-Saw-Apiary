@@ -1606,7 +1606,12 @@ This api returns log information for the recent transaction based on the transac
 + Response 200 (application/json)
 
             {
-                "Status": "Failed"
+                "Status": "Failed",
+                "Details" : {
+                    "CustomerNumber": 12345678,
+                    "PlayerId": 900009876987698765488,
+                    "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
+                }
             }
 
 + Response 425 (application/json)
