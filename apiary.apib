@@ -1571,6 +1571,9 @@ Any failure will be reported back 500 - server error.
 
 ###Scope: staffWalletRegisterWinnings [POST]
 
+This API allows client to notify RES about changes to current player's position,
+which includes returned funds, new deposits, and winnings.
+
 + Parameters
     + customernumber: `12345678` (string, required)
     + transactionId: `000000001-001` (string, required)
@@ -1630,12 +1633,12 @@ Any failure will be reported back 500 - server error.
 
 ###Scope: staffWalletGetTransactionStatus [GET]
 
-This api returns log information for the recent transaction based on the transaction id. 
+This API provides transaction status and details based on the transaction ID supplied.
+All `Details` fields are optional and will be provided only if available in the transaction log.
 
 + Parameters
     + transactionId: `000000001-001` (string, required)
     
-
 + Request (application/json)
 
     + Headers 
@@ -1646,19 +1649,23 @@ This api returns log information for the recent transaction based on the transac
 + Response 200 (application/json)
 
             {
-                "Status": "Succeeded"
+                "Status": "Succeeded",
+                "Details" : {
+                    "CustomerNumber": "12345678",
+                    "PlayerId": 519490721066127360,
+                    "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
+                }
             }
             
 + Response 200 (application/json)
 
             {
-                "Status": "Pending"
-            }
-            
-+ Response 200 (application/json)
-
-            {
-                "Status": "Undetermined"
+                "Status": "Undetermined",
+                "Details" : {
+                    "CustomerNumber": "12345678",
+                    "PlayerId": 519490721066127360,
+                    "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
+                }
             }
             
 + Response 200 (application/json)
@@ -1666,8 +1673,8 @@ This api returns log information for the recent transaction based on the transac
             {
                 "Status": "Failed",
                 "Details" : {
-                    "CustomerNumber": 12345678,
-                    "PlayerId": 900009876987698765488,
+                    "CustomerNumber": "12345678",
+                    "PlayerId": 519490721066127360,
                     "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
                 }
             }
