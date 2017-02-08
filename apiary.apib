@@ -239,6 +239,7 @@ This customer endpoint can be expanded with Membership cards, Account status and
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
 
@@ -289,6 +290,12 @@ This customer endpoint can be expanded with Membership cards, Account status and
     + customernumber: 123456 (string, required)
     + expand: `cards` - provides profile along with membership cards
 
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     
 + Response 200 
 
@@ -336,6 +343,13 @@ This customer endpoint can be expanded with Membership cards, Account status and
 + Parameters
     + customernumber: 123456 (string, required)
     + expand:`status` - provides profile along with account status
+    
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     
 + Response 200 
 
@@ -407,6 +421,13 @@ This customer endpoint can be expanded with Membership cards, Account status and
     + customernumber: 123456 (string, required)
     + expand:`additional` - provides profile along with additional details
     
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+    
 + Response 200 
 
             {
@@ -454,6 +475,7 @@ This customer endpoint can be expanded with Membership cards, Account status and
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
 
@@ -516,6 +538,7 @@ This customer endpoint can be expanded with Membership cards, Account status and
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
 
@@ -602,6 +625,7 @@ This API will be called when a customer has had a new retail account created. Th
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     
     + Body
     
@@ -670,6 +694,7 @@ This API will be called when a customer has an existing retail and either has an
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
     
@@ -717,6 +742,7 @@ This API will be called when a customer has an existing retail or digital accoun
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
     
@@ -804,6 +830,7 @@ This API will be called when a customer has an existing retail or digital accoun
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
     
@@ -916,6 +943,7 @@ Api to update an existing customers information once they have been identified a
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
     
@@ -984,7 +1012,8 @@ Service endpoint for updating a customers communication permissions, which indic
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)   
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     
     + Body
     
@@ -1013,6 +1042,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 204 (application/json)
 
@@ -1043,6 +1073,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body  
             
@@ -1073,6 +1104,7 @@ To update customer profile by removing the barred/suspended status
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 204 (application/json)
 
@@ -1097,6 +1129,7 @@ This endpoint is for the purpose of Customer self-exlusion. The minimum amount o
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body  
             
@@ -1133,6 +1166,7 @@ This will remove a customers self exclusion and should only be performed by Admi
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 204 (application/json)
 
@@ -1156,6 +1190,7 @@ Allows registered customers to add new or additional cards
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     + Body
     
             {
@@ -1192,6 +1227,7 @@ Allows registered customers to update the card status
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     + Body
     
             {
@@ -1227,6 +1263,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 201 (application/json)
 
@@ -1263,6 +1300,8 @@ Allows a customer to change there known pin to a new one.
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+            
     + Body 
     
             {
@@ -1334,6 +1373,7 @@ When Responsible Gambling limit is not accepted then RemainingResponsibleGamblin
     + Headers 
             
             Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
 
@@ -1389,6 +1429,7 @@ Any failure will be reported back 500 - server error.
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
     
@@ -1456,6 +1497,7 @@ Any failure will be reported back 500 - server error.
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
     
@@ -1530,6 +1572,7 @@ Any failure will be reported back 500 - server error.
     + Headers 
             
             Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
     
@@ -1583,6 +1626,14 @@ This api returns log information for the recent transaction based on the transac
 
 + Parameters
     + transactionId: `000000001-001` (string, required)
+    
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
 
