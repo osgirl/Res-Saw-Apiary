@@ -1372,7 +1372,7 @@ When Responsible Gambling limit is not accepted then RemainingResponsibleGamblin
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credential/resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -1571,7 +1571,7 @@ Any failure will be reported back 500 - server error.
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
@@ -1632,7 +1632,7 @@ This api returns log information for the recent transaction based on the transac
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
