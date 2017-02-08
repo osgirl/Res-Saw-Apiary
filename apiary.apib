@@ -5,6 +5,14 @@ HOST: https://dev01-res.meccabingo.com/
 
 Rank Enterprise Services API is a collection of business services exposed over a RESTful inteface.
 
+# Correlation Tokens
+
+Correlation tokens are used for the tracking and debugging purposes. It is a string value,
+which could represent GUID, unique message or transaction ID. The correlation token must
+be supplied as `X-Correlation-Token` HTTP header to every request to RES API. It must be
+unique for each request in scope of the same client. The correlation token's uniqueness
+is guaranteed by the client.
+
 # Group Authentication and Security service
 
 RES API authentication uses OpenID connect for identity, aligned with the [OAuth2](http://oauth.net/2/) protocol. 
