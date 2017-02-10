@@ -707,9 +707,6 @@ This API will be called when a customer has an existing retail and either has an
     + Body
     
             {
-                "Profile": {
-                    "NeonId": "123456789"
-                },
                 "Security": {
                     "Pin": 1234,
                     "Username" : "DigitalUsername"
@@ -736,14 +733,14 @@ This API will be called when a customer has an existing retail and either has an
                 "Message": "Internal Error"
             }
 
-## CanCreateSaw [/customer/v1/upgrade/{neonid}]
+## CanCreateSaw [/customer/v1/upgrade/{customernumber}]
 
-### Scope: staffUpgradeCustomer [PUT]
+### Scope: staffUpgradeCustomer [GET]
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
 + Parameters
-    + neonid: 12345678 (string, required)
+    + customernumber: 12345678 (string, required)
 
 + Request (application/json)
 
@@ -823,14 +820,12 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Internal Error"
             }            
 
-## CanCreateSaw [/customer/v1/upgrade/{username}]
+## CanCreateSaw [/customer/v1/upgrade/]
 
-### Scope: staffUpgradeCustomer [PUT]
+### Scope: staffUpgradeCustomer [GET]
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
-+ Parameters
-    + username: 12345678 (string, required),
 
 + Request (application/json)
 
@@ -846,7 +841,7 @@ This API will be called when a customer has an existing retail or digital accoun
                 "CanCreateSAW" : "true",
                 "CanEnterClub" : "true",
                 "DigitalAccountCount" : 0,
-                "NeonIds" : [
+                "customernumbers" : [
                     12345, 
                     67890
                 ],
