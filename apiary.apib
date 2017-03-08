@@ -184,9 +184,9 @@ This endpoint is a replacement for the existing Grosvenor Customer look service 
 Model for the resource if defined below:
 | Name                  | Type      | Required       | Description                                                                          |Example        |
 |:---                   |:---       |:---            |:---                                                                                  |:---           |
-|Name.Title             |string[25] |**yes**         |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
-|Name.Forename          |string[40] |**yes**         |                                                                                      |"John"         |
-|Name.Surname           |string[40] |**yes**         |                                                                                      |"Jackson"      |
+|Title                  |string[25] |**yes**         |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
+|Forename               |string[40] |**yes**         |                                                                                      |"John"         |
+|Surname                |string[40] |**yes**         |                                                                                      |"Jackson"      |
 |PartyAddresses         |array      |**yes**         |                                                                                      |"Flat 2, 10 Downing Street"        |
 |Gender                 |string[7]  |**yes**        |Values are Unknown, Female and Male                                                    |"Male"         |
 |DateOfBirth            |string     |**yes**        |                                                                                       |"1955-01-30"   |
@@ -224,7 +224,7 @@ This customer endpoint can be expanded with Membership information and Account s
             "PartyAddresses": [
             {
                 "AddressType": "Mobile",
-                "Telephone": "07985960259",
+                "Telephone": "456456456",
                 "AllowedMarketingContact": [
                   "SMS",
                   "Telephone"
@@ -232,7 +232,7 @@ This customer endpoint can be expanded with Membership information and Account s
               },
               {
                 "AddressType": "Primary",
-                "Email": "kdunn@rank.com",
+                "Email": "something@test.com",
                 "AllowedMarketingContact": [
                   "Email"
                 ]
@@ -240,9 +240,9 @@ This customer endpoint can be expanded with Membership information and Account s
               {
                 "AddressType": "Residential",
                 "Address": {
-                  "BuildingNumber": "7",
-                  "Street": "Glengall Terrace",
-                  "Postcode": "SE15 6NW",
+                  "BuildingNumber": "76",
+                  "Street": "Street Terrace",
+                  "Postcode": "SE97 6MR",
                   "Country": {
                     "CountryCode3": "GBR"
                   }
@@ -251,8 +251,8 @@ This customer endpoint can be expanded with Membership information and Account s
             ],
             "CreateDate": "2016-02-28T23:20:50.52Z",
             "Title": "Mr",
-            "FirstName": "Kiril",
-            "LastName": "Dunn",
+            "FirstName": "Testy",
+            "LastName": "McTest",
             "DateOfBirth": "1974-07-18T00:00:00Z",
             "Gender": "M"
           }
@@ -289,38 +289,38 @@ This customer endpoint can be expanded with Membership information and Account s
         {
             "Individual": {
                 "PartyID": "MDM/123",
-                "PartyAddresses": [
-                {
-                    "AddressType": "Mobile",
-                    "Telephone": "07985960259",
-                    "AllowedMarketingContact": [
-                      "SMS",
-                      "Telephone"
-                    ]
-                  },
-                  {
-                    "AddressType": "Primary",
-                    "Email": "kdunn@rank.com",
-                    "AllowedMarketingContact": [
-                      "Email"
-                    ]
-                  },
-                  {
-                    "AddressType": "Residential",
-                    "Address": {
-                      "BuildingNumber": "7",
-                      "Street": "Glengall Terrace",
-                      "Postcode": "SE15 6NW",
-                      "Country": {
-                        "CountryCode3": "GBR"
-                      }
-                    }
-                  }
-                ],
+               "PartyAddresses": [
+                        {
+                            "AddressType": "Mobile",
+                            "Telephone": "456456456",
+                            "AllowedMarketingContact": [
+                              "SMS",
+                              "Telephone"
+                            ]
+                          },
+                          {
+                            "AddressType": "Primary",
+                            "Email": "something@test.com",
+                            "AllowedMarketingContact": [
+                              "Email"
+                            ]
+                          },
+                          {
+                            "AddressType": "Residential",
+                            "Address": {
+                              "BuildingNumber": "76",
+                              "Street": "Street Terrace",
+                              "Postcode": "SE97 6MR",
+                              "Country": {
+                                "CountryCode3": "GBR"
+                              }
+                            }
+                          }
+                        ],
                 "CreateDate": "2016-02-28T23:20:50.52Z",
                 "Title": "Mr",
-                "FirstName": "Kiril",
-                "LastName": "Dunn",
+                "FirstName": "Testy",
+                "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
           },
@@ -448,33 +448,33 @@ This customer endpoint can be expanded with Membership information and Account s
             "Individual": {
                 "PartyID": "MDM/123",
                 "PartyAddresses": [
-                {
-                    "AddressType": "Mobile",
-                    "Telephone": "07985960259",
-                    "AllowedMarketingContact": [
-                      "SMS",
-                      "Telephone"
-                    ]
-                  },
-                  {
-                    "AddressType": "Primary",
-                    "Email": "kdunn@rank.com",
-                    "AllowedMarketingContact": [
-                      "Email"
-                    ]
-                  },
-                  {
-                    "AddressType": "Residential",
-                    "Address": {
-                      "BuildingNumber": "7",
-                      "Street": "Glengall Terrace",
-                      "Postcode": "SE15 6NW",
-                      "Country": {
-                        "CountryCode3": "GBR"
+                    {
+                        "AddressType": "Mobile",
+                        "Telephone": "456456456",
+                        "AllowedMarketingContact": [
+                          "SMS",
+                          "Telephone"
+                        ]
+                      },
+                      {
+                        "AddressType": "Primary",
+                        "Email": "something@test.com",
+                        "AllowedMarketingContact": [
+                          "Email"
+                        ]
+                      },
+                      {
+                        "AddressType": "Residential",
+                        "Address": {
+                          "BuildingNumber": "76",
+                          "Street": "Street Terrace",
+                          "Postcode": "SE97 6MR",
+                          "Country": {
+                            "CountryCode3": "GBR"
+                          }
+                        }
                       }
-                    }
-                  }
-                ],
+                    ],
                 "CreateDate": "2016-02-28T23:20:50.52Z",
                 "Verifications": [
                       {
@@ -529,8 +529,8 @@ This customer endpoint can be expanded with Membership information and Account s
                       }
                     ],
                 "Title": "Mr",
-                "FirstName": "Kiril",
-                "LastName": "Dunn",
+                "FirstName": "Testy",
+                "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
           }
@@ -555,38 +555,38 @@ This customer endpoint can be expanded with Membership information and Account s
         {
             "Individual": {
                 "PartyID": "MDM/123",
-                "PartyAddresses": [
-                {
-                    "AddressType": "Mobile",
-                    "Telephone": "07985960259",
-                    "AllowedMarketingContact": [
-                      "SMS",
-                      "Telephone"
-                    ]
-                  },
-                  {
-                    "AddressType": "Primary",
-                    "Email": "kdunn@rank.com",
-                    "AllowedMarketingContact": [
-                      "Email"
-                    ]
-                  },
-                  {
-                    "AddressType": "Residential",
-                    "Address": {
-                      "BuildingNumber": "7",
-                      "Street": "Glengall Terrace",
-                      "Postcode": "SE15 6NW",
-                      "Country": {
-                        "CountryCode3": "GBR"
+                 "PartyAddresses": [
+                    {
+                        "AddressType": "Mobile",
+                        "Telephone": "456456456",
+                        "AllowedMarketingContact": [
+                          "SMS",
+                          "Telephone"
+                        ]
+                      },
+                      {
+                        "AddressType": "Primary",
+                        "Email": "something@test.com",
+                        "AllowedMarketingContact": [
+                          "Email"
+                        ]
+                      },
+                      {
+                        "AddressType": "Residential",
+                        "Address": {
+                          "BuildingNumber": "76",
+                          "Street": "Street Terrace",
+                          "Postcode": "SE97 6MR",
+                          "Country": {
+                            "CountryCode3": "GBR"
+                          }
+                        }
                       }
-                    }
-                  }
-                ],
+                    ],
                 "CreateDate": "2016-02-28T23:20:50.52Z",
                 "Title": "Mr",
-                "FirstName": "Kiril",
-                "LastName": "Dunn",
+                "FirstName": "Testy",
+                "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
           }
@@ -630,47 +630,47 @@ This customer endpoint can be expanded with Membership information and Account s
         [
             "Individual": {
                 "PartyID": "MDM/123",
-                "PartyAddresses": [
-                {
-                    "AddressType": "Mobile",
-                    "Telephone": "07985960259",
-                    "AllowedMarketingContact": [
-                      "SMS",
-                      "Telephone"
-                    ]
-                  },
-                  {
-                    "AddressType": "Primary",
-                    "Email": "kdunn@rank.com",
-                    "AllowedMarketingContact": [
-                      "Email"
-                    ]
-                  },
-                  {
-                    "AddressType": "Residential",
-                    "Address": {
-                      "BuildingNumber": "7",
-                      "Street": "Glengall Terrace",
-                      "Postcode": "SE15 6NW",
-                      "Country": {
-                        "CountryCode3": "GBR"
+                 "PartyAddresses": [
+                    {
+                        "AddressType": "Mobile",
+                        "Telephone": "456456456",
+                        "AllowedMarketingContact": [
+                          "SMS",
+                          "Telephone"
+                        ]
+                      },
+                      {
+                        "AddressType": "Primary",
+                        "Email": "something@test.com",
+                        "AllowedMarketingContact": [
+                          "Email"
+                        ]
+                      },
+                      {
+                        "AddressType": "Residential",
+                        "Address": {
+                          "BuildingNumber": "76",
+                          "Street": "Street Terrace",
+                          "Postcode": "SE97 6MR",
+                          "Country": {
+                            "CountryCode3": "GBR"
+                          }
+                        }
                       }
-                    }
-                  }
-                ],
+                    ],
                 "CreateDate": "2016-02-28T23:20:50.52Z",
                 "Title": "Mr",
-                "FirstName": "Kiril",
-                "LastName": "Dunn",
+                "FirstName": "Testy",
+                "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
           },
             "Individual": {
                 "PartyID": "MDM/123",
-                "PartyAddresses": [
+               "PartyAddresses": [
                 {
                     "AddressType": "Mobile",
-                    "Telephone": "07985960259",
+                    "Telephone": "456456456",
                     "AllowedMarketingContact": [
                       "SMS",
                       "Telephone"
@@ -678,7 +678,7 @@ This customer endpoint can be expanded with Membership information and Account s
                   },
                   {
                     "AddressType": "Primary",
-                    "Email": "kdunn@rank.com",
+                    "Email": "something@test.com",
                     "AllowedMarketingContact": [
                       "Email"
                     ]
@@ -686,9 +686,9 @@ This customer endpoint can be expanded with Membership information and Account s
                   {
                     "AddressType": "Residential",
                     "Address": {
-                      "BuildingNumber": "7",
-                      "Street": "Glengall Terrace",
-                      "Postcode": "SE15 6NW",
+                      "BuildingNumber": "76",
+                      "Street": "Street Terrace",
+                      "Postcode": "SE97 6MR",
                       "Country": {
                         "CountryCode3": "GBR"
                       }
@@ -697,8 +697,8 @@ This customer endpoint can be expanded with Membership information and Account s
                 ],
                 "CreateDate": "2016-02-28T23:20:50.52Z",
                 "Title": "Mr",
-                "FirstName": "Kiril",
-                "LastName": "Dunn",
+                "FirstName": "Testy",
+                "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
           }
@@ -732,10 +732,10 @@ This API will be called when a customer has had a new retail account created. Th
     
             {
               "Individual": {
-                "PartyAddresses": [
-                  {
+               "PartyAddresses": [
+                {
                     "AddressType": "Mobile",
-                    "Telephone": "07985960259",
+                    "Telephone": "456456456",
                     "AllowedMarketingContact": [
                       "SMS",
                       "Telephone"
@@ -743,7 +743,7 @@ This API will be called when a customer has had a new retail account created. Th
                   },
                   {
                     "AddressType": "Primary",
-                    "Email": "kdunn@rank.com",
+                    "Email": "something@test.com",
                     "AllowedMarketingContact": [
                       "Email"
                     ]
@@ -751,9 +751,9 @@ This API will be called when a customer has had a new retail account created. Th
                   {
                     "AddressType": "Residential",
                     "Address": {
-                      "BuildingNumber": "7",
-                      "Street": "Glengall Terrace",
-                      "Postcode": "SE15 6NW",
+                      "BuildingNumber": "76",
+                      "Street": "Street Terrace",
+                      "Postcode": "SE97 6MR",
                       "Country": {
                         "CountryCode3": "GBR"
                       }
@@ -761,8 +761,8 @@ This API will be called when a customer has had a new retail account created. Th
                   }
                 ],
                 "Title": "Mr",
-                "FirstName": "Kiril",
-                "LastName": "Dunn",
+                "FirstName": "Testy",
+                "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
               },
@@ -1067,34 +1067,34 @@ Api to update an existing customers information once they have been identified a
     
             {
                 "Individual": {
-                    "PartyAddresses": [
-                      {
-                        "AddressType": "Mobile",
-                        "Telephone": "07985960259",
-                        "AllowedMarketingContact": [
-                          "SMS",
-                          "Telephone"
-                        ]
-                      },
-                      {
-                        "AddressType": "Primary",
-                        "Email": "kdunn@rank.com",
-                        "AllowedMarketingContact": [
-                          "Email"
-                        ]
-                      },
-                      {
-                        "AddressType": "Residential",
-                        "Address": {
-                          "BuildingNumber": "7",
-                          "Street": "Glengall Terrace",
-                          "Postcode": "SE15 6NW",
-                          "Country": {
-                            "CountryCode3": "GBR"
+                       "PartyAddresses": [
+                        {
+                            "AddressType": "Mobile",
+                            "Telephone": "456456456",
+                            "AllowedMarketingContact": [
+                              "SMS",
+                              "Telephone"
+                            ]
+                          },
+                          {
+                            "AddressType": "Primary",
+                            "Email": "something@test.com",
+                            "AllowedMarketingContact": [
+                              "Email"
+                            ]
+                          },
+                          {
+                            "AddressType": "Residential",
+                            "Address": {
+                              "BuildingNumber": "76",
+                              "Street": "Street Terrace",
+                              "Postcode": "SE97 6MR",
+                              "Country": {
+                                "CountryCode3": "GBR"
+                              }
+                            }
                           }
-                        }
-                      }
-                    ],
+                        ],
                     "Title": "Mr",
                     "FirstName": "Kiril",
                     "LastName": "Dunn",
