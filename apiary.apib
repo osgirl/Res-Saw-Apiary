@@ -252,31 +252,43 @@ This customer endpoint can be expanded with Membership cards, Account status and
 + Response 200 (application/json)
 
         {
-            "Name" : {
-                "Title" : "Mr",
-                "Forename" : "John",
-                "MiddleName" : "Dan",
-                "Surname" : "Jackson"
-                },
-             "Address" : {
-                "Address1" : "10 Downing Street",
-                "Town" : "London",
-                "Postcode" : "WC2B 4AA",
-                "County" : "Greater London",
-                "Country"  : "UK"
-                },
-            "ContactDetails" : {
-                "HomePhone" : "01234567890",
-                "BusinessPhone" : "01234567890",
-                "MobilePhone" : "01234567890",
-                "Email" : "john@email.com",
-                "IsHomeContactallowed" : true,
-                "IsMobileContactAllowed" : true,
-                "IsEmailContactAllowed" : true,
-                "IsSMSContactAllowed" : true
-                },
-            "ClubNumber" : "45611",
-            "CustomerNumber" : "12345678",
+            "Individual": {
+            "PartyID": "MDM/123",
+            "PartyAddresses": [
+            {
+                "AddressType": "Mobile",
+                "Telephone": "07985960259",
+                "AllowedMarketingContact": [
+                  "SMS",
+                  "Telephone"
+                ]
+              },
+              {
+                "AddressType": "Primary",
+                "Email": "kdunn@rank.com",
+                "AllowedMarketingContact": [
+                  "Email"
+                ]
+              },
+              {
+                "AddressType": "Residential",
+                "Address": {
+                  "BuildingNumber": "7",
+                  "Street": "Glengall Terrace",
+                  "Postcode": "SE15 6NW",
+                  "Country": {
+                    "CountryCode3": "GBR"
+                  }
+                }
+              }
+            ],
+            "CreateDate": "2016-02-28T23:20:50.52Z",
+            "Title": "Mr",
+            "FirstName": "Kiril",
+            "LastName": "Dunn",
+            "DateOfBirth": "1974-07-18T00:00:00Z",
+            "Gender": "M"
+          }
         }
             
 + Response 404 (application/json)
@@ -292,11 +304,11 @@ This customer endpoint can be expanded with Membership cards, Account status and
         }
 
 
-### Profile with Membership Cards [GET /customer/v1/profile/{customernumber}?{expand}=cards]
+### Profile with Membership [GET /customer/v1/profile/{customernumber}?{expand}=membership]
 
 + Parameters
     + customernumber: 123456 (string, required)
-    + expand: `cards` - provides profile along with membership cards
+    + expand: `membership` - provides profile along with membership
 
 + Request
 
@@ -307,43 +319,147 @@ This customer endpoint can be expanded with Membership cards, Account status and
     
 + Response 200 
 
-            {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                },
-                 "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                },
-                "ClubNumber" : "45611",
-                "CustomerNumber" : "12345678",
-                "MembershipCards" : [
+        {
+            "Individual": {
+                "PartyID": "MDM/123",
+                "PartyAddresses": [
+                {
+                    "AddressType": "Mobile",
+                    "Telephone": "07985960259",
+                    "AllowedMarketingContact": [
+                      "SMS",
+                      "Telephone"
+                    ]
+                  },
+                  {
+                    "AddressType": "Primary",
+                    "Email": "kdunn@rank.com",
+                    "AllowedMarketingContact": [
+                      "Email"
+                    ]
+                  },
+                  {
+                    "AddressType": "Residential",
+                    "Address": {
+                      "BuildingNumber": "7",
+                      "Street": "Glengall Terrace",
+                      "Postcode": "SE15 6NW",
+                      "Country": {
+                        "CountryCode3": "GBR"
+                      }
+                    }
+                  }
+                ],
+                "CreateDate": "2016-02-28T23:20:50.52Z",
+                "Title": "Mr",
+                "FirstName": "Kiril",
+                "LastName": "Dunn",
+                "DateOfBirth": "1974-07-18T00:00:00Z",
+                "Gender": "M"
+          },
+          "Memberships": [
+                {
+                  "MembershipSource": {
+                    "SystemName": "RES",
+                    "SystemKey": "123456789",
+                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                  },
+                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                  "ContainedMemberships": [
                     {
-                        "CardNumber" : 123456789,
-                        "Status": "Active"
+                      "MembershipSource": {
+                        "SystemName": "NEON",
+                        "SystemKey": "123456789",
+                        "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                      },
+                      "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                      "MembershipCards": [
+                        {
+                          "CardNumber": "1234567890"
+                        }
+                      ],
+                      "FirstRegisteredClub": {
+                        "SiteID": "12345"
+                      },
+                      "Loyalty": {
+                        "Tier": "Black",
+                        "EffectiveFromDate": "2016-02-28T00:00:00Z"
+                      }
                     },
                     {
-                        "CardNumber" : 789456123,
-                        "Status": "Lost"
+                      "MembershipSource": {
+                        "SystemName": "BEDE",
+                        "SystemKey": "123456789",
+                        "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                      },
+                      "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                      "Wallets": [],
+                      "Authentication": [
+                        {
+                          "Username": "kiril"
+                        }
+                      ],
+                      "Agreements": [
+                        {
+                          "AgreementType": "PoPF",
+                          "DateAgreed": "2016-02-28T23:20:50.52Z"
+                        }
+                      ],
+                      "Loyalty": {
+                        "Tier": "Black",
+                        "EffectiveFromDate": "2016-02-28T00:00:00Z"
+                      }
                     }
-                ]
-            }
+                  ]
+                },
+                {
+                  "MembershipSource": {
+                    "SystemName": "BEDE",
+                    "SystemKey": "123456788",
+                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                  },
+                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                  "Authentication": [
+                    {
+                      "Username": "kiril123"
+                    }
+                  ],
+                  "Agreements": [
+                    {
+                      "AgreementType": "PoPF",
+                      "DateAgreed": "2016-02-28T23:20:50.52Z"
+                    }
+                  ],
+                  "Loyalty": {
+                    "Tier": "Blue",
+                    "EffectiveFromDate": "2016-02-28T00:00:00Z"
+                  }
+                },
+                {
+                  "MembershipSource": {
+                    "SystemName": "NEON",
+                    "SystemKey": "123456788",
+                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                  },
+                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                  "Authentication": [
+                    {
+                      "Username": "kiril345"
+                    }
+                  ],
+                  "Agreements": [
+                    {
+                      "AgreementType": "PoPF",
+                      "DateAgreed": "2016-02-28T23:20:50.52Z"
+                    }
+                  ],
+                  "Loyalty": {
+                    "Tier": "Blue",
+                    "EffectiveFromDate": "2016-02-28T00:00:00Z"
+                  }
+                }
+              ]
+        }
             
 
 ### Profile with Account Status [GET /customer/v1/profile/{customernumber}?{expand}=status]
@@ -361,115 +477,97 @@ This customer endpoint can be expanded with Membership cards, Account status and
     
 + Response 200 
 
-            {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                },
-                "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                },
-                "ClubNumber" : "45611",
-                "CustomerNumber" : "12345678",
-                "AccountStatus" : {
-                    "IsVerified" : true,
-                    "SelfExclusion" : {
-                        "Digital" : {
-                            "From" : "2016-01-01",
-                            "To" : "2016-06-01"
-                        },
-                        "Retail" : {
-                            "From" : "2010-03-10",
-                            "To" : "2010-09-10"
-                        }
-                    },
-                    "Suspension" : {
-                        "Global" : {
-                            "Reason": "Bad behaviour",
-                            "From" : "2016-09-01",
-                            "To" : "2016-11-01"
-                        },
-                        "Local" : [
-                            {
-                                "CasinoId" : 55000,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-01-30",
-                                "To" : "2016-02-28"
-                            },
-                            {
-                                "CasinoId" : 55001,
-                                "Reason": "Bad behaviour",
-                                "From" : "2016-06-15",
-                                "To" : "2016-06-30"
-                            }
-                        ]
+         {
+            "Individual": {
+                "PartyID": "MDM/123",
+                "PartyAddresses": [
+                {
+                    "AddressType": "Mobile",
+                    "Telephone": "07985960259",
+                    "AllowedMarketingContact": [
+                      "SMS",
+                      "Telephone"
+                    ]
+                  },
+                  {
+                    "AddressType": "Primary",
+                    "Email": "kdunn@rank.com",
+                    "AllowedMarketingContact": [
+                      "Email"
+                    ]
+                  },
+                  {
+                    "AddressType": "Residential",
+                    "Address": {
+                      "BuildingNumber": "7",
+                      "Street": "Glengall Terrace",
+                      "Postcode": "SE15 6NW",
+                      "Country": {
+                        "CountryCode3": "GBR"
+                      }
                     }
-                }
-            }   
-
-### Profile with Additional Details [GET /customer/v1/profile/{customernumber}?{expand}=additional]
-
-+ Parameters
-    + customernumber: 123456 (string, required)
-    + expand:`additional` - provides profile along with additional details
-    
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-    
-+ Response 200 
-
-            {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                },
-                "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                },
-                "ClubNumber" : "45611",
-                "CustomerNumber" : "12345678",
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk",
-                "DateOfBirth" : "1955-01-30",
-                "PopfAcceptanceDate" : "2016-09-12"
-            }
+                  }
+                ],
+                "CreateDate": "2016-02-28T23:20:50.52Z",
+                "Verifications": [
+                      {
+                        "VerificationType": "CustomerPresent",
+                        "VerificationDate": "2016-02-28T23:20:50.52Z",
+                        "VerificationResult": true,
+                        "Evidence": [
+                          {
+                            "DocumentType": "Passport",
+                            "DocumentNumber": "12345",
+                            "DateOfIssue": "2016-02-28T23:20:50.52Z",
+                            "CountryOfIssue": {
+                              "CountryCode2": "GB"
+                            },
+                            "IssuingAuthority": "IPS",
+                            "Nationality": {
+                              "CountryCode3": "GBR"
+                            },
+                            "ExpiryDate": "2016-02-28T23:20:50.52Z"
+                          }
+                        ]
+                      },
+                      {
+                        "VerificationType": "Electronic",
+                        "VerificationDate": "2016-02-28T23:20:50.52Z",
+                        "VerificationResult": false
+                      },
+                      {
+                        "VerificationType": "CustomerNotPresent",
+                        "VerificationDate": "2016-02-28T23:20:50.52Z",
+                        "VerificationResult": true
+                      }
+                    ],
+                    "Suspensions": [
+                      {
+                        "SuspensionType": "SelfExcluded",
+                        "SuspensionStatus": "Active",
+                        "SuspensionStartDate": "2016-02-28T23:20:50.52Z",
+                        "SuspensionEndDate": "2018-02-28T23:20:50.52Z",
+                        "SuspensionChannels": [
+                          "Digital"
+                        ]
+                      },
+                      {
+                        "SuspensionType": "Barred",
+                        "SuspensionStatus": "Active",
+                        "SuspensionStartDate": "2016-02-28T23:20:50.52Z",
+                        "SuspensionReason": "Drunk and disorderly",
+                        "SuspensionSite": {
+                          "SiteID": "12345"
+                        }
+                      }
+                    ],
+                "Title": "Mr",
+                "FirstName": "Kiril",
+                "LastName": "Dunn",
+                "DateOfBirth": "1974-07-18T00:00:00Z",
+                "Gender": "M"
+          }
+        }   
 
 ## Search Username [/customer/v1/profile/?username={Username}]
 
@@ -487,32 +585,44 @@ This customer endpoint can be expanded with Membership cards, Account status and
 
 + Response 200 (application/json)
 
-         {
-            "Name" : {
-                "Title" : "Mr",
-                "Forename" : "John",
-                "MiddleName" : "Dan",
-                "Surname" : "Jackson"
-                },
-             "Address" : {
-                "Address1" : "10 Downing Street",
-                "Town" : "London",
-                "Postcode" : "WC2B 4AA",
-                "County" : "Greater London",
-                "Country"  : "UK"
-                },
-            "ContactDetails" : {
-                "HomePhone" : "01234567890",
-                "BusinessPhone" : "01234567890",
-                "MobilePhone" : "01234567890",
-                "Email" : "john@email.com",
-                "IsHomeContactallowed" : true,
-                "IsMobileContactAllowed" : true,
-                "IsEmailContactAllowed" : true,
-                "IsSMSContactAllowed" : true
-                },
-            "ClubNumber" : "45611",
-            "CustomerNumber" : "12345678",
+        {
+            "Individual": {
+                "PartyID": "MDM/123",
+                "PartyAddresses": [
+                {
+                    "AddressType": "Mobile",
+                    "Telephone": "07985960259",
+                    "AllowedMarketingContact": [
+                      "SMS",
+                      "Telephone"
+                    ]
+                  },
+                  {
+                    "AddressType": "Primary",
+                    "Email": "kdunn@rank.com",
+                    "AllowedMarketingContact": [
+                      "Email"
+                    ]
+                  },
+                  {
+                    "AddressType": "Residential",
+                    "Address": {
+                      "BuildingNumber": "7",
+                      "Street": "Glengall Terrace",
+                      "Postcode": "SE15 6NW",
+                      "Country": {
+                        "CountryCode3": "GBR"
+                      }
+                    }
+                  }
+                ],
+                "CreateDate": "2016-02-28T23:20:50.52Z",
+                "Title": "Mr",
+                "FirstName": "Kiril",
+                "LastName": "Dunn",
+                "DateOfBirth": "1974-07-18T00:00:00Z",
+                "Gender": "M"
+          }
         }
             
 + Response 204 (application/json)
@@ -551,64 +661,80 @@ This customer endpoint can be expanded with Membership cards, Account status and
 + Response 200 (application/json)
 
         [
-            {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                },
-                "Address": {
-                    "Address1": "10 Downing Street",
-                    "Town": "London",
-                    "Postcode": "WC2B 4AA",
-                    "County": "Greater London",
-                    "Country": "UK"
-                 },
-                 "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "jack@rank.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                 },
-                "DateOfBirth" : "1955-01-30",
-                "Gender" : "Male",
-                "ClubNumber" : "45611",
-                "CustomerNumber" : "12345678",
-            },
-            {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "Will",
-                    "MiddleName" : "Sam",
-                    "Surname" : "Smith"
-                },
-                "Address": {
-                    "Address1": "10 Grosvenor Street",
-                    "Town": "London",
-                    "Postcode": "WC2B 1BD",
-                    "County": "Greater London",
-                    "Country": "UK"
-                 },
-                 "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "jack@rank.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                 },
-                "DateOfBirth" : "1955-01-30",
-                "Gender" : "Male",
-                "ClubNumber" : "45631",
-                "CustomerNumber" : "32145678",
-            }
+            "Individual": {
+                "PartyID": "MDM/123",
+                "PartyAddresses": [
+                {
+                    "AddressType": "Mobile",
+                    "Telephone": "07985960259",
+                    "AllowedMarketingContact": [
+                      "SMS",
+                      "Telephone"
+                    ]
+                  },
+                  {
+                    "AddressType": "Primary",
+                    "Email": "kdunn@rank.com",
+                    "AllowedMarketingContact": [
+                      "Email"
+                    ]
+                  },
+                  {
+                    "AddressType": "Residential",
+                    "Address": {
+                      "BuildingNumber": "7",
+                      "Street": "Glengall Terrace",
+                      "Postcode": "SE15 6NW",
+                      "Country": {
+                        "CountryCode3": "GBR"
+                      }
+                    }
+                  }
+                ],
+                "CreateDate": "2016-02-28T23:20:50.52Z",
+                "Title": "Mr",
+                "FirstName": "Kiril",
+                "LastName": "Dunn",
+                "DateOfBirth": "1974-07-18T00:00:00Z",
+                "Gender": "M"
+          },
+            "Individual": {
+                "PartyID": "MDM/123",
+                "PartyAddresses": [
+                {
+                    "AddressType": "Mobile",
+                    "Telephone": "07985960259",
+                    "AllowedMarketingContact": [
+                      "SMS",
+                      "Telephone"
+                    ]
+                  },
+                  {
+                    "AddressType": "Primary",
+                    "Email": "kdunn@rank.com",
+                    "AllowedMarketingContact": [
+                      "Email"
+                    ]
+                  },
+                  {
+                    "AddressType": "Residential",
+                    "Address": {
+                      "BuildingNumber": "7",
+                      "Street": "Glengall Terrace",
+                      "Postcode": "SE15 6NW",
+                      "Country": {
+                        "CountryCode3": "GBR"
+                      }
+                    }
+                  }
+                ],
+                "CreateDate": "2016-02-28T23:20:50.52Z",
+                "Title": "Mr",
+                "FirstName": "Kiril",
+                "LastName": "Dunn",
+                "DateOfBirth": "1974-07-18T00:00:00Z",
+                "Gender": "M"
+          }
         ]
         
 + Response 200 (application/json)
@@ -637,40 +763,63 @@ This API will be called when a customer has had a new retail account created. Th
     
     + Body
     
-             {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                    },
-                 "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                    },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com",
-                    "IsHomeContactallowed" : true,
-                    "IsMobileContactAllowed" : true,
-                    "IsEmailContactAllowed" : true,
-                    "IsSMSContactAllowed" : true
-                    },
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk",
-                "DateOfBirth" : "1955-01-30",
-                "ClubNumber" : "45611",
-                "AccountStatus" : {
-                    "IsVerified" : true
-                },
-                "CustomerNumber" : "12345678",
-                "MembershipCardNumber" : 67890
+            {
+              "Individual": {
+                "PartyAddresses": [
+                  {
+                    "AddressType": "Mobile",
+                    "Telephone": "07985960259",
+                    "AllowedMarketingContact": [
+                      "SMS",
+                      "Telephone"
+                    ]
+                  },
+                  {
+                    "AddressType": "Primary",
+                    "Email": "kdunn@rank.com",
+                    "AllowedMarketingContact": [
+                      "Email"
+                    ]
+                  },
+                  {
+                    "AddressType": "Residential",
+                    "Address": {
+                      "BuildingNumber": "7",
+                      "Street": "Glengall Terrace",
+                      "Postcode": "SE15 6NW",
+                      "Country": {
+                        "CountryCode3": "GBR"
+                      }
+                    }
+                  }
+                ],
+                "Title": "Mr",
+                "FirstName": "Kiril",
+                "LastName": "Dunn",
+                "DateOfBirth": "1974-07-18T00:00:00Z",
+                "Gender": "M"
+              },
+              "Memberships": [
+                {
+                  "MembershipSource": {
+                    "SystemName": "NEON",
+                    "SystemKey": "123456788",
+                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                  },
+                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                  "Authentication": [
+                    {
+                      "Username": "kiril345"
+                    }
+                  ],
+                  "Agreements": [
+                    {
+                      "AgreementType": "PoPF",
+                      "DateAgreed": "2016-02-28T23:20:50.52Z"
+                    }
+                  ]
+                }
+              ]
             }
             
 
@@ -950,29 +1099,41 @@ Api to update an existing customers information once they have been identified a
     + Body
     
             {
-                "Name" : {
-                    "Title" : "Mr",
-                    "Forename" : "John",
-                    "MiddleName" : "Dan",
-                    "Surname" : "Jackson"
-                },
-                "Address" : {
-                    "Address1" : "10 Downing Street",
-                    "Town" : "London",
-                    "Postcode" : "WC2B 4AA",
-                    "County" : "Greater London",
-                    "Country"  : "UK"
-                },
-                "ContactDetails" : {
-                    "HomePhone" : "01234567890",
-                    "BusinessPhone" : "01234567890",
-                    "MobilePhone" : "01234567890",
-                    "Email" : "john@email.com"
-                },
-                "Nationality" : "GB",
-                "Gender" : "Male",
-                "Occupation" : "Clerk",
-                "DateOfBirth" : "1955-01-30"
+                "Individual": {
+                    "PartyAddresses": [
+                      {
+                        "AddressType": "Mobile",
+                        "Telephone": "07985960259",
+                        "AllowedMarketingContact": [
+                          "SMS",
+                          "Telephone"
+                        ]
+                      },
+                      {
+                        "AddressType": "Primary",
+                        "Email": "kdunn@rank.com",
+                        "AllowedMarketingContact": [
+                          "Email"
+                        ]
+                      },
+                      {
+                        "AddressType": "Residential",
+                        "Address": {
+                          "BuildingNumber": "7",
+                          "Street": "Glengall Terrace",
+                          "Postcode": "SE15 6NW",
+                          "Country": {
+                            "CountryCode3": "GBR"
+                          }
+                        }
+                      }
+                    ],
+                    "Title": "Mr",
+                    "FirstName": "Kiril",
+                    "LastName": "Dunn",
+                    "DateOfBirth": "1974-07-18T00:00:00Z",
+                    "Gender": "M"
+                  }
             }
 
 + Response 200 (application/json)
@@ -1020,10 +1181,29 @@ Service endpoint for updating a customers communication permissions, which indic
     + Body
     
             {
-                "IsMobileContactAllowed": false,
-                "IsSMSContactAllowed": true,
-                "IsEmailContactAllowed": true,
-                "IsHomeContactallowed": false
+              "PartyAddresses": [
+                      {
+                        "AddressType": "Mobile",
+                     
+                        "AllowedMarketingContact": [
+                          "SMS",
+                          "Telephone"
+                        ]
+                      },
+                      {
+                        "AddressType": "Primary",
+                        "AllowedMarketingContact": [
+                          "Email"
+                        ]
+                      },
+                      {
+                        "AddressType": "Residential",
+                        "AllowedMarketingContact": [
+                          "Email"
+                        ]
+                        }
+                      }
+                    ]
             }
     
 + Response 200 (application/json)    
