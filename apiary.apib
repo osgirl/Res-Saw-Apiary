@@ -1559,6 +1559,60 @@ When Responsible Gambling limit is not accepted then RemainingResponsibleGamblin
             {
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
+            
+## View Balance LDM [/wallet/v1/individuals/memberships/RES/BEDE/{membershipKey}/wallets]
+
+This API will be return balance from all SAW wallets. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical solution.
+
+### Scope: clientWalletGetBalance, staffWalletGetBalance [GET]
+
++ Parameters
+    + membershipKey: `12345678` (string, required) - Bede Player Id.
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential/resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
++ Response 200 (application/json)
+
+            [
+                {
+                    "WalletType": "Retail",
+                    "Value": 120.59,
+                    "Currency": "GBP"
+                },
+                {
+                    "WalletType": "MultiChannel",
+                    "Value": 50.01,
+                    "Currency": "GBP"
+                },
+                {
+                    "WalletType": "Digital",
+                    "Value": 450.00,
+                    "Currency": "GBP"
+                }
+            ]
+
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Couldn't process the transaction. {System X} is unavailable."
+            }
 
 ## Deposit [/wallet/v1/customer/{customernumber}/deposit/{transactionId}]
 
