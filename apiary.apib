@@ -1707,68 +1707,6 @@ Any failure will be reported back 500 - server error.
             {
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
-            
-## Register Winnings - Draft [/wallet/v1/customer/{customernumber}/winnings/{transactionId}]
-
-###Scope: staffWalletRegisterWinnings [POST]
-
-This API allows client to notify RES about changes to current player's position,
-which includes returned funds, new deposits, and winnings.
-
-+ Parameters
-    + customernumber: `12345678` (string, required)
-    + transactionId: `000000001-001` (string, required)
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "ReturnedFunds": 250,
-                "Deposit": 40,
-                "Winning": 70
-            }
-
-+ Response 204 (application/json)
-
-    Transaction successfully processed
-    
-    + Body
-
-+ Response 202 (application/json)
-
-    Undetermined state of transaction
-    
-    + Body
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "The specified amount is invalid"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Couldn't process the transaction. {System X} is unavailable."
-            }
 
 ## Transaction status [/wallet/v1/transaction/{transactionId}/status]
 
