@@ -1560,14 +1560,16 @@ When Responsible Gambling limit is not accepted then RemainingResponsibleGamblin
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
             
-## View Balance LDM [/wallet/v1/individuals/{partyId}/memberships/RES/BEDE/wallets]
+## View Balance LDM [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances]
 
-This API will be return balance from all SAW wallets. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical solution.
+This API will be return amount of funds available in SAW wallets along with specific calculated balances. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical engine.
 
 ### Scope: clientWalletGetBalance, staffWalletGetBalance [GET]
 
 + Parameters
-    + partyId: `12345678` (string, required)
+    + partyId: `123456` (string, required)
+    + membershipName: `RES` (string, required)
+    + membershipKey: `111222333` (string, required)
 
 + Request
 
@@ -1578,23 +1580,56 @@ This API will be return balance from all SAW wallets. It will also include funds
 
 + Response 200 (application/json)
 
-            [
-                {
-                    "WalletType": "Retail",
-                    "Value": 120.59,
-                    "Currency": "GBP"
+            {
+                "Balances": {
+                  "TotalCash": 1000.00,
+                  "TotalDigital": 500.00,
+                  "TotalRetail": 700.00,
+                  "AvailableToWithdraw": 600.00,
+                  "AvailableToTransferToRetailGame": 0.00
                 },
-                {
-                    "WalletType": "MultiChannel",
-                    "Value": 50.01,
-                    "Currency": "GBP"
-                },
-                {
-                    "WalletType": "Digital",
-                    "Value": 450.00,
-                    "Currency": "GBP"
-                }
-            ]
+                "Limits": [
+                  {
+                    "Name": "TacticalWithdrawalLimit",
+                    "RemainingAmount": 100.00
+                  },
+                  {
+                    "Name": "TacticalDepositLimit",
+                    "RemainingAmount": 350.00
+                  }
+                ],
+                "Wallets": [
+                    {
+                      "WalletType": "Retail",
+                      "Value": 300.00,
+                      "Currency": "GBP"
+                    },
+                    {
+                      "WalletType": "MultiChannel",
+                      "Value": 200.00,
+                      "Currency": "GBP"
+                    },
+                    {
+                      "WalletType": "Digital",
+                      "Value": 500.00,
+                      "Currency": "GBP"
+                    }
+                ],
+                "_Links": [
+                    {
+                        "Rel": "Self",
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    {
+                        "Rel": "Deposit",
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit"
+                    },
+                    {
+                        "Rel": "Withdraw",
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw"
+                    }
+                ]
+            }
 
 + Response 424 (application/json)
 
