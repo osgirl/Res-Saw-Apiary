@@ -1615,20 +1615,18 @@ This API will be return amount of funds available in SAW wallets along with spec
                       "Currency": "GBP"
                     }
                 ],
-                "_Links": [
-                    {
-                        "Rel": "Self",
+                "LastCalculatedDateTime": "2016-03-15T14:32:22Z",
+                "_Links": {
+                    "Self": {
                         "Href": "/customers/123456/memberships/RES:111222333/finances"
                     },
-                    {
-                        "Rel": "Deposit",
+                    "Deposit": {
                         "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit"
                     },
-                    {
-                        "Rel": "Withdraw",
+                    "Withdraw": {
                         "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw"
                     }
-                ]
+                }
             }
 
 + Response 424 (application/json)
