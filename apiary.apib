@@ -174,15 +174,34 @@ If token is expired, compromised or revoked then the result will be negative, ot
 
 (6) - Once the token is validated, RES carries on processing the client's request and responds accordingly.
 
-# Group Journey
+# Group Journeys
 
 This API is HATEOAS-based entry point for a client.
 
-## Journey [/journey]
+## Journeys [/journeys]
 
 This endpoint provides HAREOAS-centric set of links to resources and actions available to the client, based upon the token supplied.
 
-# Group Customer
+### Scope: any [GET]
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
++ Response 200 (application/json)
+
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "/journeys"
+                    }
+                }
+            }
+
+# Group Customers
 This is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
@@ -1161,7 +1180,7 @@ Any failure will be reported back 500 - server error.
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-# Group Transaction
+# Group Transactions
 
 This API allows to get details of a particular transaction.
 
