@@ -2014,7 +2014,7 @@ Any failure will be reported back 500 - server error.
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
             
-## Transaction status [/wallet/v1/transaction/{transactionId}/status]
+## Transaction Status [/wallet/v1/transaction/{transactionId}/status]
 
 ###Scope: staffWalletGetTransactionStatus [GET]
 
@@ -2076,7 +2076,7 @@ All `Details` fields are optional and will be provided only if available in the 
                 "Message": "Internal Error"
             }
             
-## Transaction status LDM [/wallet/v1/transactions/{transactionId}]
+## Transaction Status LDM [/transactions/{transactionId}]
 
 ###Scope: staffWalletGetTransactionStatus [GET]
 
@@ -2101,6 +2101,11 @@ All `Details` fields are optional and will be provided only if available in the 
                     "CustomerNumber": "12345678",
                     "PlayerId": 519490721066127360,
                     "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
+                },
+                "_Links": {
+                    "Self": {
+                        "Href": "/transactions?transactionId=000000001-001"
+                    }
                 }
             }
             
@@ -2112,6 +2117,11 @@ All `Details` fields are optional and will be provided only if available in the 
                     "CustomerNumber": "12345678",
                     "PlayerId": 519490721066127360,
                     "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
+                },
+                "_Links": {
+                    "Self": {
+                        "Href": "/transactions?transactionId=000000001-001"
+                    }
                 }
             }
             
@@ -2123,6 +2133,11 @@ All `Details` fields are optional and will be provided only if available in the 
                     "CustomerNumber": "12345678",
                     "PlayerId": 519490721066127360,
                     "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
+                },
+                "_Links": {
+                    "Self": {
+                        "Href": "/transactions?transactionId=000000001-001"
+                    }
                 }
             }
 
