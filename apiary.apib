@@ -1904,7 +1904,7 @@ Any failure will be reported back 500 - server error.
             {
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
-## Withdraw LDM [/wallet/v1/individuals/{partyId}/memberships/RES/BEDE/wallets/withdraw/{transactionId}]
+## Withdraw LDM [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances/wallets/withdraw?{transactionId}]
 
 ###Scope: clientWalletWithdraw, onbehalfWalletWithdraw [POST]
 
@@ -1914,7 +1914,9 @@ If no limits are set or request within the limits, RES will process the transact
 Any failure will be reported back 500 - server error. 
 
 + Parameters
-    + partyId: `12345678` (string, required)
+    + partyId: `123456` (string, required)
+    + membershipName: `RES` (string, required)
+    + membershipKey: `111222333` (string, required)
     + transactionId: `000000001-001` (string, required)
 
 + Request (application/json)
@@ -1930,17 +1932,51 @@ Any failure will be reported back 500 - server error.
                 "Amount": 100
             }
 
-+ Response 204 (application/json)
++ Response 200 (application/json)
 
     Transaction successfully processed
     
     + Body
+    
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Deposit": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "TransactionStatus": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 202 (application/json)
 
     Undetermined state of transaction
     
     + Body
+    
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Deposit": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "TransactionStatus": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 400 (application/json)
 
