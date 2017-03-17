@@ -188,10 +188,40 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credential/resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
+
+    "Customer performing action themselves in a venue" token supplied
+    
+    + Body
+
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "/journeys"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/456789/finances"
+                    },
+                    "Deposit": {
+                        "Href": "/customers/123456/memberships/456789/finances/wallets/withdraw{?transactionId}"
+                    },
+                    "Withdraw": {
+                        "Href": "/customers/123456/memberships/456789/finances/wallets/deposit{?transactionId}"
+                    },
+                    "ChangePin": {
+                        "Href": "/customers/123456/memberships/456789/authentication"
+                    }
+                }
+            }
+
++ Response 200 (application/json)
+
+    No journeys available
+    
+    + Body
 
             {
                 "_Links": {
