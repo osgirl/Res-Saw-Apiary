@@ -203,345 +203,12 @@ For registration following input validation in place
 - DateOfBirth - must be of legal age (18)
 
 
-## Lookup Customer Profile
-### Scope: readonlyCustomerLookup [GET /customer/v1/profile/{customernumber}]
-This customer endpoint can be expanded with Membership information and Account status for suspensions, self exclusions and verifications. Multiple expands can be included, for example /profile/12345?expand=membership,status
-+ Parameters
-    + customernumber: 123456 (string, required)
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-+ Response 200 (application/json)
-
-        {
-            "Individual": {
-            "PartyID": "MDM/123",
-            "PartyAddresses": [
-            {
-                "AddressType": "Mobile",
-                "Telephone": "456456456",
-                "AllowedMarketingContact": [
-                  "SMS",
-                  "Telephone"
-                ]
-              },
-              {
-                "AddressType": "Primary",
-                "Email": "something@test.com",
-                "AllowedMarketingContact": [
-                  "Email"
-                ]
-              },
-              {
-                "AddressType": "Residential",
-                "Address": {
-                  "BuildingNumber": "76",
-                  "Street": "Street Terrace",
-                  "Postcode": "SE97 6MR",
-                  "Country": {
-                    "CountryCode3": "GBR"
-                  }
-                }
-              }
-            ],
-            "CreateDate": "2016-02-28T23:20:50.52Z",
-            "Title": "Mr",
-            "FirstName": "Testy",
-            "LastName": "McTest",
-            "DateOfBirth": "1974-07-18T00:00:00Z",
-            "Gender": "M"
-          }
-        }
-            
-+ Response 404 (application/json)
-
-        {
-            "Message": "Customer Not Found"
-        }
-            
-+ Response 500 (application/json)
-
-        {
-            "Message": "Internal Error"
-        }
-
-
-### Profile with Membership [GET /customer/v1/profile/{customernumber}?{expand}=membership]
-
-+ Parameters
-    + customernumber: 123456 (string, required)
-    + expand: `membership` - provides profile along with membership
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-    
-+ Response 200 
-
-        {
-            "Individual": {
-                "PartyID": "MDM/123",
-               "PartyAddresses": [
-                        {
-                            "AddressType": "Mobile",
-                            "Telephone": "456456456",
-                            "AllowedMarketingContact": [
-                              "SMS",
-                              "Telephone"
-                            ]
-                          },
-                          {
-                            "AddressType": "Primary",
-                            "Email": "something@test.com",
-                            "AllowedMarketingContact": [
-                              "Email"
-                            ]
-                          },
-                          {
-                            "AddressType": "Residential",
-                            "Address": {
-                              "BuildingNumber": "76",
-                              "Street": "Street Terrace",
-                              "Postcode": "SE97 6MR",
-                              "Country": {
-                                "CountryCode3": "GBR"
-                              }
-                            }
-                          }
-                        ],
-                "CreateDate": "2016-02-28T23:20:50.52Z",
-                "Title": "Mr",
-                "FirstName": "Testy",
-                "LastName": "McTest",
-                "DateOfBirth": "1974-07-18T00:00:00Z",
-                "Gender": "M"
-          },
-          "Memberships": [
-                {
-                  "MembershipSource": {
-                    "SystemName": "RES",
-                    "SystemKey": "123456789",
-                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                  },
-                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                  "ContainedMemberships": [
-                    {
-                      "MembershipSource": {
-                        "SystemName": "NEON",
-                        "SystemKey": "123456789",
-                        "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                      },
-                      "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                      "MembershipCards": [
-                        {
-                          "CardNumber": "1234567890"
-                        }
-                      ],
-                      "FirstRegisteredClub": {
-                        "SiteID": "12345"
-                      },
-                      "Loyalty": {
-                        "Tier": "Black",
-                        "EffectiveFromDate": "2016-02-28T00:00:00Z"
-                      }
-                    },
-                    {
-                      "MembershipSource": {
-                        "SystemName": "BEDE",
-                        "SystemKey": "123456789",
-                        "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                      },
-                      "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                      "Wallets": [],
-                      "Authentication": [
-                        {
-                          "Username": "kiril"
-                        }
-                      ],
-                      "Agreements": [
-                        {
-                          "AgreementType": "PoPF",
-                          "DateAgreed": "2016-02-28T23:20:50.52Z"
-                        }
-                      ],
-                      "Loyalty": {
-                        "Tier": "Black",
-                        "EffectiveFromDate": "2016-02-28T00:00:00Z"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "MembershipSource": {
-                    "SystemName": "BEDE",
-                    "SystemKey": "123456788",
-                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                  },
-                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                  "Authentication": [
-                    {
-                      "Username": "kiril123"
-                    }
-                  ],
-                  "Agreements": [
-                    {
-                      "AgreementType": "PoPF",
-                      "DateAgreed": "2016-02-28T23:20:50.52Z"
-                    }
-                  ],
-                  "Loyalty": {
-                    "Tier": "Blue",
-                    "EffectiveFromDate": "2016-02-28T00:00:00Z"
-                  }
-                },
-                {
-                  "MembershipSource": {
-                    "SystemName": "NEON",
-                    "SystemKey": "123456788",
-                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                  },
-                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                  "Authentication": [
-                    {
-                      "Username": "kiril345"
-                    }
-                  ],
-                  "Agreements": [
-                    {
-                      "AgreementType": "PoPF",
-                      "DateAgreed": "2016-02-28T23:20:50.52Z"
-                    }
-                  ],
-                  "Loyalty": {
-                    "Tier": "Blue",
-                    "EffectiveFromDate": "2016-02-28T00:00:00Z"
-                  }
-                }
-              ]
-        }
-            
-
-### Profile with Account Status [GET /customer/v1/profile/{customernumber}?{expand}=status]
-
-+ Parameters
-    + customernumber: 123456 (string, required)
-    + expand:`status` - provides profile along with account status
-    
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-    
-+ Response 200 
-
-         {
-            "Individual": {
-                "PartyID": "MDM/123",
-                "PartyAddresses": [
-                    {
-                        "AddressType": "Mobile",
-                        "Telephone": "456456456",
-                        "AllowedMarketingContact": [
-                          "SMS",
-                          "Telephone"
-                        ]
-                      },
-                      {
-                        "AddressType": "Primary",
-                        "Email": "something@test.com",
-                        "AllowedMarketingContact": [
-                          "Email"
-                        ]
-                      },
-                      {
-                        "AddressType": "Residential",
-                        "Address": {
-                          "BuildingNumber": "76",
-                          "Street": "Street Terrace",
-                          "Postcode": "SE97 6MR",
-                          "Country": {
-                            "CountryCode3": "GBR"
-                          }
-                        }
-                      }
-                    ],
-                "CreateDate": "2016-02-28T23:20:50.52Z",
-                "Verifications": [
-                      {
-                        "VerificationType": "CustomerPresent",
-                        "VerificationDate": "2016-02-28T23:20:50.52Z",
-                        "VerificationResult": true,
-                        "Evidence": [
-                          {
-                            "DocumentType": "Passport",
-                            "DocumentNumber": "12345",
-                            "DateOfIssue": "2016-02-28T23:20:50.52Z",
-                            "CountryOfIssue": {
-                              "CountryCode2": "GB"
-                            },
-                            "IssuingAuthority": "IPS",
-                            "Nationality": {
-                              "CountryCode3": "GBR"
-                            },
-                            "ExpiryDate": "2016-02-28T23:20:50.52Z"
-                          }
-                        ]
-                      },
-                      {
-                        "VerificationType": "Electronic",
-                        "VerificationDate": "2016-02-28T23:20:50.52Z",
-                        "VerificationResult": false
-                      },
-                      {
-                        "VerificationType": "CustomerNotPresent",
-                        "VerificationDate": "2016-02-28T23:20:50.52Z",
-                        "VerificationResult": true
-                      }
-                    ],
-                    "Suspensions": [
-                      {
-                        "SuspensionType": "SelfExcluded",
-                        "SuspensionStatus": "Active",
-                        "SuspensionStartDate": "2016-02-28T23:20:50.52Z",
-                        "SuspensionEndDate": "2018-02-28T23:20:50.52Z",
-                        "SuspensionChannels": [
-                          "Digital"
-                        ]
-                      },
-                      {
-                        "SuspensionType": "Barred",
-                        "SuspensionStatus": "Active",
-                        "SuspensionStartDate": "2016-02-28T23:20:50.52Z",
-                        "SuspensionReason": "Drunk and disorderly",
-                        "SuspensionSite": {
-                          "SiteID": "12345"
-                        }
-                      }
-                    ],
-                "Title": "Mr",
-                "FirstName": "Testy",
-                "LastName": "McTest",
-                "DateOfBirth": "1974-07-18T00:00:00Z",
-                "Gender": "M"
-          }
-        }   
-
-## Search Username [/customer/v1/profile/?username={Username}]
+## Search Membership Card [/customer/?cardno={cardno}]
 
 ### Scope: readonlyCustomerSearch [GET]
 
 + Parameters
-    + Username: 123456 (string, required)
+    + cardno: 123456 (string, required)
 
 + Request
 
@@ -589,7 +256,26 @@ This customer endpoint can be expanded with Membership information and Account s
                 "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
-          }
+          },"Memberships": [
+                {
+                  "MembershipSource": {
+                    "SystemName": "NEON",
+                    "SystemKey": "123456788",
+                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                  },
+                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                  "Authentication": [
+                    {
+                      "Username": "userl345"
+                    }
+                  ],
+                  "Agreements": [
+                    {
+                      "AgreementType": "PoPF",
+                      "DateAgreed": "2016-02-28T23:20:50.52Z"
+                    }
+                  ]
+                }
         }
             
 + Response 204 (application/json)
@@ -601,123 +287,10 @@ This customer endpoint can be expanded with Membership information and Account s
         }
            
           
-## Open Search [/customer/v1/profile/?{surname}=Jackson&{dateOfBirth}=1955-01-03&{email}=jack@johnson.com&{postcode}=WC2B+4AA&{mobile}=07123456789&{cardNo}=12345&{checkAlreadyUsed}=true&{max}=10]
-### Scope: readonlyCustomerSearch [GET]
-
-+ Parameters
-    + surname: `Jackson` (string, required)
-    + dateOfBirth: `1955-01-30` (dateTime, required) - Date of birth of the Customer
-    + postcode: `WC2B 4AA` (string, optional) - Customers' postcode
-    + email: `jack@johnson.com` (string, optional) - Customers' email address
-    + mobile: `07123456789` (string, optional) - Customers mobile number
-    + cardNo: `12345` (number, required) - Card number (Number found on the back of the card) of the Customer in form of an integer
-    + checkAlreadyUsed: true (boolean, optional) - Enables Customer Spine registration check. 
-        The flag modifies response entity according to the following rules:
-        - customer registered on Spine, adds _IsAlreadyUsedOnDigital_ property with value _true_
-        - customer not registered - adds _IsAlreadyUsedOnDigital_ property with value _false_
-        - Spine check failed - no changes to response
-    + max: 10 (int, optional) - Max records to return
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-+ Response 200 (application/json)
-
-        [
-            "Individual": {
-                "PartyID": "MDM/123",
-                 "PartyAddresses": [
-                    {
-                        "AddressType": "Mobile",
-                        "Telephone": "456456456",
-                        "AllowedMarketingContact": [
-                          "SMS",
-                          "Telephone"
-                        ]
-                      },
-                      {
-                        "AddressType": "Primary",
-                        "Email": "something@test.com",
-                        "AllowedMarketingContact": [
-                          "Email"
-                        ]
-                      },
-                      {
-                        "AddressType": "Residential",
-                        "Address": {
-                          "BuildingNumber": "76",
-                          "Street": "Street Terrace",
-                          "Postcode": "SE97 6MR",
-                          "Country": {
-                            "CountryCode3": "GBR"
-                          }
-                        }
-                      }
-                    ],
-                "CreateDate": "2016-02-28T23:20:50.52Z",
-                "Title": "Mr",
-                "FirstName": "Testy",
-                "LastName": "McTest",
-                "DateOfBirth": "1974-07-18T00:00:00Z",
-                "Gender": "M"
-          },
-            "Individual": {
-                "PartyID": "MDM/123",
-               "PartyAddresses": [
-                {
-                    "AddressType": "Mobile",
-                    "Telephone": "456456456",
-                    "AllowedMarketingContact": [
-                      "SMS",
-                      "Telephone"
-                    ]
-                  },
-                  {
-                    "AddressType": "Primary",
-                    "Email": "something@test.com",
-                    "AllowedMarketingContact": [
-                      "Email"
-                    ]
-                  },
-                  {
-                    "AddressType": "Residential",
-                    "Address": {
-                      "BuildingNumber": "76",
-                      "Street": "Street Terrace",
-                      "Postcode": "SE97 6MR",
-                      "Country": {
-                        "CountryCode3": "GBR"
-                      }
-                    }
-                  }
-                ],
-                "CreateDate": "2016-02-28T23:20:50.52Z",
-                "Title": "Mr",
-                "FirstName": "Testy",
-                "LastName": "McTest",
-                "DateOfBirth": "1974-07-18T00:00:00Z",
-                "Gender": "M"
-          }
-        ]
-        
-+ Response 200 (application/json)
-
-        []
-
-+ Response 500 (application/json)
-
-        {
-            "Message": "Internal Error"
-        }
-        
-## Register [/customer/v1/profile/retailOnly]
+## Customer [/customer/]
 
 
-### Scope: staffRegisterRetailCustomer [POST]
+### Register Retail Customer -  Scope: staffRegisterRetailCustomer [POST]
 
 This API will be called when a customer has had a new retail account created. This will create a record within Rank systems except digital
 
@@ -776,7 +349,7 @@ This API will be called when a customer has had a new retail account created. Th
                   "MembershipStartDate": "2016-02-28T23:20:50.52Z",
                   "Authentication": [
                     {
-                      "Username": "kiril345"
+                      "Username": "userBlah"
                     }
                   ],
                   "Agreements": [
@@ -804,14 +377,9 @@ This API will be called when a customer has had a new retail account created. Th
                 "Message": "Internal Error"
             }
 
-## Upgrade [/customer/v1/multichannel/{customernumber}]
-
-### Scope: staffUpgradeCustomer [POST]
+### Upgrade to SAW  - Scope: staffUpgradeCustomer [PUT]
 
 This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
 
 + Request (application/json)
 
@@ -849,14 +417,9 @@ This API will be called when a customer has an existing retail and either has an
                 "Message": "Internal Error"
             }
 
-## CanCreateSaw [/customer/v1/upgrade/{customernumber}]
-
-### Scope: staffUpgradeCustomer [GET]
+### Can Create Saw -  Scope: staffUpgradeCustomer [GET]
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
 
 + Request (application/json)
 
@@ -864,92 +427,6 @@ This API will be called when a customer has an existing retail or digital accoun
             
             Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-  
-+ Response 200 (application/json)
-
-            {
-                "CanCreateSAW" : "true",
-                "CanEnterClub" : "true",
-                "DigitalAccountCount" : 0,
-                "RejectionReasons" : [
-                    {
-                        "Reason" : "Already SAW"
-                    },
-                    {
-                        "Reason" : "Deceased"
-                    },
-                    {
-                        "Reason" : "Locally barred"
-                    },
-                    {
-                        "Reason" : "Nationally barred"
-                    },
-                    {
-                        "Reason" : "Refused membership"
-                    },
-                    {
-                        "Reason" : "Self-cancelled"
-                    },
-                    {
-                        "Reason" : "Suspended"
-                    },
-                    {
-                        "Reason" : "Self-excluded"
-                    },
-                    {
-                        "Reason" : "Take-a-break"
-                    },
-                    {
-                        "Reason" : "Closed"
-                    },
-                    {
-                        "Reason" : "Locked"
-                    },
-                    {
-                        "Reason" : "Missing email"
-                    },
-                    {
-                        "Reason" : "Missing mobile number"
-                    },
-                    {
-                        "Reason" : "Email in use"
-                    }
-                ]
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }            
-
-## CanCreateSaw [/customer/v1/upgrade/]
-
-### Scope: staffUpgradeCustomer [GET]
-
-This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
-
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
 
 + Response 200 (application/json)
 
@@ -1047,15 +524,10 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Internal Error"
             }            
 
-## Update Personal Details [/customer/v1/profile/{customernumber}/personal]
-
-### Scope: staffUpdateCustomerPersonal [PATCH]
+### Update Customer Scope: staffUpdateCustomerPersonal [PATCH]
 
 Api to update an existing customers information once they have been identified as a SAW customer.
 
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    
 + Request (application/json)
 
     + Headers 
@@ -1129,15 +601,12 @@ Api to update an existing customers information once they have been identified a
                 "Message": "Internal Error"
             }
 
-## Update Communication Permissions [/customer/v1/profile/{customernumber}/communication]
+## Update Address permissions [/customer/partyaddresses]
 
-### Scope: staffUpdateCustomerComms [PATCH]
+### Update Communucation permissions -  Scope: staffUpdateCustomerComms [PATCH]
 
 Service endpoint for updating a customers communication permissions, which indicates how Rank may contact them for marketing purposes
 
-+ Parameters
-    + customernumber: 12345678 (string, required)
- 
 + Request (application/json)
 
     + Headers 
@@ -1175,16 +644,26 @@ Service endpoint for updating a customers communication permissions, which indic
     
 + Response 200 (application/json)    
 
-## Update PoPF [/customer/v1/profile/{customernumber}/popf]
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+## Update Agreements [/customer/memberships/agreements]
 
 ### Scope: staffUpdateCustomerPopf [PATCH]
 
 This API will be used to update Protection of Player Funds flag as an when is required by the terms.
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
 This functionality requires cusotmer to authorise in form of entering their correct PIN for the SAW account. Neon application will be required to generate a Resource owner token for the customer to be able to call this API.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
 
 + Request
 
@@ -1207,15 +686,11 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "Message": "Not a SAW customer"
             }
 
-## Customer suspended status [/customer/v1/profile/{customernumber}/suspension/{target}]
+## Customer suspension [/customer/suspensions/]
 
 ### Scope: staffSetAccountSuspension [PUT]
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
 
 + Request
 
@@ -1229,7 +704,9 @@ To update customer profile as barred/suspended by the SAW staff member by select
             {
                 "Reason": "Bad behaviour",
                 "From": "2016-01-30",
-                "To": "2016-01-30"
+                "To": "2016-01-30",
+                "Site": 121212312,
+                "Type": "SelfExcluded"
             }
            
 + Response 204 (application/json)
@@ -1244,10 +721,6 @@ To update customer profile as barred/suspended by the SAW staff member by select
 
 To update customer profile by removing the barred/suspended status
 
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 54321 or 'global' (string, required) - Casino number in case a local suspension, `'global'` target in case of a global suspension
-
 + Request
 
     + Headers 
@@ -1263,77 +736,12 @@ To update customer profile by removing the barred/suspended status
                 "Message": "Not a SAW customer"
             }
 
-## Set Customer self-exclusion [/customer/v1/profile/{customernumber}/selfExclusion/{target}]
-
-### Scope: onbehalfSetSelfExclusion [POST]
-
-This endpoint is for the purpose of Customer self-exlusion. The minimum amount of time a customer can self exclude is 180days, and they can choose to exclude themselves from digital, retail or the Grosvenor brand
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body  
-            
-            {
-                "From": "2016-01-30",
-                "To": "2016-01-30"
-            }
-           
-            
-+ Response 204 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
- 
-+ Response 412 (application/json)
-
-            {
-                "Message": "Invalid start date or duration"
-            }
- 
-### Scope: staffRemoveSelfExclusion [DELETE]
-
-This will remove a customers self exclusion and should only be performed by Admin staff.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    + target: 'retail' or 'digital' or 'crossChannel' (string, required)
-
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-+ Response 204 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-            
-## Register New Card [/customer/v1/profile/{customernumber}/membershipCards]
+## Register New Card [/customer/membershipCards]
 
 ### Scope: onbehalfAddCard [POST]
 
 Allows registered customers to add new or additional cards
 
-+ Parameters
-    + customernumber: 12345678 (string, required)
-  
 + Request
 
     + Headers 
@@ -1361,14 +769,13 @@ Allows registered customers to add new or additional cards
             }
             
             
-## Update Card Status [/customer/v1/profile/{customernumber}/membershipCards/{cardnumber}]
+## Update Card Status [/customer/membershipCards/{cardnumber}]
 
 ### Scope: onbehalfUpdateCard [PUT]
 
 Allows registered customers to update the card status
 
 + Parameters
-    + customernumber: 12345678 (string, required)
     + cardnumber: 123123123 (string, required)
   
 + Request
@@ -1398,15 +805,12 @@ Allows registered customers to update the card status
             }
             
             
-## Request PIN Change [/customer/v1/profile/{customernumber}/resetpin]
+## Request PIN Change [/customer/memberships/authentication/]
 
-### Scope: onbehalfRequestChangePin [POST]
+### Scope: onbehalfRequestChangePin [PUT]
 
 Allows a member of staff to request a pin change on behalf of the customer. This is for when the customer has forgotten thier current pin. Once requested the customer will complete the journey on their own device.
 
-+ Parameters
-    + customernumber: 12345678 (string, required)
-   
 + Request
 
     + Headers 
@@ -1415,74 +819,6 @@ Allows a member of staff to request a pin change on behalf of the customer. This
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 201 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Account Locked"
-            }
-
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
-## Change PIN [/customer/v1/profile/{customernumber}/changepin]
-
-### Scope: clientChangePin [POST]
-
-Allows a customer to change there known pin to a new one.
-
-+ Parameters
-    + customernumber: 12345678 (string, required)
-    
-   
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-            
-    + Body 
-    
-            {
-                "PreviousPin" : 1234,
-                "NewPin" : 4321
-            }
-
-+ Response 201 (application/json)
-
-+ Response 403
-
-    + Body
-    
-            {
-              "Message": "Current PIN is incorrect"
-            }
-            
-+ Response 409
-
-    + Body
-    
-            {
-              "Message": "The new PIN has been used before"
-            }
-
-+ Response 412
-
-    + Body
-    
-            {
-              "Message": "PIN Insecure. The PIN must not consist of consecutive digits or digits repeated 4 times"
-            }
 
 + Response 400 (application/json)
 
