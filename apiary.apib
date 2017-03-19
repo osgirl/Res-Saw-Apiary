@@ -235,7 +235,7 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
 This is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
-## Profile [/customer/v1/profile]
+## Profile [/customer]
 
 Model for the resource if defined below:
 | Name                  | Type      | Required       | Description                                                                          |Example        |
@@ -402,56 +402,20 @@ This API will be called when a customer has had a new retail account created. Th
                     "SystemKey": "123456788",
                     "SystemCreateDate": "2016-02-28T23:20:50.52Z"
                   },
-                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                  "Authentication": [
-                    {
-                      "Username": "userBlah"
-                    }
-                  ],
-                  "Agreements": [
-                    {
-                      "AgreementType": "PoPF",
-                      "DateAgreed": "2016-02-28T23:20:50.52Z"
-                    }
+                  "MembershipStartDate": "2016-02-28T23:20:50.52Z"
                   ]
                 }
-              ]
-            }
-            
-
-+ Response 201 (application/json)
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Upgrade to SAW  - Scope: staffUpgradeCustomer [PUT]
-
-This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credential token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "Security": {
-                    "Pin": 1234,
-                    "Username" : "DigitalUsername"
+              ],
+              "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "CanCreateSAW": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    }
                 }
             }
+            
 
 + Response 201 (application/json)
 
@@ -459,12 +423,6 @@ This API will be called when a customer has an existing retail and either has an
 
             {
                 "Message": "Invalid fields"
-            }
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
             }
             
 + Response 500 (application/json)
@@ -495,25 +453,39 @@ This API will be called when a customer has an existing retail or digital accoun
                     67890
                 ],
                 "GoldenRecord" : {
-                    "Name" : {
-                        "Title" : "Mr",
-                        "Forename" : "John",
-                        "MiddleName" : "Dan",
-                        "Surname" : "Jackson"
-                        },
-                     "Address" : {
-                        "Address1" : "10 Downing Street",
-                        "Town" : "London",
-                        "Postcode" : "WC2B 4AA",
-                        "County" : "Greater London",
-                        "Country"  : "UK"
-                        },
-                    "ContactDetails" : {
-                        "HomePhone" : "01234567890",
-                        "BusinessPhone" : "01234567890",
-                        "MobilePhone" : "01234567890",
-                        "Email" : "john@email.com"
-                        }
+                   "PartyAddresses": [
+                {
+                    "AddressType": "Mobile",
+                    "Telephone": "456456456",
+                    "AllowedMarketingContact": [
+                      "SMS",
+                      "Telephone"
+                    ]
+                  },
+                  {
+                    "AddressType": "Primary",
+                    "Email": "something@test.com",
+                    "AllowedMarketingContact": [
+                      "Email"
+                    ]
+                  },
+                  {
+                    "AddressType": "Residential",
+                    "Address": {
+                      "BuildingNumber": "76",
+                      "Street": "Street Terrace",
+                      "Postcode": "SE97 6MR",
+                      "Country": {
+                        "CountryCode3": "GBR"
+                      }
+                    }
+                  }
+                ],
+                "Title": "Mr",
+                "FirstName": "Testy",
+                "LastName": "McTest",
+                "DateOfBirth": "1974-07-18T00:00:00Z",
+                "Gender": "M"
                 },
                 "RejectionReasons" : [
                     {
@@ -558,7 +530,15 @@ This API will be called when a customer has an existing retail or digital accoun
                     {
                         "Reason" : "Email in use"
                     }
-                ]
+                ],
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "UpgradeSAW": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    }
+                }
             }
 
 
@@ -624,15 +604,35 @@ Api to update an existing customers information once they have been identified a
                           }
                         ],
                     "Title": "Mr",
-                    "FirstName": "Kiril",
-                    "LastName": "Dunn",
-                    "DateOfBirth": "1974-07-18T00:00:00Z",
+                    "FirstName": "Joe",
+                    "LastName": "Bloggs",
+                    "DateOfBirth": "1977-02-10T00:00:00Z",
                     "Gender": "M"
                   }
             }
 
 + Response 200 (application/json)
-
+  
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
+            
 + Response 424 (application/json)
 
             {
@@ -657,63 +657,75 @@ Api to update an existing customers information once they have been identified a
                 "Message": "Internal Error"
             }
 
-## Update Address permissions [/customer/partyaddresses]
 
-### Update Communucation permissions -  Scope: staffUpdateCustomerComms [PATCH]
 
-Service endpoint for updating a customers communication permissions, which indicates how Rank may contact them for marketing purposes
+## Upgrade to SAW [/customers/{partyId}/memberships]
+
+### Scope: staffUpgradeCustomer [POST]
+
+This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
 
 + Request (application/json)
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-    
+
+    + Parameters
+        + partyId: `123456` (string, required)
+
+
     + Body
     
             {
-              "PartyAddresses": [
-                      {
-                        "AddressType": "Mobile",
-                     
-                        "AllowedMarketingContact": [
-                          "SMS",
-                          "Telephone"
-                        ]
-                      },
-                      {
-                        "AddressType": "Primary",
-                        "AllowedMarketingContact": [
-                          "Email"
-                        ]
-                      },
-                      {
-                        "AddressType": "Residential",
-                        "AllowedMarketingContact": [
-                          "Email"
-                        ]
-                        }
-                      }
-                    ]
+                "Security": {
+                    "Pin": 1234,
+                    "Username" : "DigitalUsername"
+                }
             }
-    
-+ Response 200 (application/json)    
 
++ Response 200 (application/json)
+          
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 400 (application/json)
 
             {
                 "Message": "Invalid fields"
             }
+            
++ Response 424 (application/json)
 
+            {
+                "Message": "Customer Not Found"
+            }
+            
 + Response 500 (application/json)
 
             {
                 "Message": "Internal Error"
             }
 
-## Update Agreements [/customer/memberships/agreements]
+## Update Agreements [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/agreements]
 
 ### Scope: staffUpdateCustomerPopf [PATCH]
 
@@ -728,15 +740,40 @@ This functionality requires cusotmer to authorise in form of entering their corr
             Authorization: Bearer (resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
             
+    + Parameters
+        + partyId: `123456` (string, required)
+        + membershipName: `RES` (string, required)
+        + membershipKey: `111222333` (string, required)
+            
     + Body  
             
             {
                 "VersionDate": "Bad behaviour",
                 "AgreedDate": "2016-01-30",
-                "AgreementType": "PoPf"
+                "AgreementType": "PoPF"
             }
 
-+ Response 204 (application/json)
++ Response 200 (application/json)
+
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 424 (application/json)
 
@@ -750,7 +787,59 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "Message": "Not a SAW customer"
             }
 
-## Customer suspension [/customer/suspensions/]
+## Customer suspension [/customers/{partyId}/suspensions/]
+
+### Scope: staffSetAccountSuspension [POST]
+
+To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credential token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Parameters
+        + partyId: `123456` (string, required)
+
+    + Body  
+            
+            {
+                "Reason": "Bad behaviour",
+                "From": "2016-01-30",
+                "To": "2016-01-30",
+                "Site": 121212312,
+                "Type": "SelfExcluded"
+            }
+           
++ Response 200 (application/json)
+  
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
 
 ### Scope: staffSetAccountSuspension [PUT]
 
@@ -773,7 +862,27 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Type": "SelfExcluded"
             }
            
-+ Response 204 (application/json)
++ Response 200 (application/json)
+  
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 400 (application/json)
 
@@ -792,7 +901,27 @@ To update customer profile by removing the barred/suspended status
             Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
-+ Response 204 (application/json)
++ Response 200 (application/json)
+  
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 400 (application/json)
 
@@ -800,7 +929,7 @@ To update customer profile by removing the barred/suspended status
                 "Message": "Not a SAW customer"
             }
 
-## Register New Card [/customer/membershipCards]
+## Register New Card [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/membershipCards]
 
 ### Scope: onbehalfAddCard [POST]
 
@@ -812,6 +941,12 @@ Allows registered customers to add new or additional cards
             
             Authorization: Bearer (resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+            
+    + Parameters
+        + partyId: `123456` (string, required)
+        + membershipName: `RES` (string, required)
+        + membershipKey: `111222333` (string, required)
+    
     + Body
     
             {
@@ -819,7 +954,27 @@ Allows registered customers to add new or additional cards
             }
             
 + Response 200 (application/json)
-
+  
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
+            
 + Response 424 (application/json)
 
             {
@@ -833,13 +988,16 @@ Allows registered customers to add new or additional cards
             }
             
             
-## Update Card Status [/customer/membershipCards/{cardnumber}]
+## Update Card Status [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/membershipCards/{cardnumber}]
 
 ### Scope: onbehalfUpdateCard [PUT]
 
 Allows registered customers to update the card status
 
 + Parameters
+    + partyId: `123456` (string, required)
+    + membershipName: `RES` (string, required)
+    + membershipKey: `111222333` (string, required)
     + cardnumber: 123123123 (string, required)
   
 + Request
@@ -855,6 +1013,26 @@ Allows registered customers to update the card status
             }
             
 + Response 200 (application/json)
+  
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 424 (application/json)
 
@@ -869,9 +1047,9 @@ Allows registered customers to update the card status
             }
             
             
-## Request PIN Change [/customer/memberships/authentication/]
+## Request PIN Change [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/authentication/]
 
-### Scope: onbehalfRequestChangePin [PUT]
+### Scope: onbehalfRequestChangePin [DELETE]
 
 Allows a member of staff to request a pin change on behalf of the customer. This is for when the customer has forgotten thier current pin. Once requested the customer will complete the journey on their own device.
 
@@ -881,8 +1059,33 @@ Allows a member of staff to request a pin change on behalf of the customer. This
             
             Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+            
+    + Parameters
+        + partyId: `123456` (string, required)
+        + membershipName: `RES` (string, required)
+        + membershipKey: `111222333` (string, required)
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
+
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
 
 + Response 400 (application/json)
 
