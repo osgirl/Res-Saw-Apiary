@@ -259,13 +259,16 @@ For registration following input validation in place
 - DateOfBirth - must be of legal age (18)
 
 
-## Search Membership Card [/customer/?cardno={cardno}]
+## Search Membership Card [/customer/?cardno={cardno}&dob={dob}]
 
 ### Scope: readonlyCustomerSearch [GET]
 
+Endpoint for customer lookup from Bede using Membership Number (card no) and date of birth
+
 + Parameters
     + cardno: 123456 (string, required)
-
+    + dob: 12/12/2001 (date, required)
+    
 + Request
 
     + Headers 
@@ -405,7 +408,13 @@ This API will be called when a customer has had a new retail account created. Th
                   "MembershipStartDate": "2016-02-28T23:20:50.52Z"
                   ]
                 }
-              ],
+              ]
+            }
+            
+
++ Response 200 (application/json)
+
+        {
               "_Links": {
                     "Self": {
                         "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
@@ -414,10 +423,7 @@ This API will be called when a customer has had a new retail account created. Th
                         "Href": "/customers/123456/memberships/RES:111222333/finances"
                     }
                 }
-            }
-            
-
-+ Response 201 (application/json)
+        }
 
 + Response 400 (application/json)
 
