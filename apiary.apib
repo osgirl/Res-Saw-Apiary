@@ -147,7 +147,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerLookup <br/>readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/> staffWalletRegisterWinnings|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/> staffWalletRegisterWinnings|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
@@ -235,20 +235,18 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
 This is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
-## Profile [/customer]
-
 Model for the resource if defined below:
-| Name                  | Type      | Required       | Description                                                                          |Example        |
-|:---                   |:---       |:---            |:---                                                                                  |:---           |
-|Title                  |string[25] |**yes**         |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
-|Forename               |string[40] |**yes**         |                                                                                      |"John"         |
-|Surname                |string[40] |**yes**         |                                                                                      |"Jackson"      |
-|PartyAddresses         |array      |**yes**         |                                                                                      |"Flat 2, 10 Downing Street"        |
+| Name                  | Type      | Required      | Description                                                                          |Example        |
+|:---                   |:---       |:---           |:---                                                                                  |:---           |
+|Title                  |string[25] |**yes**        |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
+|Forename               |string[40] |**yes**        |                                                                                      |"John"         |
+|Surname                |string[40] |**yes**        |                                                                                      |"Jackson"      |
+|PartyAddresses         |array      |**yes**        |                                                                                      |"Flat 2, 10 Downing Street"        |
 |Gender                 |string[7]  |**yes**        |Values are Unknown, Female and Male                                                    |"Male"         |
 |DateOfBirth            |string     |**yes**        |                                                                                       |"1955-01-30"   |
 |Verifications          |array      |**optional**   |if customer has decided to self-exclude from the retail channel                        |true           |
 |Suspensions            |array      |**optional**   |if customer is suspended from the casino globally                                      |true           |
-|Memberships            |array      |**yes**        | 2 dimentional array, holds membership CardNumber and Status                                                                                        
+|Memberships            |array      |**yes**        |2 dimentional array, holds membership CardNumber and Status                                                                                        
 
 For registration following input validation in place
 
@@ -259,15 +257,15 @@ For registration following input validation in place
 - DateOfBirth - must be of legal age (18)
 
 
-## Search Membership Card [/customer/?cardno={cardno}&dateOfBirth={dateOfBirth}]
+## Search Membership Card [/customers/?cardno={cardno}&dateOfBirth={dateOfBirth}]
 
 ### Scope: readonlyCustomerSearch [GET]
 
 Endpoint for customer lookup from Bede using Membership Number (card no) and date of birth
 
 + Parameters
-    + cardno: 123456 (string, required)
-    + dateOfBirth: 12/12/2001 (date, required)
+    + cardno: `123456` (string, required)
+    + dateOfBirth: `2001-12-12` (date, required)
     
 + Request
 
@@ -281,7 +279,7 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
         {
             "Individual": {
                 "PartyID": "MDM/123",
-                 "PartyAddresses": [
+                "PartyAddresses": [
                     {
                         "AddressType": "Mobile",
                         "Telephone": "456456456",
@@ -289,15 +287,15 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
                           "SMS",
                           "Telephone"
                         ]
-                      },
-                      {
+                    },
+                    {
                         "AddressType": "Primary",
                         "Email": "something@test.com",
                         "AllowedMarketingContact": [
                           "Email"
                         ]
-                      },
-                      {
+                    },
+                    {
                         "AddressType": "Residential",
                         "Address": {
                           "BuildingNumber": "76",
@@ -307,34 +305,36 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
                             "CountryCode3": "GBR"
                           }
                         }
-                      }
-                    ],
+                    }
+                ],
                 "CreateDate": "2016-02-28T23:20:50.52Z",
                 "Title": "Mr",
                 "FirstName": "Testy",
                 "LastName": "McTest",
                 "DateOfBirth": "1974-07-18T00:00:00Z",
                 "Gender": "M"
-          },"Memberships": [
+            },
+            "Memberships": [
                 {
-                  "MembershipSource": {
-                    "SystemName": "NEON",
-                    "SystemKey": "123456788",
-                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                  },
-                  "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                  "Authentication": [
-                    {
-                      "Username": "userl345"
-                    }
-                  ],
-                  "Agreements": [
-                    {
-                      "AgreementType": "PoPF",
-                      "DateAgreed": "2016-02-28T23:20:50.52Z"
-                    }
-                  ]
+                    "MembershipSource": {
+                        "SystemName": "NEON",
+                        "SystemKey": "123456788",
+                        "SystemCreateDate": "2016-02-28T23:20:50.52Z"
+                    },
+                    "MembershipStartDate": "2016-02-28T23:20:50.52Z",
+                    "Authentication": [
+                        {
+                          "Username": "userl345"
+                        }
+                    ],
+                    "Agreements": [
+                        {
+                            "AgreementType": "PoPF",
+                            "DateAgreed": "2016-02-28T23:20:50.52Z"
+                        }
+                    ]
                 }
+            ]
         }
             
 + Response 204 (application/json)
@@ -345,10 +345,6 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
             "Message": "Internal Error"
         }
            
-          
-## Customer [/customer/]
-
-
 ### Register Retail Customer -  Scope: staffRegisterRetailCustomer [POST]
 
 This API will be called when a customer has had a new retail account created. This will create a record within Rank systems except digital
@@ -410,12 +406,11 @@ This API will be called when a customer has had a new retail account created. Th
                 }
               ]
             }
-            
 
 + Response 200 (application/json)
 
-        {
-              "_Links": {
+            {
+                "_Links": {
                     "Self": {
                         "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
                     },
@@ -423,7 +418,7 @@ This API will be called when a customer has had a new retail account created. Th
                         "Href": "/customers/123456/memberships/RES:111222333/finances"
                     }
                 }
-        }
+            }
 
 + Response 400 (application/json)
 
@@ -437,7 +432,7 @@ This API will be called when a customer has had a new retail account created. Th
                 "Message": "Internal Error"
             }
 
-### Can Create Saw -  Scope: staffUpgradeCustomer [GET]
+### Can Create Saw - Scope: staffUpgradeCustomer [GET]
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
