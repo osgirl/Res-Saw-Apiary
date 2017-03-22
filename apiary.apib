@@ -13,14 +13,14 @@ be supplied as `X-Correlation-Token` HTTP header to every request to RES API. It
 unique for each request in scope of the same client. The correlation token's uniqueness
 is guaranteed by the client.
 
-# Group Authentication and Security service
+# Authentication
 
 RES API authentication uses OpenID connect for identity, aligned with the [OAuth2](http://oauth.net/2/) protocol. 
 
 Clients will be issued with a `client_id` and `client_secret` that must be provided for token requests. 
 
 <a name="tokens"></a>
-## Tokens
+## Access Tokens
 
 All requests to RES resources require the client application to provide an appropriate access token. These tokens are provided in the Authorization header as Bearer tokens. e.g.
 
@@ -178,7 +178,7 @@ If token is expired, compromised or revoked then the result will be negative, ot
 
 This API is HATEOAS-based entry point for a client.
 
-## Journeys [/journeys]
+## Initial Journeys [/journeys]
 
 This endpoint provides HAREOAS-centric set of links to resources and actions available to the client, based upon the token supplied.
 
@@ -233,7 +233,7 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
 
 # Group Customers
 
-## Customers [/customers]
+## Profile [/customers]
 
 This is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
@@ -259,7 +259,9 @@ For registration following input validation in place
 - Address.Postcode - valid UK postcode for UK addresses
 - DateOfBirth - must be of legal age (18)
 
-### Search Membership Card - Scope: readonlyCustomerSearch [GET /customers?cardno={cardno}&dateOfBirth={dateOfBirth}]
+### Search Membership Card [GET /customers?cardno={cardno}&dateOfBirth={dateOfBirth}]
+
+**Allowed scopes**: readonlyCustomerSearch
 
 Endpoint for customer lookup from Bede using Membership Number (card no) and date of birth
 
@@ -325,8 +327,105 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
         {
             "Message": "Internal Error"
         }
+
+### Update Customer Scope [PUT]
+
+**Allowed scopes**: staffUpdateCustomerPersonal
+
+This API is to update an existing customers information once they have been identified as a SAW customer.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "Name": {
+                    "Title": "Mr",
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson"
+                },
+                "Address": {
+                    "Line1": "Flat 57",
+                    "Line2": "10 Downing Street",
+                    "Town": "London",
+                    "Postcode": "WC2B 4AA",
+                    "County": "Greater London",
+                    "Country": "United Kingdom",
+                    "CountryCode3": "GBR"
+                },
+                "ContactDetails": {
+                    "HomePhone": "01234567890",
+                    "BusinessPhone": "01234567890",
+                    "MobilePhone": "01234567890",
+                    "Email": "jack@rank.com"
+                },
+                "AllowedMarketingContacts": {
+                    "IsHomeContactallowed": true,
+                    "IsMobileContactAllowed": true,
+                    "IsEmailContactAllowed": true,
+                    "IsSMSContactAllowed": true
+                },
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "Nationality": "GB",
+                "Occupation": "Clerk"
+            }
+
++ Response 200 (application/json)
+  
+           {
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    },
+                    "Agreements": {
+                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                    },
+                    "Communication": {
+                        "Href": "/transactions/000000001-001"
+                    },
+                    "Edit": {
+                        "Href": "/transactions/000000001-001"
+                    }
+                }
+            }
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
            
-### Register Retail Customer -  Scope: staffRegisterRetailCustomer [POST]
+### Register Retail Customer [POST]
+
+**Allowed scopes**: staffRegisterRetailCustomer
 
 This API will be called when a customer has had a new retail account created. This will create a record within Rank systems except digital
 
@@ -401,7 +500,11 @@ This API will be called when a customer has had a new retail account created. Th
                 "Message": "Internal Error"
             }
 
-### Can Create Saw - Scope: staffUpgradeCustomer [GET]
+## Upgrade to SAW [/customers/{partyId}/memberships]
+
+### Can Create SAW [GET]
+
+**Allowed scopes**: staffUpgradeCustomer
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
@@ -527,105 +630,11 @@ This API will be called when a customer has an existing retail or digital accoun
 
             {
                 "Message": "Internal Error"
-            }            
-
-### Update Customer Scope: staffUpdateCustomerPersonal [PATCH]
-
-Api to update an existing customers information once they have been identified as a SAW customer.
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "Name": {
-                    "Title": "Mr",
-                    "FirstName": "John",
-                    "MiddleName": "Dan",
-                    "LastName": "Jackson"
-                },
-                "Address": {
-                    "Line1": "Flat 57",
-                    "Line2": "10 Downing Street",
-                    "Town": "London",
-                    "Postcode": "WC2B 4AA",
-                    "County": "Greater London",
-                    "Country": "United Kingdom",
-                    "CountryCode3": "GBR"
-                },
-                "ContactDetails": {
-                    "HomePhone": "01234567890",
-                    "BusinessPhone": "01234567890",
-                    "MobilePhone": "01234567890",
-                    "Email": "jack@rank.com"
-                },
-                "AllowedMarketingContacts": {
-                    "IsHomeContactallowed": true,
-                    "IsMobileContactAllowed": true,
-                    "IsEmailContactAllowed": true,
-                    "IsSMSContactAllowed": true
-                },
-                "DateOfBirth": "1955-01-30",
-                "Gender": "M",
-                "Nationality": "GB",
-                "Occupation": "Clerk"
             }
-
-+ Response 200 (application/json)
-  
-           {
-                "_Links": {
-                    "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
-                    }
-                }
-            }
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-
-## Upgrade to SAW [/customers/{partyId}/memberships]
 
 ### Scope: staffUpgradeCustomer [POST]
+
+**Allowed scopes**: staffUpgradeCustomer
 
 This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
 
@@ -687,9 +696,11 @@ This API will be called when a customer has an existing retail and either has an
                 "Message": "Internal Error"
             }
 
-## Update Agreements [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/agreements]
+## Agreements [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/agreements]
 
-### Scope: staffUpdateCustomerPopf [PATCH]
+### Update Agreements [PATCH]
+
+**Allowed scopes**: staffUpdateCustomerPopf
 
 This API will be used to update Protection of Player Funds flag as an when is required by the terms.
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
@@ -749,9 +760,11 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "Message": "Not a SAW customer"
             }
 
-## Customer suspension [/customers/{partyId}/suspensions/]
+## Suspensions [/customers/{partyId}/suspensions/]
 
-### Scope: staffSetAccountSuspension [POST]
+### Add Suspension [POST]
+
+**Allowed scopes**: staffSetAccountSuspension
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
@@ -803,7 +816,9 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Message": "Not a SAW customer"
             }
 
-### Scope: staffSetAccountSuspension [PUT]
+### Update Suspension [PUT]
+
+**Allowed scopes**: staffSetAccountSuspension
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
@@ -852,7 +867,9 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Message": "Not a SAW customer"
             }
  
-### Scope: staffRemoveAccountSuspension [DELETE]
+### Remove Suspension [DELETE]
+
+**Allowed scopes**: staffRemoveAccountSuspension
 
 To update customer profile by removing the barred/suspended status
 
@@ -891,9 +908,11 @@ To update customer profile by removing the barred/suspended status
                 "Message": "Not a SAW customer"
             }
 
-## Register New Card [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/membershipCards]
+## Membership Cards [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/membershipCards]
 
-### Scope: onbehalfAddCard [POST]
+### Register New Card [POST]
+
+**Allowed scopes**: onbehalfAddCard
 
 Allows registered customers to add new or additional cards
 
@@ -949,10 +968,9 @@ Allows registered customers to add new or additional cards
                 "Message": "Internal Error"
             }
             
-            
-## Update Card Status [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/membershipCards/{cardnumber}]
+### Update Card Status [PUT]
 
-### Scope: onbehalfUpdateCard [PUT]
+**Allowed scopes**: onbehalfUpdateCard
 
 Allows registered customers to update the card status
 
@@ -1009,9 +1027,11 @@ Allows registered customers to update the card status
             }
             
             
-## Request PIN Change [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/authentication/]
+## Security [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/authentication/]
 
-### Scope: onbehalfRequestChangePin [DELETE]
+### Request PIN Change [POST]
+
+**Allowed scopes**: onbehalfRequestChangePin
 
 Allows a member of staff to request a pin change on behalf of the customer. This is for when the customer has forgotten thier current pin. Once requested the customer will complete the journey on their own device.
 
@@ -1067,11 +1087,13 @@ Allows a member of staff to request a pin change on behalf of the customer. This
                 "Message": "Internal Error"
             }
 
-## View Balance [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances]
+## Wallet [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances]
 
 This API will be return amount of funds available in SAW wallets along with specific calculated balances. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical engine.
 
-### Scope: clientWalletGetBalance, staffWalletGetBalance [GET]
+### View Balance [GET]
+
+**Allowed scopes**: clientWalletGetBalance, staffWalletGetBalance
 
 + Parameters
     + partyId: `123456` (string, required)
@@ -1154,9 +1176,9 @@ This API will be return amount of funds available in SAW wallets along with spec
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-## Deposit [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances/wallets/deposit?{transactionId}]
+### Deposit [POST /customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances/wallets/deposit?{transactionId}]
 
-### Scope: clientWalletDeposit, onbehalfWalletDeposit [POST]
+**Allowed scopes**: clientWalletDeposit, onbehalfWalletDeposit
 
 If the transaction breaches the responsible gambling limits set by customer, then the transaction would faile and RES will return an error message. 
 If current request breaches any AML/Fraud deposit limit, RES will store overflow funds to "pending" wallet, this will be mentioned in the response message.
@@ -1265,9 +1287,9 @@ Any failure will be reported back 500 - server error.
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-## Withdraw [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances/wallets/withdraw?{transactionId}]
+### Withdraw [POST /customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances/wallets/withdraw?{transactionId}]
 
-###Scope: clientWalletWithdraw, onbehalfWalletWithdraw [POST]
+**Allowed scopes**: clientWalletWithdraw, onbehalfWalletWithdraw
 
 Customer will be asked to authenticate the transaction by entering the PIN number. 
 If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
