@@ -182,7 +182,9 @@ This API is HATEOAS-based entry point for a client.
 
 This endpoint provides HAREOAS-centric set of links to resources and actions available to the client, based upon the token supplied.
 
-### Scope: any [GET]
+### Get Initial Journeys [GET]
+
+**Allowed scopes**: any
 
 + Request
 
@@ -233,7 +235,7 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
 
 # Group Customers
 
-## Profile [/customers]
+## Customers [/customers]
 
 This is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
@@ -308,7 +310,7 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
                 },
                 "RetailId": "12345678",
                 "DigitalId": "12345678",
-                "DigitalUsername": "userjohn33",
+                "DigitalUsername": "johnSilver777",
                 "DateOfBirth": "1955-01-30",
                 "Gender": "M",
                 "FirstRegisteredClubNumber": "45611",
@@ -391,7 +393,7 @@ This API is to update an existing customers information once they have been iden
                 "Nationality": "GB",
                 "Occupation": "Clerk",
                 "_Links": {
-                    "Self": {,
+                    "Self": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": "staffUpdateCustomerPersonal"
@@ -494,7 +496,7 @@ This API will be called when a customer has had a new retail account created. Th
                 "Message": "Internal Error"
             }
 
-## Upgrade to SAW [/customers/saw]
+## Upgrade to SAW [/customers/{identifier}/upgradeToSaw]
 
 ### Can Create SAW [GET /customers/{identifier}/canCreateSaw]
 
@@ -602,10 +604,10 @@ This API will be called when a customer has an existing retail or digital accoun
                 ],
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/canCreateSaw"
                     },
-                    "UpgradeSAW": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                    "UpgradeToSaw": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw"
                     }
                 }
             }
@@ -657,19 +659,7 @@ This API will be called when a customer has an existing retail and either has an
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw"
                     }
                 }
             }
@@ -692,9 +682,9 @@ This API will be called when a customer has an existing retail and either has an
                 "Message": "Internal Error"
             }
 
-## Agreements [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/agreements]
+## Agreements [/customers/agreements/{identifier}]
 
-### Update Agreements [PATCH]
+### Update Agreements [PUT]
 
 **Allowed scopes**: staffUpdateCustomerPopf
 
@@ -702,17 +692,15 @@ This API will be used to update Protection of Player Funds flag as an when is re
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
 This functionality requires cusotmer to authorise in form of entering their correct PIN for the SAW account. Neon application will be required to generate a Resource owner token for the customer to be able to call this API.
 
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
 + Request
 
     + Headers 
             
             Authorization: Bearer (resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-            
-    + Parameters
-        + partyId: `123456` (string, required)
-        + membershipName: `RES` (string, required)
-        + membershipKey: `111222333` (string, required)
             
     + Body  
             
@@ -727,19 +715,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
                     }
                 }
             }
@@ -756,13 +732,16 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "Message": "Not a SAW customer"
             }
 
-## Suspensions [/customers/{partyId}/suspensions/]
+## Suspensions [/customers/suspensions/{identifier}]
 
 ### Add Suspension [POST]
 
 **Allowed scopes**: staffSetAccountSuspension
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
 
 + Request
 
@@ -789,19 +768,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/suspensions/123456"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
                     }
                 }
             }
@@ -818,6 +785,9 @@ To update customer profile as barred/suspended by the SAW staff member by select
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
 + Request
 
     + Headers 
@@ -837,22 +807,10 @@ To update customer profile as barred/suspended by the SAW staff member by select
            
 + Response 200 (application/json)
   
-           {
+            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
                     }
                 }
             }
@@ -869,6 +827,9 @@ To update customer profile as barred/suspended by the SAW staff member by select
 
 To update customer profile by removing the barred/suspended status
 
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
 + Request
 
     + Headers 
@@ -877,23 +838,11 @@ To update customer profile by removing the barred/suspended status
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
-  
-           {
+
+            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
                     }
                 }
             }
@@ -904,50 +853,28 @@ To update customer profile by removing the barred/suspended status
                 "Message": "Not a SAW customer"
             }
 
-## Membership Cards [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/membershipCards]
+## Membership Cards [/customers/membershipCards/{identifier}]
 
 ### Register New Card [POST]
 
 **Allowed scopes**: onbehalfAddCard
 
 Allows registered customers to add new or additional cards
-
+            
 + Request
 
     + Headers 
             
             Authorization: Bearer (resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-            
-    + Parameters
-        + partyId: `123456` (string, required)
-        + membershipName: `RES` (string, required)
-        + membershipKey: `111222333` (string, required)
     
     + Body
     
             {
-                "CardNumber" : 123123123
-            }
-            
-+ Response 200 (application/json)
-  
-           {
+                "CardNumber" : 123123123,
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
                     }
                 }
             }
@@ -971,10 +898,7 @@ Allows registered customers to add new or additional cards
 Allows registered customers to update the card status
 
 + Parameters
-    + partyId: `123456` (string, required)
-    + membershipName: `RES` (string, required)
-    + membershipKey: `111222333` (string, required)
-    + cardnumber: 123123123 (string, required)
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
   
 + Request
 
@@ -985,27 +909,10 @@ Allows registered customers to update the card status
     + Body
     
             {
-                "Status" : "Lost"
-            }
-            
-+ Response 200 (application/json)
-  
-           {
+                "Status" : "Lost",
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
                     }
                 }
             }
@@ -1023,7 +930,7 @@ Allows registered customers to update the card status
             }
             
             
-## Security [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/memberships/authentication/]
+## Security [/customers/{identifier}/authentication/pinAuth/requestChange]
 
 ### Request PIN Change [POST]
 
@@ -1031,36 +938,22 @@ Allows registered customers to update the card status
 
 Allows a member of staff to request a pin change on behalf of the customer. This is for when the customer has forgotten thier current pin. Once requested the customer will complete the journey on their own device.
 
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
 + Request
 
     + Headers 
             
             Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-            
-    + Parameters
-        + partyId: `123456` (string, required)
-        + membershipName: `RES` (string, required)
-        + membershipKey: `111222333` (string, required)
 
 + Response 200 (application/json)
 
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pinAuth/requestChange"
                     }
                 }
             }
@@ -1083,7 +976,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
                 "Message": "Internal Error"
             }
 
-## Wallet [/customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances]
+## Wallet [/customers/{identifier}/finances]
 
 This API will be return amount of funds available in SAW wallets along with specific calculated balances. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical engine.
 
@@ -1092,9 +985,7 @@ This API will be return amount of funds available in SAW wallets along with spec
 **Allowed scopes**: clientWalletGetBalance, staffWalletGetBalance
 
 + Parameters
-    + partyId: `123456` (string, required)
-    + membershipName: `RES` (string, required)
-    + membershipKey: `111222333` (string, required)
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
 
 + Request
 
@@ -1143,13 +1034,13 @@ This API will be return amount of funds available in SAW wallets along with spec
                 "LastCalculatedDateTime": "2016-03-15T14:32:22Z",
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
                     "Deposit": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
                     },
                     "Withdraw": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
                     }
                 }
             }
@@ -1172,7 +1063,7 @@ This API will be return amount of funds available in SAW wallets along with spec
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-### Deposit [POST /customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances/wallets/deposit?{transactionId}]
+### Deposit [POST /customers/{identifier}/finances/transactions/{transactionId}/deposit]
 
 **Allowed scopes**: clientWalletDeposit, onbehalfWalletDeposit
 
@@ -1183,9 +1074,7 @@ Any failure will be reported back 500 - server error.
 
 
 + Parameters
-    + partyId: `123456` (string, required)
-    + membershipName: `RES` (string, required)
-    + membershipKey: `111222333` (string, required)
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
     + transactionId: `000000001-001` (string, required)
 
 + Request (application/json)
@@ -1210,13 +1099,13 @@ Any failure will be reported back 500 - server error.
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit?transactionId=000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/deposit"
                     },
                     "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
                     "Withdraw": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
                     },
                     "TransactionStatus": {
                         "Href": "/transactions/000000001-001"
@@ -1233,13 +1122,13 @@ Any failure will be reported back 500 - server error.
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit?transactionId=000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/deposit"
                     },
                     "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
                     "Withdraw": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
                     },
                     "TransactionStatus": {
                         "Href": "/transactions/000000001-001"
@@ -1283,7 +1172,7 @@ Any failure will be reported back 500 - server error.
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-### Withdraw [POST /customers/{partyId}/memberships/{membershipName}:{membershipKey}/finances/wallets/withdraw?{transactionId}]
+### Withdraw [POST /customers/{identifier}/finances/transactions/{transactionId}/withdraw]
 
 **Allowed scopes**: clientWalletWithdraw, onbehalfWalletWithdraw
 
@@ -1293,9 +1182,7 @@ If no limits are set or request within the limits, RES will process the transact
 Any failure will be reported back 500 - server error. 
 
 + Parameters
-    + partyId: `123456` (string, required)
-    + membershipName: `RES` (string, required)
-    + membershipKey: `111222333` (string, required)
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
     + transactionId: `000000001-001` (string, required)
 
 + Request (application/json)
@@ -1320,13 +1207,13 @@ Any failure will be reported back 500 - server error.
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/withdraw"
                     },
                     "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
                     "Deposit": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
                     },
                     "TransactionStatus": {
                         "Href": "/transactions/000000001-001"
@@ -1343,13 +1230,13 @@ Any failure will be reported back 500 - server error.
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/withdraw"
                     },
                     "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
                     "Deposit": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
                     },
                     "TransactionStatus": {
                         "Href": "/transactions/000000001-001"
@@ -1399,7 +1286,9 @@ This API allows to get details of a particular transaction.
 
 ## Transaction Status [/transactions/{transactionId}]
 
-###Scope: staffWalletGetTransactionStatus [GET]
+### Get Transaction Status [GET]
+
+**Allowed scopes**: staffWalletGetTransactionStatus
 
 This endpoint provides transaction status and details based on the transaction ID supplied.
 All `Details` fields are optional and will be provided only if available in the transaction log.
@@ -1425,7 +1314,7 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "/transactions?transactionId=000000001-001"
+                        "Href": "/transactions/000000001-001"
                     }
                 }
             }
@@ -1441,7 +1330,7 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "/transactions?transactionId=000000001-001"
+                        "Href": "/transactions/000000001-001"
                     }
                 }
             }
@@ -1457,7 +1346,7 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "/transactions?transactionId=000000001-001"
+                        "Href": "/transactions/000000001-001"
                     }
                 }
             }
