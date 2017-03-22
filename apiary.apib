@@ -259,14 +259,14 @@ For registration following input validation in place
 - Address.Postcode - valid UK postcode for UK addresses
 - DateOfBirth - must be of legal age (18)
 
-### Search by Membership Card [GET /customers?cardno={cardno}&dateOfBirth={dateOfBirth}]
+### Search by Membership Card [GET /customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}]
 
 **Allowed scopes**: readonlyCustomerSearch
 
 Endpoint for customer lookup from Bede using Membership Number (card no) and date of birth
 
 + Parameters
-    + cardno: `123456` (string, required)
+    + cardNo: `123456` (string, required)
     + dateOfBirth: `2001-12-12` (date, required)
     
 + Request
@@ -317,22 +317,37 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
                 "Occupation": "Clerk",
                 "PopfAgreedDate": "2016-09-12",
                 "PopfVersionDate": "2016-01-01",
-                "VipGrade": "Black"
+                "VipGrade": "Black",
+                "_Links": {
+                    "Self": {
+                        "Href": "/customers?cardno={cardno}&dateOfBirth={dateOfBirth}",
+                        "Method": "GET",
+                        "AllowedScopes": "readonlyCustomerSearch"
+                    },
+                    "UpdateCustomer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "PUT",
+                        "AllowedScopes": "staffUpdateCustomerPersonal"
+                    }
+                }
             }
 
 + Response 204 (application/json)
 
 + Response 500 (application/json)
 
-        {
-            "Message": "Internal Error"
-        }
+            {
+                "Message": "Internal Error"
+            }
 
-### Update Customer [PUT]
+### Update Customer [PUT /customers/{identifier}]
 
 **Allowed scopes**: staffUpdateCustomerPersonal
 
 This API is to update an existing customers information once they have been identified as a SAW customer.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
 
 + Request (application/json)
 
@@ -374,27 +389,12 @@ This API is to update an existing customers information once they have been iden
                 "DateOfBirth": "1955-01-30",
                 "Gender": "M",
                 "Nationality": "GB",
-                "Occupation": "Clerk"
-            }
-
-+ Response 200 (application/json)
-  
-           {
+                "Occupation": "Clerk",
                 "_Links": {
-                    "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
-                    },
-                    "Agreements": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/deposit{?transactionId}"
-                    },
-                    "Communication": {
-                        "Href": "/transactions/000000001-001"
-                    },
-                    "Edit": {
-                        "Href": "/transactions/000000001-001"
+                    "Self": {,
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "PUT",
+                        "AllowedScopes": "staffUpdateCustomerPersonal"
                     }
                 }
             }
@@ -472,18 +472,12 @@ This API will be called when a customer has had a new retail account created. Th
                 "FirstRegisteredClubNumber": "45611",
                 "Nationality": "GB",
                 "Occupation": "Clerk",
-                "VipGrade": "Black"
-            }
-
-+ Response 200 (application/json)
-
-            {
+                "VipGrade": "Black",
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
-                    },
-                    "CanCreateSAW": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances"
+                        "Href": "/customers",
+                        "Method": "POST",
+                        "AllowedScopes": "staffRegisterRetailCustomer"
                     }
                 }
             }
@@ -500,14 +494,17 @@ This API will be called when a customer has had a new retail account created. Th
                 "Message": "Internal Error"
             }
 
-## Upgrade to SAW [/customers/{partyId}/memberships]
+## Upgrade to SAW [/customers/saw]
 
-### Can Create SAW [GET]
+### Can Create SAW [GET /customers/{identifier}/canCreateSaw]
 
 **Allowed scopes**: staffUpgradeCustomer
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+    
 + Request (application/json)
 
     + Headers 
@@ -632,11 +629,14 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Internal Error"
             }
 
-### Upgrade to SAW [POST]
+### Upgrade to SAW [POST /customers/{identifier}/upgradeToSaw]
 
 **Allowed scopes**: staffUpgradeCustomer
 
 This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
 
 + Request (application/json)
 
@@ -644,10 +644,6 @@ This API will be called when a customer has an existing retail and either has an
             
             Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Parameters
-        + partyId: `123456` (string, required)
-
 
     + Body
     
