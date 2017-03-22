@@ -259,7 +259,7 @@ For registration following input validation in place
 - Address.Postcode - valid UK postcode for UK addresses
 - DateOfBirth - must be of legal age (18)
 
-### Search Membership Card [GET /customers?cardno={cardno}&dateOfBirth={dateOfBirth}]
+### Search by Membership Card [GET /customers?cardno={cardno}&dateOfBirth={dateOfBirth}]
 
 **Allowed scopes**: readonlyCustomerSearch
 
@@ -328,7 +328,7 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
             "Message": "Internal Error"
         }
 
-### Update Customer Scope [PUT]
+### Update Customer [PUT]
 
 **Allowed scopes**: staffUpdateCustomerPersonal
 
@@ -632,7 +632,7 @@ This API will be called when a customer has an existing retail or digital accoun
                 "Message": "Internal Error"
             }
 
-### Scope: staffUpgradeCustomer [POST]
+### Upgrade to SAW [POST]
 
 **Allowed scopes**: staffUpgradeCustomer
 
