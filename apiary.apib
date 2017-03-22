@@ -70,7 +70,7 @@ Resource owner access tokens are required to access resources where an authentic
 
 **channel** - The parameter identifies the way **username** and **password** are interpreted. The following values are supported: `retail`, `digital`. If not specified then defaults to `retail`.
 
-**username** - Username of the resource owner (customer) for `digital` or card number for `retail`. Always required.
+**username** - Username of the resource owner (customer) for `digital` or membership number for `retail`. Always required.
 
 **password** - Password of the resource owner (customer) for `digital` or PIN for `retail`. Always required.
 
@@ -92,7 +92,7 @@ Authorization: Basic 98712389abc
 grant_type=password
 &scope=res
 &channel=retail
-&username=<cardno/username>
+&username=<neonId/username>
 &password=<pin/password>
 &venue_id=50601
 &game_category=slot
@@ -148,8 +148,8 @@ The following table explains what should be supplied as a part of auth server re
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerLookup <br/>readonlyCustomerSearch|
 |Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/> staffWalletRegisterWinnings|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>cardNo <br/>pin |clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>cardNo <br/>pin |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>neonId <br/>pin |clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>neonId <br/>pin |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
 ## Authentication flow
 
