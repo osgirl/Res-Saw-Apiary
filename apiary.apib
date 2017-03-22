@@ -146,7 +146,7 @@ The following table explains what should be supplied as a part of auth server re
 
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
-|Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerLookup <br/>readonlyCustomerSearch|
+|Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
 |Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
@@ -232,6 +232,9 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
             }
 
 # Group Customers
+
+## Customers [/customers]
+
 This is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
@@ -256,10 +259,7 @@ For registration following input validation in place
 - Address.Postcode - valid UK postcode for UK addresses
 - DateOfBirth - must be of legal age (18)
 
-
-## Search Membership Card [/customers/?cardno={cardno}&dateOfBirth={dateOfBirth}]
-
-### Scope: readonlyCustomerSearch [GET]
+### Scope: readonlyCustomerSearch [GET /customers?cardno={cardno}&dateOfBirth={dateOfBirth}]
 
 Endpoint for customer lookup from Bede using Membership Number (card no) and date of birth
 
@@ -276,67 +276,48 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
 
 + Response 200 (application/json)
 
-        {
-            "Individual": {
-                "PartyID": "MDM/123",
-                "PartyAddresses": [
-                    {
-                        "AddressType": "Mobile",
-                        "Telephone": "456456456",
-                        "AllowedMarketingContact": [
-                          "SMS",
-                          "Telephone"
-                        ]
-                    },
-                    {
-                        "AddressType": "Primary",
-                        "Email": "something@test.com",
-                        "AllowedMarketingContact": [
-                          "Email"
-                        ]
-                    },
-                    {
-                        "AddressType": "Residential",
-                        "Address": {
-                          "BuildingNumber": "76",
-                          "Street": "Street Terrace",
-                          "Postcode": "SE97 6MR",
-                          "Country": {
-                            "CountryCode3": "GBR"
-                          }
-                        }
-                    }
-                ],
-                "CreateDate": "2016-02-28T23:20:50.52Z",
-                "Title": "Mr",
-                "FirstName": "Testy",
-                "LastName": "McTest",
-                "DateOfBirth": "1974-07-18T00:00:00Z",
-                "Gender": "M"
-            },
-            "Memberships": [
-                {
-                    "MembershipSource": {
-                        "SystemName": "NEON",
-                        "SystemKey": "123456788",
-                        "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                    },
-                    "MembershipStartDate": "2016-02-28T23:20:50.52Z",
-                    "Authentication": [
-                        {
-                          "Username": "userl345"
-                        }
-                    ],
-                    "Agreements": [
-                        {
-                            "AgreementType": "PoPF",
-                            "DateAgreed": "2016-02-28T23:20:50.52Z"
-                        }
-                    ]
-                }
-            ]
-        }
-            
+            {
+                "Name": {
+                    "Title": "Mr",
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson"
+                },
+                "Address": {
+                    "Line1": "Flat 57",
+                    "Line2": "10 Downing Street",
+                    "Town": "London",
+                    "Postcode": "WC2B 4AA",
+                    "County": "Greater London",
+                    "Country": "United Kingdom",
+                    "CountryCode3": "GBR"
+                },
+                "ContactDetails": {
+                    "HomePhone": "01234567890",
+                    "BusinessPhone": "01234567890",
+                    "MobilePhone": "01234567890",
+                    "Email": "jack@rank.com"
+                },
+                "AllowedMarketingContacts": {
+                    "IsHomeContactallowed": true,
+                    "IsMobileContactAllowed": true,
+                    "IsEmailContactAllowed": true,
+                    "IsSMSContactAllowed": true
+                },
+                "RetailId": "12345678",
+                "DigitalId": "12345678",
+                "DigitalUsername": "userjohn33",
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "FirstRegisteredClubNumber": "45611",
+                "IsDeceased": false,
+                "Nationality": "GB",
+                "Occupation": "Clerk",
+                "PopfAgreedDate": "2016-09-12",
+                "PopfVersionDate": "2016-01-01",
+                "VipGrade": "Black"
+            }
+
 + Response 204 (application/json)
 
 + Response 500 (application/json)
@@ -359,52 +340,40 @@ This API will be called when a customer has had a new retail account created. Th
     + Body
     
             {
-              "Individual": {
-               "PartyAddresses": [
-                {
-                    "AddressType": "Mobile",
-                    "Telephone": "456456456",
-                    "AllowedMarketingContact": [
-                      "SMS",
-                      "Telephone"
-                    ]
-                  },
-                  {
-                    "AddressType": "Primary",
-                    "Email": "something@test.com",
-                    "AllowedMarketingContact": [
-                      "Email"
-                    ]
-                  },
-                  {
-                    "AddressType": "Residential",
-                    "Address": {
-                      "BuildingNumber": "76",
-                      "Street": "Street Terrace",
-                      "Postcode": "SE97 6MR",
-                      "Country": {
-                        "CountryCode3": "GBR"
-                      }
-                    }
-                  }
-                ],
-                "Title": "Mr",
-                "FirstName": "Testy",
-                "LastName": "McTest",
-                "DateOfBirth": "1974-07-18T00:00:00Z",
-                "Gender": "M"
-              },
-              "Memberships": [
-                {
-                  "MembershipSource": {
-                    "SystemName": "NEON",
-                    "SystemKey": "123456788",
-                    "SystemCreateDate": "2016-02-28T23:20:50.52Z"
-                  },
-                  "MembershipStartDate": "2016-02-28T23:20:50.52Z"
-                  ]
-                }
-              ]
+                "Name": {
+                    "Title": "Mr",
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson"
+                },
+                "Address": {
+                    "Line1": "Flat 57",
+                    "Line2": "10 Downing Street",
+                    "Town": "London",
+                    "Postcode": "WC2B 4AA",
+                    "County": "Greater London",
+                    "Country": "United Kingdom",
+                    "CountryCode3": "GBR"
+                },
+                "ContactDetails": {
+                    "HomePhone": "01234567890",
+                    "BusinessPhone": "01234567890",
+                    "MobilePhone": "01234567890",
+                    "Email": "jack@rank.com"
+                },
+                "AllowedMarketingContacts": {
+                    "IsHomeContactallowed": true,
+                    "IsMobileContactAllowed": true,
+                    "IsEmailContactAllowed": true,
+                    "IsSMSContactAllowed": true
+                },
+                "RetailId": "12345678",
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "FirstRegisteredClubNumber": "45611",
+                "Nationality": "GB",
+                "Occupation": "Clerk",
+                "VipGrade": "Black"
             }
 
 + Response 200 (application/json)
@@ -446,47 +415,46 @@ This API will be called when a customer has an existing retail or digital accoun
 + Response 200 (application/json)
 
             {
-                "CanCreateSAW" : "true",
-                "CanEnterClub" : "true",
+                "CanCreateSAW" : true,
+                "CanEnterClub" : true,
                 "DigitalAccountCount" : 0,
-                "customernumbers" : [
-                    12345, 
-                    67890
+                "RetailAccountIds" : [
+                    "12345678", 
+                    "87654321"
                 ],
                 "GoldenRecord" : {
-                   "PartyAddresses": [
-                {
-                    "AddressType": "Mobile",
-                    "Telephone": "456456456",
-                    "AllowedMarketingContact": [
-                      "SMS",
-                      "Telephone"
-                    ]
-                  },
-                  {
-                    "AddressType": "Primary",
-                    "Email": "something@test.com",
-                    "AllowedMarketingContact": [
-                      "Email"
-                    ]
-                  },
-                  {
-                    "AddressType": "Residential",
+                   "Name": {
+                        "Title": "Mr",
+                        "FirstName": "John",
+                        "MiddleName": "Dan",
+                        "LastName": "Jackson"
+                    },
                     "Address": {
-                      "BuildingNumber": "76",
-                      "Street": "Street Terrace",
-                      "Postcode": "SE97 6MR",
-                      "Country": {
+                        "Line1": "Flat 57",
+                        "Line2": "10 Downing Street",
+                        "Town": "London",
+                        "Postcode": "WC2B 4AA",
+                        "County": "Greater London",
+                        "Country": "United Kingdom",
                         "CountryCode3": "GBR"
-                      }
-                    }
-                  }
-                ],
-                "Title": "Mr",
-                "FirstName": "Testy",
-                "LastName": "McTest",
-                "DateOfBirth": "1974-07-18T00:00:00Z",
-                "Gender": "M"
+                    },
+                    "ContactDetails": {
+                        "HomePhone": "01234567890",
+                        "BusinessPhone": "01234567890",
+                        "MobilePhone": "01234567890",
+                        "Email": "jack@rank.com"
+                    },
+                    "AllowedMarketingContacts": {
+                        "IsHomeContactallowed": true,
+                        "IsMobileContactAllowed": true,
+                        "IsEmailContactAllowed": true,
+                        "IsSMSContactAllowed": true
+                    },
+                    "DateOfBirth": "1955-01-30",
+                    "Gender": "M",
+                    "Nationality": "GB",
+                    "Occupation": "Clerk",
+                    "VipGrade": "Black"
                 },
                 "RejectionReasons" : [
                     {
@@ -575,41 +543,37 @@ Api to update an existing customers information once they have been identified a
     + Body
     
             {
-                "Individual": {
-                       "PartyAddresses": [
-                        {
-                            "AddressType": "Mobile",
-                            "Telephone": "456456456",
-                            "AllowedMarketingContact": [
-                              "SMS",
-                              "Telephone"
-                            ]
-                          },
-                          {
-                            "AddressType": "Primary",
-                            "Email": "something@test.com",
-                            "AllowedMarketingContact": [
-                              "Email"
-                            ]
-                          },
-                          {
-                            "AddressType": "Residential",
-                            "Address": {
-                              "BuildingNumber": "76",
-                              "Street": "Street Terrace",
-                              "Postcode": "SE97 6MR",
-                              "Country": {
-                                "CountryCode3": "GBR"
-                              }
-                            }
-                          }
-                        ],
+                "Name": {
                     "Title": "Mr",
-                    "FirstName": "Joe",
-                    "LastName": "Bloggs",
-                    "DateOfBirth": "1977-02-10T00:00:00Z",
-                    "Gender": "M"
-                  }
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson"
+                },
+                "Address": {
+                    "Line1": "Flat 57",
+                    "Line2": "10 Downing Street",
+                    "Town": "London",
+                    "Postcode": "WC2B 4AA",
+                    "County": "Greater London",
+                    "Country": "United Kingdom",
+                    "CountryCode3": "GBR"
+                },
+                "ContactDetails": {
+                    "HomePhone": "01234567890",
+                    "BusinessPhone": "01234567890",
+                    "MobilePhone": "01234567890",
+                    "Email": "jack@rank.com"
+                },
+                "AllowedMarketingContacts": {
+                    "IsHomeContactallowed": true,
+                    "IsMobileContactAllowed": true,
+                    "IsEmailContactAllowed": true,
+                    "IsSMSContactAllowed": true
+                },
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "Nationality": "GB",
+                "Occupation": "Clerk"
             }
 
 + Response 200 (application/json)
@@ -659,7 +623,6 @@ Api to update an existing customers information once they have been identified a
             }
 
 
-
 ## Upgrade to SAW [/customers/{partyId}/memberships]
 
 ### Scope: staffUpgradeCustomer [POST]
@@ -680,10 +643,8 @@ This API will be called when a customer has an existing retail and either has an
     + Body
     
             {
-                "Security": {
-                    "Pin": 1234,
-                    "Username" : "DigitalUsername"
-                }
+                "Pin": 1234,
+                "DigitalUsername" : "johnSilver777"
             }
 
 + Response 200 (application/json)
@@ -749,7 +710,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
     + Body  
             
             {
-                "VersionDate": "Bad behaviour",
+                "VersionDate": "2016-01-30",
                 "AgreedDate": "2016-01-30",
                 "AgreementType": "PoPF"
             }
@@ -810,7 +771,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Reason": "Bad behaviour",
                 "From": "2016-01-30",
                 "To": "2016-01-30",
-                "Site": 121212312,
+                "Site": "12345",
                 "Type": "SelfExcluded"
             }
            
@@ -819,7 +780,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/123456/memberships/RES:111222333/finances/wallets/withdraw?transactionId=000000001-001"
+                        "Href": "/customers/suspensions/123456"
                     },
                     "ViewBalance": {
                         "Href": "/customers/123456/memberships/RES:111222333/finances"
@@ -859,7 +820,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Reason": "Bad behaviour",
                 "From": "2016-01-30",
                 "To": "2016-01-30",
-                "Site": 121212312,
+                "Site": "12345",
                 "Type": "SelfExcluded"
             }
            
