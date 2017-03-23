@@ -245,7 +245,6 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                         "AllowedScopes": "onbehalfAddCard"
                     }
                 }
-                }
             }
 
 + Response 200 (application/json)
@@ -272,10 +271,10 @@ This endpoint is a replacement for the existing Grosvenor Customer look service 
 Model for the resource if defined below:
 | Name                  | Type      | Required      | Description                                                                          |Example        |
 |:---                   |:---       |:---           |:---                                                                                  |:---           |
-|Name.Title             |string[25] |**yes**         |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
-|Name.Forename          |string[40] |**yes**         |                                                                                      |"John"         |
-|Name.MiddleName        |string[40] |**optional**    |                                                                                      |"Dan"          |
-|Name.Surname           |string[40] |**yes**         |                                                                                      |"Jackson"      |
+|Title             |string[25] |**yes**         |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
+|Forename          |string[40] |**yes**         |                                                                                      |"John"         |
+|MiddleName        |string[40] |**optional**    |                                                                                      |"Dan"          |
+|Surname           |string[40] |**yes**         |                                                                                      |"Jackson"      |
 |Address.Address1       |string[?]  |**yes**         |                                                                                      |"Flat 2, 10 Downing Street"        |
 |Address.Town           |string[?]  |**yes**         |                                                                                      |"London"       |
 |Address.Postcode       |string[?]  |**yes**         |                                                                                      |"WC2B 4AA"     |
@@ -343,12 +342,22 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
 + Response 200 (application/json)
 
             {
-                "Name": {
-                    "Title": "Mr",
-                    "FirstName": "John",
-                    "MiddleName": "Dan",
-                    "LastName": "Jackson"
-                },
+                "Title": "Mr",
+                "FirstName": "John",
+                "MiddleName": "Dan",
+                "LastName": "Jackson",
+                "RetailId": "12345678",
+                "DigitalId": "12345678",
+                "DigitalUsername": "johnSilver777",
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "FirstRegisteredClubNumber": "45611",
+                "IsDeceased": false,
+                "Nationality": "GB",
+                "Occupation": "Clerk",
+                "PopfAgreedDate": "2016-09-12",
+                "PopfVersionDate": "2016-01-01",
+                "VipGrade": "Black",
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
@@ -369,19 +378,7 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
                     "IsMobileContactAllowed": true,
                     "IsEmailContactAllowed": true,
                     "IsSMSContactAllowed": true
-                },
-                "RetailId": "12345678",
-                "DigitalId": "12345678",
-                "DigitalUsername": "johnSilver777",
-                "DateOfBirth": "1955-01-30",
-                "Gender": "M",
-                "FirstRegisteredClubNumber": "45611",
-                "IsDeceased": false,
-                "Nationality": "GB",
-                "Occupation": "Clerk",
-                "PopfAgreedDate": "2016-09-12",
-                "PopfVersionDate": "2016-01-01",
-                "VipGrade": "Black"
+                }
             }
 
 + Response 204 (application/json)
@@ -411,12 +408,14 @@ This API is to update an existing customers information once they have been iden
     + Body
     
             {
-                "Name": {
-                    "Title": "Mr",
-                    "FirstName": "John",
-                    "MiddleName": "Dan",
-                    "LastName": "Jackson"
-                },
+                "Title": "Mr",
+                "FirstName": "John",
+                "MiddleName": "Dan",
+                "LastName": "Jackson",
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "Nationality": "GB",
+                "Occupation": "Clerk",
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
@@ -437,11 +436,17 @@ This API is to update an existing customers information once they have been iden
                     "IsMobileContactAllowed": true,
                     "IsEmailContactAllowed": true,
                     "IsSMSContactAllowed": true
-                },
-                "DateOfBirth": "1955-01-30",
-                "Gender": "M",
-                "Nationality": "GB",
-                "Occupation": "Clerk"
+                }
+            }
+            
++ Response 200 (application/json)
+
+            {
+                "_Links": {
+                    "Journeys": {
+                        "Href": "/journeys"
+                    }
+                }
             }
             
 + Response 424 (application/json)
@@ -484,12 +489,17 @@ This API will be called when a customer has had a new retail account created. Th
     + Body
     
             {
-                "Name": {
-                    "Title": "Mr",
-                    "FirstName": "John",
-                    "MiddleName": "Dan",
-                    "LastName": "Jackson"
-                },
+                "Title": "Mr",
+                "FirstName": "John",
+                "MiddleName": "Dan",
+                "LastName": "Jackson",
+                "RetailId": "12345678",
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "FirstRegisteredClubNumber": "45611",
+                "Nationality": "GB",
+                "Occupation": "Clerk",
+                "VipGrade": "Black",
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
@@ -510,22 +520,14 @@ This API will be called when a customer has had a new retail account created. Th
                     "IsMobileContactAllowed": true,
                     "IsEmailContactAllowed": true,
                     "IsSMSContactAllowed": true
-                },
-                "RetailId": "12345678",
-                "DateOfBirth": "1955-01-30",
-                "Gender": "M",
-                "FirstRegisteredClubNumber": "45611",
-                "Nationality": "GB",
-                "Occupation": "Clerk",
-                "VipGrade": "Black"
+                }
             }
 
-+ Response 200
++ Response 200 (application/json)
 
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/{identifier}/upgradeToSaw",
-                        "Method": "POST",
+                        "Href": "/customers/{identifier}/canCreateSaw",
                         "AllowedScopes": "staffUpgradeCustomer"
                     }
                 }
@@ -571,12 +573,15 @@ This API will be called when a customer has an existing retail or digital accoun
                     "87654321"
                 ],
                 "GoldenRecord" : {
-                   "Name": {
-                        "Title": "Mr",
-                        "FirstName": "John",
-                        "MiddleName": "Dan",
-                        "LastName": "Jackson"
-                    },
+                    "Title": "Mr",
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson",
+                    "DateOfBirth": "1955-01-30",
+                    "Gender": "M",
+                    "Nationality": "GB",
+                    "Occupation": "Clerk",
+                    "VipGrade": "Black",
                     "Address": {
                         "Line1": "Flat 57",
                         "Line2": "10 Downing Street",
@@ -597,12 +602,7 @@ This API will be called when a customer has an existing retail or digital accoun
                         "IsMobileContactAllowed": true,
                         "IsEmailContactAllowed": true,
                         "IsSMSContactAllowed": true
-                    },
-                    "DateOfBirth": "1955-01-30",
-                    "Gender": "M",
-                    "Nationality": "GB",
-                    "Occupation": "Clerk",
-                    "VipGrade": "Black"
+                    }
                 },
                 "RejectionReasons" : [
                     {
@@ -653,11 +653,12 @@ This API will be called when a customer has an existing retail or digital accoun
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/canCreateSaw"
                     },
                     "UpgradeToSaw": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw",
+                        "Method": "POST",
+                        "AllowedScopes": "staffUpgradeCustomer"
                     }
                 }
             }
-
 
 + Response 400 (application/json)
 
@@ -704,7 +705,7 @@ This API will be called when a customer has an existing retail and either has an
           
            {
                 "_Links": {
-                    "Self": {
+                    "Journeys": {
                         "Href": "/journeys"
                     }
                 }
@@ -756,7 +757,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
                 "AgreementType": "PoPF"
             }
 
-+ Response 201 (application/json)
++ Response 204 (application/json)
 
 + Response 424 (application/json)
 
@@ -772,7 +773,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
 
 ## Suspensions [/customers/{identifier}/suspensions]
 
-### Get Suspension [GET]
+### Get Suspensions [GET]
 
 **Allowed scopes**: staffSetAccountSuspension
 
@@ -800,45 +801,57 @@ Get all suspension information for a single customer
            
 + Response 200 (application/json)
   
-           {    Suspensions [
+           {    
+                [
                     {
                         "Reason": "SelfExcluded",
                         "From": "2016-01-30",
                         "To": "2016-06-30",
                         "Site": "",
                         "Type": "SelfExcluded",
-                        "_Links": { [
-                             "Self": {
-                                    "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
-                             "Put": {
-                                    "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                                     "Method": "PUT",
-                                    "AllowedScopes": "staffSetAccountSuspension"
-                             "Delete": {
-                                    "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                                     "Method": "DELETE",
-                                    "AllowedScopes": "staffSetAccountSuspension"
-                            ]}
-                        },
+                        "_Links": {
+                            "UpdateSuspension": {
+                                "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Method": "PUT",
+                                "AllowedScopes": "staffSetAccountSuspension"
+                            },
+                            "DeleteSuspension": {
+                                "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Method": "DELETE",
+                                "AllowedScopes": "staffSetAccountSuspension"
+                            }
+                        }
+                    },
+                    {
                         "Reason": "Bad behaviour",
                         "From": "2016-01-30",
                         "To": "2016-02-30",
                         "Site": "67891",
                         "Type": "Suspended",
-                        "_Links": { [
-                             "Self": {
-                                    "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
-                             "Put": {
-                                    "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                                     "Method": "PUT",
-                                    "AllowedScopes": "staffSetAccountSuspension"
-                             "Delete": {
-                                    "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                                     "Method": "DELETE",
-                                    "AllowedScopes": "staffSetAccountSuspension"
-                            ]}
+                        "_Links": {
+                            "UpdateSuspension": {
+                                "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Method": "PUT",
+                                "AllowedScopes": "staffSetAccountSuspension"
+                            },
+                            "DeleteSuspension": {
+                                "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Method": "DELETE",
+                                "AllowedScopes": "staffSetAccountSuspension"
+                            }
                         }
-                ]
+                    }
+                ],
+                "_Links": {
+                     "Self": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions"
+                    },
+                    "AddSuspension": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                         "Method": "POST",
+                        "AllowedScopes": "staffSetAccountSuspension"
+                    }       
+                }
             }
 
 + Response 400 (application/json)
@@ -878,7 +891,19 @@ To update customer profile as barred/suspended by the SAW staff member by select
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                        "Method": "POST",
+                        "AllowedScopes": "staffSetAccountSuspension"
+                    },
+                    "UpdateSuspension": {
+                        "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "PUT",
+                        "AllowedScopes": "staffSetAccountSuspension"
+                    },
+                    "DeleteSuspension": {
+                        "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "DELETE",
+                        "AllowedScopes": "staffSetAccountSuspension"
                     }
                 }
             }
@@ -889,7 +914,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Message": "Not a SAW customer"
             }
 
-### Update Suspension [PUT]
+### Update Suspension [PUT /customers/suspensions/{identifier}]
 
 **Allowed scopes**: staffSetAccountSuspension
 
@@ -931,7 +956,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Message": "Not a SAW customer"
             }
  
-### Remove Suspension [DELETE]
+### Remove Suspension [DELETE /customers/suspensions/{identifier}]
 
 **Allowed scopes**: staffRemoveAccountSuspension
 
@@ -947,7 +972,7 @@ To update customer profile by removing the barred/suspended status
             Authorization: Bearer (client credential token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
-+ Response 201 (application/json)
++ Response 204 (application/json)
 
 + Response 400 (application/json)
 
@@ -970,21 +995,29 @@ Allows registered customers get all assoicated cards
             Authorization: Bearer (resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     
-+ Response 200
++ Response 200 (application/json)
     
-            {   Cards [
-                "CardNumber" : 123123123,
+            {
+                [
+                    "CardNumber" : 123123123,
+                    "_Links": {
+                        "UpdateMembershipCard": {
+                            "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                            "Method": "PUT",
+                            "AllowedScopes": "staffUpdateCustomerPersonal"
+                        }
+                    }
+                ],
                 "_Links": {
                     "Self": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards"
                     },
-                     "PUT": {
-                        "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                         "Method": "PUT",
-                        "AllowedScopes": "staffUpdateCustomerPersonal"
+                    "RegisterCard": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Method": "POST",
+                        "AllowedScopes": "onbehalfAddCard"
                     }
                 }
-                ]
             }
             
 + Response 424 (application/json)
@@ -1015,11 +1048,21 @@ Allows registered customers to add new or additional cards
     + Body
     
             {
-                "CardNumber" : 123123123,
+                "CardNumber" : 123123123
+            }
+            
++ Response 200 (application/json)
+
+           {
                 "_Links": {
                     "Self": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Method": "POST",
+                        "AllowedScopes": "onbehalfAddCard"
+                    },
+                    "UpdateMembershipCard": {
                         "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                         "Method": "PUT",
+                        "Method": "PUT",
                         "AllowedScopes": "staffUpdateCustomerPersonal"
                     }
                 }
@@ -1037,7 +1080,7 @@ Allows registered customers to add new or additional cards
                 "Message": "Internal Error"
             }
             
-### Update Card Status [PUT]
+### Update Card Status [PUT /customers/membershipCards/{identifier}]
 
 **Allowed scopes**: onbehalfUpdateCard
 
@@ -1055,7 +1098,12 @@ Allows registered customers to update the card status
     + Body
     
             {
-                "Status" : "Lost",
+                "Status" : "Lost"
+            }
+
++ Response 200 (application/json)
+
+           {
                 "_Links": {
                     "Self": {
                         "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
@@ -1144,21 +1192,21 @@ This API will be return amount of funds available in SAW wallets along with spec
 
             {
                 "Balances": {
-                  "TotalCash": 1000.00,
-                  "TotalDigital": 500.00,
-                  "TotalRetail": 700.00,
-                  "AvailableToWithdraw": 600.00,
-                  "AvailableToTransferToRetailGame": 0.00
+                    "TotalCash": 1000.00,
+                    "TotalDigital": 500.00,
+                    "TotalRetail": 700.00,
+                    "AvailableToWithdraw": 600.00,
+                    "AvailableToTransferToRetailGame": 0.00
                 },
                 "Limits": [
-                  {
-                    "Name": "TacticalWithdrawalLimit",
-                    "RemainingAmount": 100.00
-                  },
-                  {
-                    "Name": "TacticalDepositLimit",
-                    "RemainingAmount": 350.00
-                  }
+                    {
+                        "Name": "TacticalWithdrawalLimit",
+                        "RemainingAmount": 100.00
+                    },
+                    {
+                        "Name": "TacticalDepositLimit",
+                        "RemainingAmount": 350.00
+                    }
                 ],
                 "Wallets": [
                     {
@@ -1454,8 +1502,8 @@ All `Details` fields are optional and will be provided only if available in the 
             {
                 "Status": "Succeeded",
                 "Details" : {
-                    "CustomerNumber": "12345678",
-                    "PlayerId": 519490721066127360,
+                    "RetailId": "12345678",
+                    "DigitalId": 519490721066127360,
                     "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
                 },
                 "_Links": {
@@ -1470,8 +1518,8 @@ All `Details` fields are optional and will be provided only if available in the 
             {
                 "Status": "Undetermined",
                 "Details" : {
-                    "CustomerNumber": "12345678",
-                    "PlayerId": 519490721066127360,
+                    "RetailId": "12345678",
+                    "DigitalId": 519490721066127360,
                     "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
                 },
                 "_Links": {
@@ -1486,8 +1534,8 @@ All `Details` fields are optional and will be provided only if available in the 
             {
                 "Status": "Failed",
                 "Details" : {
-                    "CustomerNumber": "12345678",
-                    "PlayerId": 519490721066127360,
+                    "RetailId": "12345678",
+                    "DigitalId": 519490721066127360,
                     "TransferId": "ccef74ff-414a-4a65-b961-eccb245927f8"
                 },
                 "_Links": {
