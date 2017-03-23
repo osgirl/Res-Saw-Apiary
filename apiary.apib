@@ -13,6 +13,52 @@ be supplied as `X-Correlation-Token` HTTP header to every request to RES API. It
 unique for each request in scope of the same client. The correlation token's uniqueness
 is guaranteed by the client.
 
+# HATEOAS
+
+This RESTful API has been design with HATEOAS (Hypermedia As The Engine Of Application State) constraint in mind.
+A payload with a set of suggested links is returned as a part of each resource in the response, where it's possible.
+
+In case an initial set of available links is required, a special `/journeys` endpoint has to be called.
+Depending on the access token and parameters supplied, the endpoint will return the links available to the consumer.
+
+For example:
+```
+    {
+        "_Links": {
+            "ViewBalance": {
+                "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                "Method": "GET",
+                "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
+            }
+        }
+    }
+```
+
+The following is a table of all possible URIs with the corresponding HTTP verbs and allowed scopes defined in the API:
+
+|Link name|Href|Method|Allowed Scopes|
+|---------|---|---------|--------------|
+|Self|Refers to the resource it's attached to|
+|Journeys|/journeys|GET|any|
+|SearchCustomerByMembershipCard|/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}|GET|readonlyCustomerSearch|
+|UpdateCustomer|/customers/{identifier}|PUT|staffUpdateCustomerPersonal|
+|RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
+|CanCreateSaw|/customers/{identifier}/canCreateSaw|GET|staffUpgradeCustomer|
+|UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer|
+|GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
+|AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
+|UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
+|RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
+|GetMembershipCards|/customers/{identifier}/membershipCards|GET|onbehalfAddCard|
+|RegisterMembershipCard|/customers/{identifier}/membershipCards|POST|onbehalfAddCard|
+|UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|onbehalfAddCard|
+|UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerPopf|
+|RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|onbehalfRequestChangePin|
+|ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
+|Deposit|/customers/{identifier}/finances/transactions/{transactionId}/deposit|POST|clientWalletDeposit<br/>onbehalfWalletDeposit|
+|Withdraw|/customers/{identifier}/finances/transactions/{transactionId}/withdraw|POST|clientWalletWithdraw<br/>onbehalfWalletWithdraw|
+|GetTransactionStatus|/transactions/{transactionId}|GET|staffWalletGetTransactionStatus|
+
 # Authentication
 
 RES API authentication uses OpenID connect for identity, aligned with the [OAuth2](http://oauth.net/2/) protocol. 
@@ -213,7 +259,7 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                     "Withdraw": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/wallets/deposit{?transactionId}"
                     },
-                    "ChangePin": {
+                    "RequestPinChange": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication"
                     },
                     "UpdateCustomer": {
@@ -221,16 +267,16 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                         "Method": "PUT",
                         "AllowedScopes": "staffUpdateCustomerPersonal"
                     },
-                    "UpdateAgreements": {
+                    "UpdateAgreement": {
                         "Href": "/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": "staffUpdateCustomerPopf"
                     },
-                    "GetCards": {
+                    "GetMembershipCards": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"/membershipCards,
                         "AllowedScopes": "onbehalfAddCard"
                     },
-                    "RegisterCard": {
+                    "RegisterMembershipCard": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"/membershipCards,
                         "Method": "POST",
                         "AllowedScopes": "onbehalfAddCard"
@@ -500,13 +546,15 @@ This API will be called when a customer has had a new retail account created. Th
             }
 
 + Response 200 (application/json)
-
+    
+            {
                 "_Links": {
-                    "Self": {
+                    "CanCreateSaw": {
                         "Href": "/customers/{identifier}/canCreateSaw",
                         "AllowedScopes": "staffUpgradeCustomer"
                     }
                 }
+            }
                 
 + Response 400 (application/json)
 
@@ -671,7 +719,7 @@ This API will be called when a customer has an existing retail and either has an
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
-    
+
             {
                 "Pin": 1234,
                 "DigitalUsername" : "johnSilver777"
@@ -679,7 +727,7 @@ This API will be called when a customer has an existing retail and either has an
 
 + Response 200 (application/json)
           
-           {
+            {
                 "_Links": {
                     "Journeys": {
                         "Href": "/journeys"
@@ -707,7 +755,7 @@ This API will be called when a customer has an existing retail and either has an
 
 ## Agreements [/customers/agreements/{identifier}]
 
-### Update Agreements [PUT]
+### Update Agreement [PUT]
 
 **Allowed scopes**: staffUpdateCustomerPopf
 
@@ -778,7 +826,7 @@ Get all suspension information for a single customer
 + Response 200 (application/json)
   
            {    
-                [
+                "Suspensions": [
                     {
                         "Reason": "SelfExcluded",
                         "From": "2016-01-30",
@@ -826,7 +874,7 @@ Get all suspension information for a single customer
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                          "Method": "POST",
                         "AllowedScopes": "staffSetAccountSuspension"
-                    }       
+                    }
                 }
             }
 
@@ -876,7 +924,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
                         "Method": "PUT",
                         "AllowedScopes": "staffSetAccountSuspension"
                     },
-                    "DeleteSuspension": {
+                    "RemoveSuspension": {
                         "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "DELETE",
                         "AllowedScopes": "staffSetAccountSuspension"
@@ -988,7 +1036,7 @@ Allows registered customers get all assoicated cards
                     "Self": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards"
                     },
-                    "RegisterCard": {
+                    "RegisterMembershipCard": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
                         "AllowedScopes": "onbehalfAddCard"
@@ -1277,7 +1325,7 @@ Any failure will be reported back 500 - server error.
                     "Withdraw": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
                     },
-                    "TransactionStatus": {
+                    "GetTransactionStatus": {
                         "Href": "/transactions/000000001-001"
                     }
                 }
@@ -1300,7 +1348,7 @@ Any failure will be reported back 500 - server error.
                     "Withdraw": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
                     },
-                    "TransactionStatus": {
+                    "GetTransactionStatus": {
                         "Href": "/transactions/000000001-001"
                     }
                 }
@@ -1385,7 +1433,7 @@ Any failure will be reported back 500 - server error.
                     "Deposit": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
                     },
-                    "TransactionStatus": {
+                    "GetTransactionStatus": {
                         "Href": "/transactions/000000001-001"
                     }
                 }
@@ -1408,7 +1456,7 @@ Any failure will be reported back 500 - server error.
                     "Deposit": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
                     },
-                    "TransactionStatus": {
+                    "GetTransactionStatus": {
                         "Href": "/transactions/000000001-001"
                     }
                 }
