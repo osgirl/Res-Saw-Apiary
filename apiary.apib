@@ -1289,15 +1289,7 @@ This API will be return amount of funds available in SAW wallets along with spec
 
 **Allowed scopes**: `clientWalletTransfer`, `onbehalfWalletTransfer`
 
-If the transaction breaches the responsible gambling limits set by customer, then the transaction would faile and RES will return an error message. 
-If current request breaches any AML/Fraud deposit limit, RES will store overflow funds to "pending" wallet, this will be mentioned in the response message.
-If no limits are set or request within the limits, RES will process the transaction with AML/Fraud engine and limits/balance engine in "all-or-nothing" fashion. 
-Any failure will be reported back 500 - server error.
-
-Customer will be asked to authenticate the transaction by entering the PIN number. 
-If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
-If no limits are set or request within the limits, RES will process the transaction with AML/Fraud engine and limits/balance engine in "all-or-nothing" fashion. 
-Any failure will be reported back 500 - server error.
+This API endpoint is used for transfers such as placing funds into SAW (deposits and cashouts from retail games) and removed funds from SAW (withdrawals and transfers to retail games).
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
