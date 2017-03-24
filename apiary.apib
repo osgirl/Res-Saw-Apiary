@@ -55,9 +55,8 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerPopf|
 |RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|onbehalfRequestChangePin|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
-|Deposit|/customers/{identifier}/finances/transactions/{transactionId}/deposit|POST|clientWalletDeposit<br/>onbehalfWalletDeposit|
-|Withdraw|/customers/{identifier}/finances/transactions/{transactionId}/withdraw|POST|clientWalletWithdraw<br/>onbehalfWalletWithdraw|
-|GetTransactionStatus|/transactions/{transactionId}|GET|staffWalletGetTransactionStatus|
+|Transfer|/customers/{identifier}/finances/transfers/{transactionId}|POST|clientWalletTransfer<br/>onbehalfWalletTransfer|
+|GetWalletTransactionStatus|/transactions/{transactionId}|GET|staffWalletGetTransactionStatus|
 
 # Authentication
 
@@ -73,6 +72,20 @@ All requests to RES resources require the client application to provide an appro
 ```
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSIsImtpZCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSJ9.eyJjbGllbnRfaWQiOiJiZWRlLWdyb3N2ZW5vci1jbXMiLCJzY29wZSI6InJlYWRfZ3Jvc3Zlbm9ybG95YWx0eSIsImlzcyI6Imh0dHBzOi8vaWRzcnYzLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRzcnYzLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE0MzU5Mzk5NzQsIm5iZiI6MTQzNTkzOTYxNH0.nGLoo8B_enlzdY2OX_sf0d1IEGbAUOL8E_-Dl94owI_rnxRrtvumz6fIGx8L5hTXzl8-GlM0Edfb3fe9cD49JDUbWuh0fYnBTjj4SnALv6DSmYSFHeDBkbbbzwI4QVuERblfeGB04ZAEDCjZlLoL4uly-lE8Oq2E150R83u43i8zDfYqKpPp1D5rvhOvdnOg4q3coICHqGkFzsg_0wfEwaYUgc2AWCuyy7ry4pEnV8cg7BVA3GOldkY5jsE062SP4T-N-UjzKd3Lz1KG0bBYZPfJ2CwV2oTgTnwEAkubIqdfYLm_bXMz8sQwm4I_V22qMDhavYwYBhFp1vQdWoYD2A
 ```
+
+<a name="scopes"></a>
+## Scopes
+
+In order to access any resource provided by RES, the client should provide a token of a certain type obtained for appropriate scopes.
+The relation between resources and allowed scopes is reflected in each endpoint's description.
+The following table explains what should be supplied as a part of auth server request in order to get a token with a particular scope issued.
+
+|Authentication type|Token type|Required parameters|Available scopes|
+|-------------------|----------|-------------------|----------------|
+|Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
 ### Token validation
 Access tokens are fully signed [Json Web Tokens](http://jwt.io/) and should be validated by the client. Many libraries exist for all platforms that support validating tokens. The details of RES's authentication certificates used to sign token are documented below under the core resoure.
@@ -183,20 +196,6 @@ grant_type=refresh_token
 }
 ```
 
-<a name="scopes"></a>
-## Scopes
-
-In order to access any resource provided by RES, the client should provide a token of a certain type obtained for appropriate scopes.
-The relation between resources and allowed scopes is reflected in each endpoint's description.
-The following table explains what should be supplied as a part of auth server request in order to get a token with a particular scope issued.
-
-|Authentication type|Token type|Required parameters|Available scopes|
-|-------------------|----------|-------------------|----------------|
-|Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientChangePin <br/>clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
-
 ## Authentication flow
 
 The following diagram depicts the sequence of interactions between client and the main RES components in context of authentication process:
@@ -253,11 +252,8 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                     "ViewBalance": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
-                    "Deposit": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
-                    },
-                    "Withdraw": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
+                    "Transfer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
                     },
                     "RequestPinChange": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication"
@@ -1265,11 +1261,8 @@ This API will be return amount of funds available in SAW wallets along with spec
                     "Self": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
-                    "Deposit": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
-                    },
-                    "Withdraw": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
+                    "Transfer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
                     }
                 }
             }
@@ -1292,21 +1285,27 @@ This API will be return amount of funds available in SAW wallets along with spec
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-### Deposit [POST /customers/{identifier}/finances/transactions/{transactionId}/deposit]
+### Transfer [POST /customers/{identifier}/finances/transfers/{transactionId}]
 
-**Allowed scopes**: `clientWalletDeposit`, `onbehalfWalletDeposit`
+**Allowed scopes**: `clientWalletTransfer`, `onbehalfWalletTransfer`
 
 If the transaction breaches the responsible gambling limits set by customer, then the transaction would faile and RES will return an error message. 
 If current request breaches any AML/Fraud deposit limit, RES will store overflow funds to "pending" wallet, this will be mentioned in the response message.
 If no limits are set or request within the limits, RES will process the transaction with AML/Fraud engine and limits/balance engine in "all-or-nothing" fashion. 
-Any failure will be reported back 500 - server error. 
+Any failure will be reported back 500 - server error.
 
+Customer will be asked to authenticate the transaction by entering the PIN number. 
+If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
+If no limits are set or request within the limits, RES will process the transaction with AML/Fraud engine and limits/balance engine in "all-or-nothing" fashion. 
+Any failure will be reported back 500 - server error.
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
     + transactionId: `000000001-001` (string, required)
 
 + Request (application/json)
+
+    Place funds into SAW
 
     + Headers 
             
@@ -1316,7 +1315,26 @@ Any failure will be reported back 500 - server error.
     + Body
     
             {
-                "Amount": 100
+                "Withdraw": {
+                    "Amount": 100
+                }
+            }
+
++ Request (application/json)
+
+    Remove funds from SAW
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "Deposit": {
+                    "Amount": 100
+                }
             }
 
 + Response 200 (application/json)
@@ -1328,15 +1346,15 @@ Any failure will be reported back 500 - server error.
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/deposit"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001"
                     },
                     "ViewBalance": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
-                    "Withdraw": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
+                    "Transfer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
                     },
-                    "GetTransactionStatus": {
+                    "GetWalletTransactionStatus": {
                         "Href": "/transactions/000000001-001"
                     }
                 }
@@ -1351,15 +1369,15 @@ Any failure will be reported back 500 - server error.
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/deposit"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001"
                     },
                     "ViewBalance": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
-                    "Withdraw": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
+                    "Transfer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
                     },
-                    "GetTransactionStatus": {
+                    "GetWalletTransactionStatus": {
                         "Href": "/transactions/000000001-001"
                     }
                 }
@@ -1368,7 +1386,19 @@ Any failure will be reported back 500 - server error.
 + Response 400 (application/json)
 
             {
+                "Message": "The requested amount exceeds available funds"
+            }
+            
++ Response 400 (application/json)
+
+            {
                 "Message": "The specified amount exceeds tactical deposit limit"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "The requested amount exceeds tactical withdrawal limit"
             }
 
 + Response 400 (application/json)
@@ -1401,121 +1431,13 @@ Any failure will be reported back 500 - server error.
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-### Withdraw [POST /customers/{identifier}/finances/transactions/{transactionId}/withdraw]
-
-**Allowed scopes**: `clientWalletWithdraw`, `onbehalfWalletWithdraw`
-
-Customer will be asked to authenticate the transaction by entering the PIN number. 
-If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
-If no limits are set or request within the limits, RES will process the transaction with AML/Fraud engine and limits/balance engine in "all-or-nothing" fashion. 
-Any failure will be reported back 500 - server error. 
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
-    + transactionId: `000000001-001` (string, required)
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "Amount": 100
-            }
-
-+ Response 200 (application/json)
-
-    Transaction successfully processed
-    
-    + Body
-    
-            {
-                "_Links": {
-                    "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/withdraw"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
-                    },
-                    "Deposit": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
-                    },
-                    "GetTransactionStatus": {
-                        "Href": "/transactions/000000001-001"
-                    }
-                }
-            }
-
-+ Response 202 (application/json)
-
-    Undetermined state of transaction
-    
-    + Body
-    
-            {
-                "_Links": {
-                    "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/000000001-001/withdraw"
-                    },
-                    "ViewBalance": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
-                    },
-                    "Deposit": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
-                    },
-                    "GetTransactionStatus": {
-                        "Href": "/transactions/000000001-001"
-                    }
-                }
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "The requested amount exceeds available funds"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "The requested amount exceeds tactical withdrawal limit"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "The specified amount is invalid"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Couldn't process the transaction. {System X} is unavailable."
-            }
-
 # Group Transactions
 
 This API allows to get details of a particular transaction.
 
-## Transaction Status [/transactions/{transactionId}]
+## Wallet Transactions [/transactions/{transactionId}]
 
-### Get Transaction Status [GET]
+### Get Wallet Transaction Status [GET]
 
 **Allowed scopes**: `staffWalletGetTransactionStatus`
 
