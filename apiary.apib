@@ -380,7 +380,6 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
                 "DateOfBirth": "1955-01-30",
                 "Gender": "M",
                 "FirstRegisteredClubNumber": "45611",
-                "IsDeceased": false,
                 "Nationality": "GB",
                 "Occupation": "Clerk",
                 "PopfAgreedDate": "2016-09-12",
@@ -896,8 +895,6 @@ Acceptable `Suspension.Type` values:
 * `Suspect` - equivalent to digital and retail Suspended status
 * `SelfExcluded` - digital and/or retail self exclusion (self-cancellation for retail)
 * `TakeABreak` - digital only, not allowed to play for a set period
-
-All the suspensions automatically expire after their end-date has passed, except self-exclusion, which remains active until its status changes to inactive.
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
