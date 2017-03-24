@@ -3,7 +3,7 @@ HOST: https://dev01-res.meccabingo.com/
 
 # RES.API.SAW - Draft
 
-Rank Enterprise Services API is a collection of business services exposed over a RESTful inteface.
+Rank Enterprise Services API is a collection of business services exposed over a RESTful inteface with HATEOAS constraints applied.
 
 # Correlation Tokens
 
@@ -19,7 +19,7 @@ This RESTful API has been design with HATEOAS (Hypermedia As The Engine Of Appli
 A payload with a set of suggested links is returned as a part of each resource in the response, where it's possible.
 
 In case an initial set of available links is required, a special `/journeys` endpoint has to be called.
-Depending on the access token and parameters supplied, the endpoint will return the links available to the consumer.
+Depending on the access token and parameters supplied, the endpoint will return the links available to the client.
 
 For example:
 ```
