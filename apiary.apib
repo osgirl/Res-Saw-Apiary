@@ -352,7 +352,7 @@ For registration following input validation in place
 
 ### Search by Membership Card [GET /customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}]
 
-**Allowed scopes**: readonlyCustomerSearch
+**Allowed scopes**: `readonlyCustomerSearch`
 
 Endpoint for customer lookup from Bede using Membership Number (card no) and date of birth
 
@@ -413,7 +413,7 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
 
 ### Update Customer [PUT /customers/{identifier}]
 
-**Allowed scopes**: staffUpdateCustomerPersonal
+**Allowed scopes**: `staffUpdateCustomerPersonal`
 
 This API is to update an existing customers information once they have been identified as a SAW customer.
 
@@ -497,7 +497,7 @@ This API is to update an existing customers information once they have been iden
            
 ### Register Retail Customer [POST]
 
-**Allowed scopes**: staffRegisterRetailCustomer
+**Allowed scopes**: `staffRegisterRetailCustomer`
 
 This API will be called when a customer has had a new retail account created. This will create a record within Rank systems except digital
 
@@ -572,7 +572,7 @@ This API will be called when a customer has had a new retail account created. Th
 
 ### Can Create SAW [GET /customers/{identifier}/sawEligible]
 
-**Allowed scopes**: staffUpgradeCustomer
+**Allowed scopes**: `staffUpgradeCustomer`
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
@@ -704,7 +704,7 @@ This API will be called when a customer has an existing retail or digital accoun
 
 ### Upgrade to SAW [POST /customers/{identifier}/upgradeToSaw]
 
-**Allowed scopes**: staffUpgradeCustomer
+**Allowed scopes**: `staffUpgradeCustomer`
 
 This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
 
@@ -757,7 +757,7 @@ This API will be called when a customer has an existing retail and either has an
 
 ### Update Agreement [PUT]
 
-**Allowed scopes**: staffUpdateCustomerPopf
+**Allowed scopes**: `staffUpdateCustomerPopf`
 
 This API will be used to update Protection of Player Funds flag as an when is required by the terms.
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
@@ -799,7 +799,7 @@ This functionality requires cusotmer to authorise in form of entering their corr
 
 ### Get Suspensions [GET]
 
-**Allowed scopes**: staffSetAccountSuspension
+**Allowed scopes**: `staffSetAccountSuspension`
 
 Get all suspension information for a single customer
 
@@ -886,9 +886,18 @@ Get all suspension information for a single customer
 
 ### Add Suspension [POST]
 
-**Allowed scopes**: staffSetAccountSuspension
+**Allowed scopes**: `staffSetAccountSuspension`
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
+
+Acceptable `Suspension.Type` values:
+* `Deceased` - self explanatory
+* `Barred` - retail barring in one or more clubs, also mapped to Refused Membership in retail (which may be for one or more clubs)
+* `Suspect` - equivalent to digital and retail Suspended status
+* `SelfExcluded` - digital and/or retail self exclusion (self-cancellation for retail)
+* `TakeABreak` - digital only, not allowed to play for a set period
+
+All the suspensions automatically expire after their end-date has passed, except self-exclusion, which remains active until its status changes to inactive.
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -940,7 +949,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
 
 ### Update Suspension [PUT /customers/suspensions/{identifier}]
 
-**Allowed scopes**: staffSetAccountSuspension
+**Allowed scopes**: `staffSetAccountSuspension`
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
@@ -982,7 +991,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
  
 ### Remove Suspension [DELETE /customers/suspensions/{identifier}]
 
-**Allowed scopes**: staffRemoveAccountSuspension
+**Allowed scopes**: `staffRemoveAccountSuspension`
 
 To update customer profile by removing the barred/suspended status
 
@@ -1008,7 +1017,7 @@ To update customer profile by removing the barred/suspended status
 
 ### Get Registered Cards [GET]
 
-**Allowed scopes**: onbehalfAddCard
+**Allowed scopes**: `onbehalfAddCard`
 
 Allows registered customers get all assoicated cards
             
@@ -1061,7 +1070,7 @@ Allows registered customers get all assoicated cards
 
 ### Register New Card [POST]
 
-**Allowed scopes**: onbehalfAddCard
+**Allowed scopes**: `onbehalfAddCard`
 
 Allows registered customers to add new or additional cards
             
@@ -1109,9 +1118,11 @@ Allows registered customers to add new or additional cards
             
 ### Update Card Status [PATCH /customers/membershipCards/{identifier}]
 
-**Allowed scopes**: onbehalfUpdateCard
+**Allowed scopes**: `onbehalfUpdateCard`
 
-Allows registered customers to update the card status
+Allows registered customers to update their card status.
+
+Acceptable `MembershipCard.Status` values: `Active`, `Inactive`
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -1125,7 +1136,7 @@ Allows registered customers to update the card status
     + Body
     
             {
-                "Status" : "NotActive"
+                "Status" : "Inactive"
             }
 
 + Response 200 (application/json)
@@ -1155,7 +1166,7 @@ Allows registered customers to update the card status
 
 ### Request PIN Change [POST]
 
-**Allowed scopes**: onbehalfRequestChangePin
+**Allowed scopes**: `onbehalfRequestChangePin`
 
 Allows a member of staff to request a pin change on behalf of the customer. This is for when the customer has forgotten thier current pin. Once requested the customer will complete the journey on their own device.
 
@@ -1203,7 +1214,7 @@ This API will be return amount of funds available in SAW wallets along with spec
 
 ### View Balance [GET]
 
-**Allowed scopes**: clientWalletGetBalance, staffWalletGetBalance
+**Allowed scopes**: `clientWalletGetBalance`, `staffWalletGetBalance`
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -1286,7 +1297,7 @@ This API will be return amount of funds available in SAW wallets along with spec
 
 ### Deposit [POST /customers/{identifier}/finances/transactions/{transactionId}/deposit]
 
-**Allowed scopes**: clientWalletDeposit, onbehalfWalletDeposit
+**Allowed scopes**: `clientWalletDeposit`, `onbehalfWalletDeposit`
 
 If the transaction breaches the responsible gambling limits set by customer, then the transaction would faile and RES will return an error message. 
 If current request breaches any AML/Fraud deposit limit, RES will store overflow funds to "pending" wallet, this will be mentioned in the response message.
@@ -1395,7 +1406,7 @@ Any failure will be reported back 500 - server error.
 
 ### Withdraw [POST /customers/{identifier}/finances/transactions/{transactionId}/withdraw]
 
-**Allowed scopes**: clientWalletWithdraw, onbehalfWalletWithdraw
+**Allowed scopes**: `clientWalletWithdraw`, `onbehalfWalletWithdraw`
 
 Customer will be asked to authenticate the transaction by entering the PIN number. 
 If current request breaches any withdrawal limits, RES will throw and error along with an error message. 
@@ -1509,7 +1520,7 @@ This API allows to get details of a particular transaction.
 
 ### Get Transaction Status [GET]
 
-**Allowed scopes**: staffWalletGetTransactionStatus
+**Allowed scopes**: `staffWalletGetTransactionStatus`
 
 This endpoint provides transaction status and details based on the transaction ID supplied.
 All `Details` fields are optional and will be provided only if available in the transaction log.
