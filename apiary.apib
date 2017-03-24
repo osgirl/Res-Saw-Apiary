@@ -254,10 +254,10 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
                     },
                     "Deposit": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/wallets/withdraw{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/deposit"
                     },
                     "Withdraw": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/wallets/deposit{?transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transactions/{transactionId}/withdraw"
                     },
                     "RequestPinChange": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication"
@@ -273,20 +273,20 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                         "AllowedScopes": "staffUpdateCustomerPopf"
                     },
                     "GetMembershipCards": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"/membershipCards,
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "AllowedScopes": "onbehalfAddCard"
                     },
                     "RegisterMembershipCard": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"/membershipCards,
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
                         "AllowedScopes": "onbehalfAddCard"
                     },
                     "GetSuspensions": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"/suspensions,
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "AllowedScopes": "onbehalfAddCard"
                     },
                     "AddSuspension": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"/suspensions,
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
                         "AllowedScopes": "onbehalfAddCard"
                     }
@@ -570,7 +570,7 @@ This API will be called when a customer has had a new retail account created. Th
 
 ## Upgrade to SAW [/customers/{identifier}/upgradeToSaw]
 
-### Can Create SAW [GET /customers/{identifier}/canCreateSaw]
+### Can Create SAW [GET /customers/{identifier}/sawEligible]
 
 **Allowed scopes**: staffUpgradeCustomer
 
@@ -1022,13 +1022,16 @@ Allows registered customers get all assoicated cards
 + Response 200 (application/json)
     
             {
-                [
-                    "CardNumber" : 123123123,
-                    "_Links": {
-                        "UpdateMembershipCard": {
-                            "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                            "Method": "PUT",
-                            "AllowedScopes": "staffUpdateCustomerPersonal"
+                "MembershipCards": [
+                    {
+                        "CardNumber" : 123123123,
+                        "Status": "Active",
+                        "_Links": {
+                            "UpdateMembershipCard": {
+                                "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Method": "PUT",
+                                "AllowedScopes": "staffUpdateCustomerPersonal"
+                            }
                         }
                     }
                 ],
@@ -1104,7 +1107,7 @@ Allows registered customers to add new or additional cards
                 "Message": "Internal Error"
             }
             
-### Update Card Status [PUT /customers/membershipCards/{identifier}]
+### Update Card Status [PATCH /customers/membershipCards/{identifier}]
 
 **Allowed scopes**: onbehalfUpdateCard
 
@@ -1122,7 +1125,7 @@ Allows registered customers to update the card status
     + Body
     
             {
-                "Status" : "Lost"
+                "Status" : "NotActive"
             }
 
 + Response 200 (application/json)
