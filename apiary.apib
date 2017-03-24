@@ -1203,9 +1203,11 @@ Allows a member of staff to request a pin change on behalf of the customer. This
 
 ## Wallet [/customers/{identifier}/finances]
 
-This API will be return amount of funds available in SAW wallets along with specific calculated balances. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical engine.
+The following endpoints are exposed, in order to provide and interface for interactions with customer's SAW.
 
 ### View Balance [GET]
+
+This API will be return amount of funds available in SAW wallets along with specific calculated balances. It will also include funds allowed to be deposited or withdrawn based on limits set for the customer in the F&P tactical engine.
 
 **Allowed scopes**: `clientWalletGetBalance`, `staffWalletGetBalance`
 
