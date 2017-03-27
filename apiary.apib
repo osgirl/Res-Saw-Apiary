@@ -51,7 +51,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
 |GetMembershipCards|/customers/{identifier}/membershipCards|GET|onbehalfAddCard|
 |RegisterMembershipCard|/customers/{identifier}/membershipCards|POST|onbehalfAddCard|
-|UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|onbehalfAddCard|
+|UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|onbehalfUpdateCard|
 |UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerPopf|
 |RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|onbehalfRequestChangePin|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
@@ -83,9 +83,9 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRemoveSelfExclusion <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerComms <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfSetSelfExclusion <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
 ### Token validation
 Access tokens are fully signed [Json Web Tokens](http://jwt.io/) and should be validated by the client. Many libraries exist for all platforms that support validating tokens. The details of RES's authentication certificates used to sign token are documented below under the core resoure.
