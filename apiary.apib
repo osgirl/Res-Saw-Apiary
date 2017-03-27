@@ -84,7 +84,7 @@ The following table explains what should be supplied as a part of auth server re
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
 |Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |onbehalfRequestChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
 ### Token validation
