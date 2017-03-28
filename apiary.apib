@@ -401,32 +401,33 @@ This is a dedicated aggregated endpoint for Customer services.
 This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
 
 Model for the resource if defined below:
-| Name                  | Type      | Required      | Description                                                                          |Example        |
-|:---                   |:---       |:---           |:---                                                                                  |:---           |
-|Title             |string[25] |**yes**         |Mr, Mrs, Miss, ...                                                                    |"Mr"           |
-|Forename          |string[40] |**yes**         |                                                                                      |"John"         |
-|MiddleName        |string[40] |**optional**    |                                                                                      |"Dan"          |
-|Surname           |string[40] |**yes**         |                                                                                      |"Jackson"      |
-|Address.Address1       |string[?]  |**yes**         |                                                                                      |"Flat 2, 10 Downing Street"        |
-|Address.Town           |string[?]  |**yes**         |                                                                                      |"London"       |
-|Address.Postcode       |string[?]  |**yes**         |                                                                                      |"WC2B 4AA"     |
-|Address.County         |string[?]  |**optional**    |                                                                                      |"Greater London"                   |
-|Address.Country        |string[2]  |**yes**         |ISO 2 digit country code ie. AU, NZ, ZA, GB, US                                       |"GB"           |
-|ContactDetails.HomePhone                   |string[?]  |**optional**                                                                       |"01234567890"  |
-|ContactDetails.BusinessPhone               |string[?]  |**optional**                                                                       |"01234567890"  |
-|ContactDetails.MobilePhone                 |string[?]  |**optional** Either Mobile or Email must be supplied                               |"01234567890"  |
-|ContactDetails.Email                       |string[?]  |**optional** Either Mobile or Email must be supplied                               |"<john@email.com>"                 |
-|AllowedMarketingContacts.IsHomeContactallowed        |bool       |**optional**   |Allow postal communication channel                                 |true           |
-|AllowedMarketingContacts.IsMobileContactAllowed      |bool       |**optional**   |Allow mobile phone communication channel                           |true           |
-|AllowedMarketingContacts.IsEmailContactAllowed       |bool       |**optional**   |Allow email communication channel                                  |true           |
-|AllowedMarketingContacts.IsSMSContactAllowed         |bool       |**optional**   |Allow SMS communication channel                                    |true           |
-|Nationality                                |string[2]  |**yes**        |ISO 2 digit country code ie. AU, NZ, ZA, GB, US                                        |"ZA"           |
-|Gender                                     |string[7]  |**yes**        |Values are Unknown, Female and Male                                                    |"Male"         |
-|Occupation                                 |string[40] |**optional**   |                                                                                       |"Clerk"        |
-|DateOfBirth                                |string     |**yes**        |                                                                                       |"1955-01-30"   |
-|PopfAcceptanceDate                         |datetime   |**optional**   |                                                                                       |"2016-04-23"   |
-|IsVerified                                 |bool       |**yes**        |                                                                                       |true           |
-|CustomerNumber                             |string[?]  |**yes**        |                                                                                       
+| Name                                                  | Type      | Required          | Description                                                                           |Example                    |
+|:---                                                   |:---       |:--:               |:---                                                                                   |:---                       |
+|Title                                                  |string[25] |**yes**            |Allowed values: "Mr", "Mrs", "Miss", ...                                               |"Mr"                       |
+|FirstName                                              |string[40] |**yes**            |                                                                                       |"John"                     |
+|MiddleName                                             |string[40] |**optional**       |                                                                                       |"Dan"                      |
+|LastName                                               |string[40] |**yes**            |                                                                                       |"Jackson"                  |
+|DateOfBirth                                            |date       |**yes**            |                                                                                       |"1955-01-30"               |
+|Gender                                                 |string[1]  |**yes**            |Allowed values: "U" for Unknown, "F" for Female, "M" for Male                          |"M"                        |
+|Nationality                                            |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
+|Occupation                                             |string[40] |**optional**       |                                                                                       |"Clerk"                    |
+|VipGrade                                               |string[30] |**yes**            |                                                                                       |"Black"                    |
+|RetailId                                               |string[10] |**yes**            |Up to 10 digits allowed.                                                               |"1234567890"               |
+|FirstRegisteredClubNumber                              |string[5]  |**yes**            |                                                                                       |"50106"                    |
+|Address.Line1                                          |string[?]  |**yes**            |                                                                                       |"Flat 2"                   |
+|Address.Line2                                          |string[?]  |**yes**            |                                                                                       |"10 Downing Street"        |
+|Address.Town                                           |string[?]  |**yes**            |                                                                                       |"London"                   |
+|Address.Postcode                                       |string[?]  |**yes**            |                                                                                       |"WC2B 4AA"                 |
+|Address.County                                         |string[?]  |**optional**       |                                                                                       |"Greater London"           |
+|Address.Country                                        |string[2]  |**yes**            |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"GB"                       |
+|ContactDetails.HomePhone                               |string[?]  |**optional**       |                                                                                       |"01234567890"              |
+|ContactDetails.BusinessPhone                           |string[?]  |**optional**       |                                                                                       |"01234567890"              |
+|ContactDetails.MobilePhone                             |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"01234567890"              |
+|ContactDetails.Email                                   |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"john@rank.com"            |
+|AllowedMarketingContacts.IsHomeContactallowed          |bool       |**optional**       |Whether to allow marketing contacts via post                                           |true                       |
+|AllowedMarketingContacts.IsMobileContactAllowed        |bool       |**optional**       |Whether to allow marketing contacts via mobile phone                                   |true                       |
+|AllowedMarketingContacts.IsEmailContactAllowed         |bool       |**optional**       |Whether to allow marketing contacts via email                                          |true                       |
+|AllowedMarketingContacts.IsSMSContactAllowed           |bool       |**optional**       |Whether to allow marketing contacts via SMS                                            |true                       |
 
 For registration following input validation in place
 
@@ -440,7 +441,7 @@ For registration following input validation in place
 
 **Allowed scopes**: `readonlyCustomerSearch`
 
-Endpoint for customer lookup from Bede using Membership Number (card no) and date of birth
+The endpoint for customer lookup from Bede using Membership Card Number and Date of Birth.
 
 + Parameters
     + cardNo: `123456` (string, required)
@@ -460,25 +461,22 @@ Endpoint for customer lookup from Bede using Membership Number (card no) and dat
                 "FirstName": "John",
                 "MiddleName": "Dan",
                 "LastName": "Jackson",
+                "DateOfBirth": "1955-01-30",
+                "Gender": "M",
+                "Nationality": "GB",
+                "Occupation": "Clerk",
+                "VipGrade": "Black",
                 "RetailId": "12345678",
                 "DigitalId": "12345678",
                 "DigitalUsername": "johnSilver777",
-                "DateOfBirth": "1955-01-30",
-                "Gender": "M",
                 "FirstRegisteredClubNumber": "45611",
-                "Nationality": "GB",
-                "Occupation": "Clerk",
-                "PopfAgreedDate": "2016-09-12",
-                "PopfVersionDate": "2016-01-01",
-                "VipGrade": "Black",
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
                     "Town": "London",
                     "Postcode": "WC2B 4AA",
                     "County": "Greater London",
-                    "Country": "United Kingdom",
-                    "CountryCode3": "GBR"
+                    "Country": "GB"
                 },
                 "ContactDetails": {
                     "HomePhone": "01234567890",
@@ -523,14 +521,14 @@ This API is to update an existing customers information once they have been iden
                 "Gender": "M",
                 "Nationality": "GB",
                 "Occupation": "Clerk",
+                "VipGrade": "Black",
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
                     "Town": "London",
                     "Postcode": "WC2B 4AA",
                     "County": "Greater London",
-                    "Country": "United Kingdom",
-                    "CountryCode3": "GBR"
+                    "Country": "GB"
                 },
                 "ContactDetails": {
                     "HomePhone": "01234567890",
@@ -601,21 +599,20 @@ This API will be called when a customer has had a new retail account created. Th
                 "FirstName": "John",
                 "MiddleName": "Dan",
                 "LastName": "Jackson",
-                "RetailId": "12345678",
                 "DateOfBirth": "1955-01-30",
                 "Gender": "M",
-                "FirstRegisteredClubNumber": "45611",
                 "Nationality": "GB",
                 "Occupation": "Clerk",
                 "VipGrade": "Black",
+                "RetailId": "12345678",
+                "FirstRegisteredClubNumber": "45611",
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
                     "Town": "London",
                     "Postcode": "WC2B 4AA",
                     "County": "Greater London",
-                    "Country": "United Kingdom",
-                    "CountryCode3": "GBR"
+                    "Country": "GB"
                 },
                 "ContactDetails": {
                     "HomePhone": "01234567890",
@@ -699,8 +696,7 @@ This API will be called when a customer has an existing retail or digital accoun
                         "Town": "London",
                         "Postcode": "WC2B 4AA",
                         "County": "Greater London",
-                        "Country": "United Kingdom",
-                        "CountryCode3": "GBR"
+                        "Country": "GB"
                     },
                     "ContactDetails": {
                         "HomePhone": "01234567890",
