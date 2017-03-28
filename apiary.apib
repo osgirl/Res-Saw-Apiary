@@ -43,7 +43,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |SearchCustomerByMembershipCard|/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}|GET|readonlyCustomerSearch|
 |UpdateCustomer|/customers/{identifier}|PUT|staffUpdateCustomerPersonal|
 |RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
-|CanCreateSaw|/customers/{identifier}/canCreateSaw|GET|staffUpgradeCustomer|
+|CanCreateSaw|/customers/{identifier}/sawEligible|GET|staffUpgradeCustomer|
 |UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer|
 |GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
@@ -52,7 +52,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |GetMembershipCards|/customers/{identifier}/membershipCards|GET|onbehalfAddCard|
 |RegisterMembershipCard|/customers/{identifier}/membershipCards|POST|onbehalfAddCard|
 |UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|onbehalfUpdateCard|
-|UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerPopf|
+|UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerAgreement|
 |RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|onbehalfRequestChangePin|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
 |Transfer|/customers/{identifier}/finances/transfers/{transactionId}|POST|clientWalletTransfer<br/>onbehalfWalletTransfer|
@@ -83,7 +83,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerPopf <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |onbehalfRequestChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
 
@@ -240,51 +240,140 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
 
 + Response 200 (application/json)
 
-    "Customer performing action themselves in a venue" token supplied
+    Read-only operations
     
     + Body
 
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/journeys"
+                        "Href": "/journeys",
+                        "Method": "GET"
                     },
-                    "ViewBalance": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
-                    },
-                    "Transfer": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
-                    },
-                    "RequestPinChange": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication"
-                    },
-                    "UpdateCustomer": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                        "Method": "PUT",
-                        "AllowedScopes": "staffUpdateCustomerPersonal"
-                    },
-                    "UpdateAgreement": {
-                        "Href": "/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                        "Method": "PUT",
-                        "AllowedScopes": "staffUpdateCustomerPopf"
-                    },
-                    "GetMembershipCards": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "AllowedScopes": "onbehalfAddCard"
-                    },
-                    "RegisterMembershipCard": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "POST",
-                        "AllowedScopes": "onbehalfAddCard"
+                    "SearchCustomerByMembershipCard": {
+                        "Href": "/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}",
+                        "Method": "GET",
+                        "AllowedScopes": [ "readonlyCustomerSearch" ]
+                    }
+                }
+            }
+
++ Response 200 (application/json)
+
+    Member of staff performing an operation
+    
+    + Body
+
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "/journeys",
+                        "Method": "GET"
                     },
                     "GetSuspensions": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
-                        "AllowedScopes": "onbehalfAddCard"
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "AddSuspension": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
-                        "AllowedScopes": "onbehalfAddCard"
+                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
+                    },
+                    "UpdateCustomer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "staffUpdateCustomerPersonal" ]
+                    },
+                    "UpdateAgreement": {
+                        "Href": "/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "staffUpdateCustomerAgreement" ]
+                    },
+                    "RegisterRetailCustomer": {
+                        "Href": "/customers",
+                        "Method": "POST",
+                        "AllowedScopes": [ "staffRegisterRetailCustomer" ]
+                    },
+                    "CanCreateSaw": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Method": "POST",
+                        "AllowedScopes": [ "staffUpgradeCustomer" ]
+                    },
+                    "GetWalletTransactionStatus": {
+                        "Href": "/transactions/{transactionId}",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
+                    }
+                }
+            }
+            
++ Response 200 (application/json)
+
+    Customer performing action themselves in a venue
+    
+    + Body
+
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "/journeys",
+                        "Method": "GET"
+                    },
+                    "RequestPinChange": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
+                        "Method": "POST",
+                        "AllowedScopes": [ "onbehalfRequestChangePin" ]
+                    },
+                    "ViewBalance": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
+                    },
+                    "Transfer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                    }
+                }
+            }
+            
++ Response 200 (application/json)
+
+    Customer performing action themselves in a venue
+    
+    + Body
+
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "/journeys",
+                        "Method": "GET"
+                    },
+                    "RequestPinChange": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
+                        "Method": "POST",
+                        "AllowedScopes": [ "onbehalfRequestChangePin" ]
+                    },
+                    "Transfer": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                    },
+                    "GetMembershipCards": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Method": "GET",
+                        "AllowedScopes": [ "onbehalfAddCard" ]
+                    },
+                    "RegisterMembershipCard": {
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Method": "POST",
+                        "AllowedScopes": [ "onbehalfAddCard" ]
                     }
                 }
             }
@@ -298,7 +387,8 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/journeys"
+                        "Href": "/journeys",
+                        "Method": "GET"
                     }
                 }
             }
@@ -461,7 +551,8 @@ This API is to update an existing customers information once they have been iden
             {
                 "_Links": {
                     "Journeys": {
-                        "Href": "/journeys"
+                        "Href": "/journeys",
+                        "Method": "GET"
                     }
                 }
             }
@@ -545,8 +636,9 @@ This API will be called when a customer has had a new retail account created. Th
             {
                 "_Links": {
                     "CanCreateSaw": {
-                        "Href": "/customers/{identifier}/canCreateSaw",
-                        "AllowedScopes": "staffUpgradeCustomer"
+                        "Href": "/customers/{identifier}/sawEligible",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffUpgradeCustomer" ]
                     }
                 }
             }
@@ -669,12 +761,14 @@ This API will be called when a customer has an existing retail or digital accoun
                 ],
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/canCreateSaw"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffUpgradeCustomer" ]
                     },
                     "UpgradeToSaw": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw",
                         "Method": "POST",
-                        "AllowedScopes": "staffUpgradeCustomer"
+                        "AllowedScopes": [ "staffUpgradeCustomer" ]
                     }
                 }
             }
@@ -725,7 +819,8 @@ This API will be called when a customer has an existing retail and either has an
             {
                 "_Links": {
                     "Journeys": {
-                        "Href": "/journeys"
+                        "Href": "/journeys",
+                        "Method": "GET"
                     }
                 }
             }
@@ -752,7 +847,7 @@ This API will be called when a customer has an existing retail and either has an
 
 ### Update Agreement [PUT]
 
-**Allowed scopes**: `staffUpdateCustomerPopf`
+**Allowed scopes**: `staffUpdateCustomerAgreement`
 
 This API will be used to update Protection of Player Funds flag as an when is required by the terms.
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
@@ -832,12 +927,12 @@ Get all suspension information for a single customer
                             "UpdateSuspension": {
                                 "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": "staffSetAccountSuspension"
+                                "AllowedScopes": [ "staffSetAccountSuspension" ]
                             },
-                            "DeleteSuspension": {
+                            "RemoveSuspension": {
                                 "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "DELETE",
-                                "AllowedScopes": "staffSetAccountSuspension"
+                                "AllowedScopes": [ "staffRemoveAccountSuspension" ]
                             }
                         }
                     },
@@ -851,24 +946,26 @@ Get all suspension information for a single customer
                             "UpdateSuspension": {
                                 "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": "staffSetAccountSuspension"
+                                "AllowedScopes": [ "staffSetAccountSuspension" ]
                             },
-                            "DeleteSuspension": {
+                            "RemoveSuspension": {
                                 "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "DELETE",
-                                "AllowedScopes": "staffSetAccountSuspension"
+                                "AllowedScopes": [ "staffRemoveAccountSuspension" ]
                             }
                         }
                     }
                 ],
                 "_Links": {
                      "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "AddSuspension": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                          "Method": "POST",
-                        "AllowedScopes": "staffSetAccountSuspension"
+                        "AllowedScopes": [ "staffSetAccountSuspension" ]
                     }
                 }
             }
@@ -919,17 +1016,17 @@ Acceptable `Suspension.Type` values:
                     "Self": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
-                        "AllowedScopes": "staffSetAccountSuspension"
+                        "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "UpdateSuspension": {
                         "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": "staffSetAccountSuspension"
+                        "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "RemoveSuspension": {
                         "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "DELETE",
-                        "AllowedScopes": "staffSetAccountSuspension"
+                        "AllowedScopes": [ "staffRemoveAccountSuspension" ]
                     }
                 }
             }
@@ -972,6 +1069,8 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "_Links": {
                     "Self": {
                         "Href": "/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "staffSetAccountSuspension" ]
                     }
                 }
             }
@@ -1032,19 +1131,21 @@ Allows registered customers get all assoicated cards
                             "UpdateMembershipCard": {
                                 "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": "staffUpdateCustomerPersonal"
+                                "AllowedScopes": [ "onbehalfUpdateCard" ]
                             }
                         }
                     }
                 ],
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Method": "GET",
+                        "AllowedScopes": [ "onbehalfAddCard" ]
                     },
                     "RegisterMembershipCard": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
-                        "AllowedScopes": "onbehalfAddCard"
+                        "AllowedScopes": [ "onbehalfAddCard" ]
                     }
                 }
             }
@@ -1087,12 +1188,12 @@ Allows registered customers to add new or additional cards
                     "Self": {
                         "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
-                        "AllowedScopes": "onbehalfAddCard"
+                        "AllowedScopes": [ "onbehalfAddCard" ]
                     },
                     "UpdateMembershipCard": {
                         "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": "staffUpdateCustomerPersonal"
+                        "AllowedScopes": [ "onbehalfUpdateCard" ]
                     }
                 }
             }
@@ -1109,7 +1210,7 @@ Allows registered customers to add new or additional cards
                 "Message": "Internal Error"
             }
             
-### Update Card Status [PATCH /customers/membershipCards/{identifier}]
+### Update Card Status [PUT /customers/membershipCards/{identifier}]
 
 **Allowed scopes**: `onbehalfUpdateCard`
 
@@ -1137,7 +1238,9 @@ Acceptable `MembershipCard.Status` values: `Active`, `Inactive`
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b"
+                        "Href": "/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "onbehalfUpdateCard" ]
                     }
                 }
             }
@@ -1178,7 +1281,9 @@ Allows a member of staff to request a pin change on behalf of the customer. This
            {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pinAuth/requestChange"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pinAuth/requestChange",
+                        "Method": "POST",
+                        "AllowedScopes": [ "onbehalfRequestChangePin" ]
                     }
                 }
             }
@@ -1261,10 +1366,14 @@ This API will be return amount of funds available in SAW wallets along with spec
                 "LastCalculatedDateTime": "2016-03-15T14:32:22Z",
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "Transfer": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     }
                 }
             }
@@ -1340,16 +1449,24 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "ViewBalance": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "Transfer": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "GetWalletTransactionStatus": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/transactions/000000001-001",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
                 }
             }
@@ -1363,16 +1480,24 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
             {
                 "_Links": {
                     "Self": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "ViewBalance": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "Transfer": {
-                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}"
+                        "Href": "/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "GetWalletTransactionStatus": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/transactions/000000001-001",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
                 }
             }
@@ -1459,7 +1584,9 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/transactions/000000001-001",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
                 }
             }
@@ -1475,7 +1602,9 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/transactions/000000001-001",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
                 }
             }
@@ -1491,7 +1620,9 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "/transactions/000000001-001"
+                        "Href": "/transactions/000000001-001",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
                 }
             }
