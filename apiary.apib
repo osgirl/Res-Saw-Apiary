@@ -420,9 +420,9 @@ Model for the resource if defined below:
 |Address.Postcode                                       |string[?]  |**yes**            |                                                                                       |"WC2B 4AA"                 |
 |Address.County                                         |string[?]  |**optional**       |                                                                                       |"Greater London"           |
 |Address.Country                                        |string[2]  |**yes**            |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"GB"                       |
-|ContactDetails.HomePhone                               |string[?]  |**optional**       |                                                                                       |"01234567890"              |
-|ContactDetails.BusinessPhone                           |string[?]  |**optional**       |                                                                                       |"01234567890"              |
-|ContactDetails.MobilePhone                             |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"01234567890"              |
+|ContactDetails.HomePhone                               |string[?]  |**optional**       |                                                                                       |"07886028945"              |
+|ContactDetails.BusinessPhone                           |string[?]  |**optional**       |                                                                                       |"07886028946"              |
+|ContactDetails.MobilePhone                             |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"07886028947"              |
 |ContactDetails.Email                                   |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"john@rank.com"            |
 |AllowedMarketingContacts.IsHomeContactallowed          |bool       |**optional**       |Whether to allow marketing contacts via post                                           |true                       |
 |AllowedMarketingContacts.IsMobileContactAllowed        |bool       |**optional**       |Whether to allow marketing contacts via mobile phone                                   |true                       |
@@ -432,10 +432,10 @@ Model for the resource if defined below:
 For registration following input validation in place
 
 **Following fields must follow a valid format:**
-- Email address - valid email format
-- ContactDetails.HomePhone,BusinessPhone & MobilePhone - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 078 8602 8945, +44 78 8602 9845, etc)
-- Address.Postcode - valid UK postcode for UK addresses
-- DateOfBirth - must be of legal age (18)
+- `ContactDetails.Email` address - valid email format
+- `ContactDetails.HomePhone`, `BusinessPhone`, `MobilePhone` - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 07886028945, +447886029845, etc.)
+- `Address.Postcode` - valid UK postcode for UK addresses
+- `DateOfBirth` - must be of legal age (18)
 
 ### Search by Membership Card [GET /customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}]
 
@@ -479,9 +479,9 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "Country": "GB"
                 },
                 "ContactDetails": {
-                    "HomePhone": "01234567890",
-                    "BusinessPhone": "01234567890",
-                    "MobilePhone": "01234567890",
+                    "HomePhone": "07886028945",
+                    "BusinessPhone": "07886028946",
+                    "MobilePhone": "07886028947",
                     "Email": "jack@rank.com"
                 }
             }
@@ -531,9 +531,9 @@ This API is to update an existing customers information once they have been iden
                     "Country": "GB"
                 },
                 "ContactDetails": {
-                    "HomePhone": "01234567890",
-                    "BusinessPhone": "01234567890",
-                    "MobilePhone": "01234567890",
+                    "HomePhone": "07886028945",
+                    "BusinessPhone": "07886028946",
+                    "MobilePhone": "07886028947",
                     "Email": "jack@rank.com"
                 },
                 "AllowedMarketingContacts": {
@@ -615,9 +615,9 @@ This API will be called when a customer has had a new retail account created. Th
                     "Country": "GB"
                 },
                 "ContactDetails": {
-                    "HomePhone": "01234567890",
-                    "BusinessPhone": "01234567890",
-                    "MobilePhone": "01234567890",
+                    "HomePhone": "07886028945",
+                    "BusinessPhone": "07886028946",
+                    "MobilePhone": "07886028947",
                     "Email": "jack@rank.com"
                 },
                 "AllowedMarketingContacts": {
@@ -699,9 +699,9 @@ This API will be called when a customer has an existing retail or digital accoun
                         "Country": "GB"
                     },
                     "ContactDetails": {
-                        "HomePhone": "01234567890",
-                        "BusinessPhone": "01234567890",
-                        "MobilePhone": "01234567890",
+                        "HomePhone": "07886028945",
+                        "BusinessPhone": "07886028946",
+                        "MobilePhone": "07886028947",
                         "Email": "jack@rank.com"
                     },
                     "AllowedMarketingContacts": {
