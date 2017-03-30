@@ -125,7 +125,7 @@ grant_type=client_credentials
 
 The following diagram depicts the sequence of interactions between client and the main RES components in context of authentication process:
 
-![Client Credentials Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/ClientCredentialsAuthFlow.png?version=1&modificationDate=1490806675186&cacheVersion=1&api=v2)
+![Client Credentials Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/Client-Credentials-Auth-Flow.png?version=1&modificationDate=1490862680794&cacheVersion=1&api=v2)
 
 (1) - The client requests [an access token](#tokens) from Identity Provider (IDP).
 The type of the token (see [Client Credentials Access Token](#client-credentials-access-token),
@@ -205,7 +205,7 @@ grant_type=password
 
 The following diagram depicts the sequence of interactions between client and the main RES components in context of authentication process:
 
-![Resource Owner Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/ResourceOwnerAuthFlow.png?version=1&modificationDate=1490806699826&cacheVersion=1&api=v2)
+![Resource Owner Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/Resource-Owner-Auth-Flow.png?version=1&modificationDate=1490862699245&cacheVersion=1&api=v2)
 
 (1) - The client requests [an access token](#tokens) from Identity Provider (IDP).
 The type of the token (see [Client Credentials Access Token](#client-credentials-access-token),
@@ -224,7 +224,7 @@ If token is expired, compromised or revoked then the result will be negative, ot
 
 (6) - Once the token is validated, RES carries on processing the client's request and responds accordingly.
 
-## Refreshing Resource Owner Access Token
+## Refresh Token
 
 Resource owner access tokens have an expiration time defined both in the response above and inside the token claims, shown in seconds. Unlike the client credentials access token, resource owner tokens provide a specific refresh operation to allow the client application to extend the life of the session without requiring customer authentication details to be resupplied.
 
@@ -254,7 +254,7 @@ grant_type=refresh_token
 
 The following diagram depicts the sequence of interactions between client and the main RES components in context of authentication process:
 
-![Resource Owner Refresh Token Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/ResourceOwnerRefreshTokenFlow.png?version=1&modificationDate=1490806720748&cacheVersion=1&api=v2)
+![Refresh Token Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/Refresh-Token-Auth-Flow.png?version=1&modificationDate=1490862715845&cacheVersion=1&api=v2)
 
 (1) - The client requests [an access token](#tokens) from Identity Provider (IDP).
 The type of the token (see [Client Credentials Access Token](#client-credentials-access-token),
