@@ -127,23 +127,21 @@ The following diagram depicts the sequence of interactions between client and th
 
 ![Client Credentials Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/Client-Credentials-Auth-Flow.png?version=1&modificationDate=1490862680794&cacheVersion=1&api=v2)
 
-(1) - The client requests [an access token](#tokens) from Identity Provider (IDP).
-The type of the token (see [Client Credentials Access Token](#client-credentials-access-token),
-[Resource Owner Access Token](#resource-owner-access-token)) and parameters to be
-supplied depend on the [scopes](#scopes) required to perform an operation over a resource.
+(1) - The Client requests Client Credentials [Access Token](#tokens) from Identity Provider (IDP).
+The parameters to be supplied depend on the [scopes](#scopes) required to perform an operation
+over a resource.
 
-(2) - Token of the requested type is issued by IDP and returned to the client.
+(2) - `access_token` of the requested token type is issued by IDP and returned to the Client.
 
-(3) - The client calls RES API.
-The obtained token must be supplied to the request as `Authorization` HTTP header.
+(3) - The Client sends a request to one of RES API endpoints.
+The obtained `access_token` must be supplied to the request as `Authorization` HTTP header.
 
-(4) - RES communicates to IDP, in order to validate the token provided by the client.
+(4) - RES communicates to IDP, in order to validate the token provided by the Client.
 
 (5) - IDP responds with the token validation result.
 If token is expired, compromised or revoked then the result will be negative, otherwise positive.
 
-(6) - Once the token is validated, RES carries on processing the client's request and responds accordingly.
-
+(6) - Once the token is validated, RES carries on processing the Client's request and responds accordingly.
 
 ### Token expiration
 
@@ -207,23 +205,24 @@ The following diagram depicts the sequence of interactions between client and th
 
 ![Resource Owner Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/Resource-Owner-Auth-Flow.png?version=1&modificationDate=1490862699245&cacheVersion=1&api=v2)
 
-(1) - The client requests [an access token](#tokens) from Identity Provider (IDP).
-The type of the token (see [Client Credentials Access Token](#client-credentials-access-token),
-[Resource Owner Access Token](#resource-owner-access-token)) and parameters to be
-supplied depend on the [scopes](#scopes) required to perform an operation over a resource.
+(1) - The Client requests Resource Owner [Access Token](#tokens) from Identity Provider (IDP).
+The parameters to be supplied depend on the [scopes](#scopes) required to perform an operation
+over a resource. Customer's `username` and `password` are mandatory parameters for this type of authentication flow.
 
-(2) - Token of the requested type is issued by IDP and returned to the client.
+(2) - `access_token` of the requested token type along with `refresh_token` is issued by IDP and returned to the Client.
+It's Client's responsibility to save `refresh_token` if [Refresh Token Authentication Flow](#refresh-token) is going to be used for further RES API calls.
 
-(3) - The client calls RES API.
-The obtained token must be supplied to the request as `Authorization` HTTP header.
+(3) - The Client sends a request to one of RES API endpoints.
+The obtained `access_token` must be supplied to the request as `Authorization` HTTP header.
 
-(4) - RES communicates to IDP, in order to validate the token provided by the client.
+(4) - RES communicates to IDP, in order to validate the token provided by the Client.
 
 (5) - IDP responds with the token validation result.
 If token is expired, compromised or revoked then the result will be negative, otherwise positive.
 
-(6) - Once the token is validated, RES carries on processing the client's request and responds accordingly.
+(6) - Once the token is validated, RES carries on processing the Client's request and responds accordingly.
 
+<a name="refresh-token"></a>
 ## Refresh Token
 
 Resource owner access tokens have an expiration time defined both in the response above and inside the token claims, shown in seconds. Unlike the client credentials access token, resource owner tokens provide a specific refresh operation to allow the client application to extend the life of the session without requiring customer authentication details to be resupplied.
@@ -256,23 +255,23 @@ The following diagram depicts the sequence of interactions between client and th
 
 ![Refresh Token Authentication Flow](https://rankgroup.atlassian.net/wiki/download/attachments/9699367/Refresh-Token-Auth-Flow.png?version=1&modificationDate=1490862715845&cacheVersion=1&api=v2)
 
-(1) - The client requests [an access token](#tokens) from Identity Provider (IDP).
-The type of the token (see [Client Credentials Access Token](#client-credentials-access-token),
-[Resource Owner Access Token](#resource-owner-access-token)) and parameters to be
-supplied depend on the [scopes](#scopes) required to perform an operation over a resource.
+(1) - The Client requests Resource Owner [Access Token](#tokens) from Identity Provider (IDP).
+The parameters to be supplied depend on the [scopes](#scopes) required to perform an operation
+over a resource. Previously obtained `refresh_token` is a mandatory parameter for this type of authentication flow.
 
-(2) - Token of the requested type is issued by IDP and returned to the client.
+(2) - `access_token` of the requested token type along with `refresh_token` is issued by IDP and returned to the Client.
+If the returned `refresh_token` differes from the previously saved value, the Client should start using new
+`refresh_token` since the previous one may be expired.
 
-(3) - The client calls RES API.
-The obtained token must be supplied to the request as `Authorization` HTTP header.
+(3) - The Client sends a request to one of RES API endpoints.
+The obtained `access_token` must be supplied to the request as `Authorization` HTTP header.
 
-(4) - RES communicates to IDP, in order to validate the token provided by the client.
+(4) - RES communicates to IDP, in order to validate the token provided by the Client.
 
 (5) - IDP responds with the token validation result.
 If token is expired, compromised or revoked then the result will be negative, otherwise positive.
 
-(6) - Once the token is validated, RES carries on processing the client's request and responds accordingly.
-
+(6) - Once the token is validated, RES carries on processing the Client's request and responds accordingly.
 
 # Group Journeys
 
