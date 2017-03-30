@@ -229,6 +229,8 @@ Resource owner access tokens have an expiration time defined both in the respons
 
 **Example Request**
 
+`client_id:client_secret` Base64 encoded, e.g. `YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==` and passed in the `Authorization` header
+
 ```
 POST /api/connect/token
 Content-Type: application/x-www-form-urlencoded
@@ -260,8 +262,8 @@ The parameters to be supplied depend on the [scopes](#scopes) required to perfor
 over a resource. Previously obtained `refresh_token` is a mandatory parameter for this type of authentication flow.
 
 (2) - `access_token` of the requested token type along with `refresh_token` is issued by IDP and returned to the Client.
-If the returned `refresh_token` differes from the previously saved value, the Client should start using new
-`refresh_token` since the previous one may be expired.
+If the returned `refresh_token` differes from the supplied value, the Client should start using new
+`refresh_token` since the previously saved one may be expired.
 
 (3) - The Client sends a request to one of RES API endpoints.
 The obtained `access_token` must be supplied to the request as `Authorization` HTTP header.
