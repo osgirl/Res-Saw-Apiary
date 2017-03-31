@@ -49,9 +49,9 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
 |RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
-|GetMembershipCards|/customers/{identifier}/membershipCards|GET|onbehalfAddCard|
-|RegisterMembershipCard|/customers/{identifier}/membershipCards|POST|onbehalfAddCard|
-|UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|onbehalfUpdateCard|
+|GetMembershipCards|/customers/{identifier}/membershipCards|GET|staffAddCard|
+|RegisterMembershipCard|/customers/{identifier}/membershipCards|POST|staffAddCard|
+|UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|staffUpdateCard|
 |UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerAgreement|
 |RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|onbehalfRequestChangePin<br/>clientRequestChangePin|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
@@ -90,9 +90,9 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffAddCard <br/>staffUpdateCard|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientRequestChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin <br/>onbehalfAddCard <br/>onbehalfUpdateCard|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin|
 
 <a name="client-credentials-access-token"></a>
 ## Client Credentials Access Token
@@ -365,6 +365,16 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                         "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
+                    },
+                    "GetMembershipCards": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffAddCard" ]
+                    },
+                    "RegisterMembershipCard": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Method": "POST",
+                        "AllowedScopes": [ "staffAddCard" ]
                     }
                 }
             }
@@ -420,16 +430,6 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
-                    },
-                    "GetMembershipCards": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "GET",
-                        "AllowedScopes": [ "onbehalfAddCard" ]
-                    },
-                    "RegisterMembershipCard": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "POST",
-                        "AllowedScopes": [ "onbehalfAddCard" ]
                     }
                 }
             }
@@ -1161,7 +1161,7 @@ To update customer profile by removing the barred/suspended status
 
 ### Get Registered Cards [GET]
 
-**Allowed scopes**: `onbehalfAddCard`
+**Allowed scopes**: `staffAddCard`
 
 Allows registered customers get all assoicated cards
             
@@ -1183,7 +1183,7 @@ Allows registered customers get all assoicated cards
                             "UpdateMembershipCard": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": [ "onbehalfUpdateCard" ]
+                                "AllowedScopes": [ "staffUpdateCard" ]
                             }
                         }
                     }
@@ -1192,12 +1192,12 @@ Allows registered customers get all assoicated cards
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "GET",
-                        "AllowedScopes": [ "onbehalfAddCard" ]
+                        "AllowedScopes": [ "staffAddCard" ]
                     },
                     "RegisterMembershipCard": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
-                        "AllowedScopes": [ "onbehalfAddCard" ]
+                        "AllowedScopes": [ "staffAddCard" ]
                     }
                 }
             }
@@ -1216,7 +1216,7 @@ Allows registered customers get all assoicated cards
 
 ### Register New Card [POST]
 
-**Allowed scopes**: `onbehalfAddCard`
+**Allowed scopes**: `staffAddCard`
 
 Allows registered customers to add new or additional cards
             
@@ -1240,12 +1240,12 @@ Allows registered customers to add new or additional cards
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
-                        "AllowedScopes": [ "onbehalfAddCard" ]
+                        "AllowedScopes": [ "staffAddCard" ]
                     },
                     "UpdateMembershipCard": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": [ "onbehalfUpdateCard" ]
+                        "AllowedScopes": [ "staffAddCard" ]
                     }
                 }
             }
@@ -1264,7 +1264,7 @@ Allows registered customers to add new or additional cards
             
 ### Update Card Status [PUT /customers/membershipCards/{identifier}]
 
-**Allowed scopes**: `onbehalfUpdateCard`
+**Allowed scopes**: `staffUpdateCard`
 
 Allows registered customers to update their card status.
 
@@ -1292,7 +1292,7 @@ Acceptable `MembershipCard.Status` values: `Active`, `Inactive`
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": [ "onbehalfUpdateCard" ]
+                        "AllowedScopes": [ "staffUpdateCard" ]
                     }
                 }
             }
