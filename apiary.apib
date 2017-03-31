@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://dev01-res.meccabingo.com/
+HOST: https://dev01-resapi.rankgrouptech.net/
 
 # RES.API.SAW - Draft
 
@@ -26,7 +26,7 @@ For example:
     {
         "_Links": {
             "ViewBalance": {
-                "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                 "Method": "GET",
                 "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
             }
@@ -303,11 +303,11 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/journeys",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     },
                     "SearchCustomerByMembershipCard": {
-                        "Href": "http://localhost/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}",
                         "Method": "GET",
                         "AllowedScopes": [ "readonlyCustomerSearch" ]
                     }
@@ -323,46 +323,46 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/journeys",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     },
                     "GetSuspensions": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "GET",
                         "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "AddSuspension": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
                         "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "ViewBalance": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "UpdateCustomer": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": [ "staffUpdateCustomerPersonal" ]
                     },
                     "UpdateAgreement": {
-                        "Href": "http://localhost/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": [ "staffUpdateCustomerAgreement" ]
                     },
                     "RegisterRetailCustomer": {
-                        "Href": "http://localhost/customers",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers",
                         "Method": "POST",
                         "AllowedScopes": [ "staffRegisterRetailCustomer" ]
                     },
                     "CanCreateSaw": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
                         "Method": "POST",
                         "AllowedScopes": [ "staffUpgradeCustomer" ]
                     },
                     "GetWalletTransactionStatus": {
-                        "Href": "http://localhost/transactions/{transactionId}",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
@@ -378,21 +378,21 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/journeys",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     },
                     "RequestPinChange": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
                         "Method": "POST",
                         "AllowedScopes": [ "onbehalfRequestChangePin", "clientRequestChangePin" ]
                     },
                     "ViewBalance": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "Transfer": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     }
@@ -408,26 +408,26 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/journeys",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     },
                     "RequestPinChange": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
                         "Method": "POST",
                         "AllowedScopes": [ "onbehalfRequestChangePin", "clientRequestChangePin" ]
                     },
                     "Transfer": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "GetMembershipCards": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "GET",
                         "AllowedScopes": [ "onbehalfAddCard" ]
                     },
                     "RegisterMembershipCard": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
                         "AllowedScopes": [ "onbehalfAddCard" ]
                     }
@@ -443,7 +443,7 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/journeys",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     }
                 }
@@ -605,7 +605,7 @@ This API is to update an existing customers information once they have been iden
             {
                 "_Links": {
                     "Journeys": {
-                        "Href": "http://localhost/journeys",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     }
                 }
@@ -689,7 +689,7 @@ This API will be called when a customer has had a new retail account created. Th
             {
                 "_Links": {
                     "CanCreateSaw": {
-                        "Href": "http://localhost/customers/{identifier}/sawEligible",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/{identifier}/sawEligible",
                         "Method": "GET",
                         "AllowedScopes": [ "staffUpgradeCustomer" ]
                     }
@@ -813,12 +813,12 @@ This API will be called when a customer has an existing retail or digital accoun
                 ],
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
                         "Method": "GET",
                         "AllowedScopes": [ "staffUpgradeCustomer" ]
                     },
                     "UpgradeToSaw": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw",
                         "Method": "POST",
                         "AllowedScopes": [ "staffUpgradeCustomer" ]
                     }
@@ -871,7 +871,7 @@ This API will be called when a customer has an existing retail and either has an
             {
                 "_Links": {
                     "Journeys": {
-                        "Href": "http://localhost/journeys",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     }
                 }
@@ -977,12 +977,12 @@ Get all suspension information for a single customer
                         "Type": "SelfExcluded",
                         "_Links": {
                             "UpdateSuspension": {
-                                "Href": "http://localhost/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
                                 "AllowedScopes": [ "staffSetAccountSuspension" ]
                             },
                             "RemoveSuspension": {
-                                "Href": "http://localhost/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "DELETE",
                                 "AllowedScopes": [ "staffRemoveAccountSuspension" ]
                             }
@@ -996,12 +996,12 @@ Get all suspension information for a single customer
                         "Type": "Suspended",
                         "_Links": {
                             "UpdateSuspension": {
-                                "Href": "http://localhost/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
                                 "AllowedScopes": [ "staffSetAccountSuspension" ]
                             },
                             "RemoveSuspension": {
-                                "Href": "http://localhost/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "DELETE",
                                 "AllowedScopes": [ "staffRemoveAccountSuspension" ]
                             }
@@ -1010,12 +1010,12 @@ Get all suspension information for a single customer
                 ],
                 "_Links": {
                      "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "GET",
                         "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "AddSuspension": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                          "Method": "POST",
                         "AllowedScopes": [ "staffSetAccountSuspension" ]
                     }
@@ -1066,17 +1066,17 @@ Acceptable `Suspension.Type` values:
            {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
                         "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "UpdateSuspension": {
-                        "Href": "http://localhost/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": [ "staffSetAccountSuspension" ]
                     },
                     "RemoveSuspension": {
-                        "Href": "http://localhost/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "DELETE",
                         "AllowedScopes": [ "staffRemoveAccountSuspension" ]
                     }
@@ -1120,7 +1120,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": [ "staffSetAccountSuspension" ]
                     }
@@ -1181,7 +1181,7 @@ Allows registered customers get all assoicated cards
                         "Status": "Active",
                         "_Links": {
                             "UpdateMembershipCard": {
-                                "Href": "http://localhost/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
                                 "AllowedScopes": [ "onbehalfUpdateCard" ]
                             }
@@ -1190,12 +1190,12 @@ Allows registered customers get all assoicated cards
                 ],
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "GET",
                         "AllowedScopes": [ "onbehalfAddCard" ]
                     },
                     "RegisterMembershipCard": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
                         "AllowedScopes": [ "onbehalfAddCard" ]
                     }
@@ -1238,12 +1238,12 @@ Allows registered customers to add new or additional cards
            {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
                         "Method": "POST",
                         "AllowedScopes": [ "onbehalfAddCard" ]
                     },
                     "UpdateMembershipCard": {
-                        "Href": "http://localhost/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": [ "onbehalfUpdateCard" ]
                     }
@@ -1290,7 +1290,7 @@ Acceptable `MembershipCard.Status` values: `Active`, `Inactive`
            {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": [ "onbehalfUpdateCard" ]
                     }
@@ -1333,7 +1333,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
            {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pinAuth/requestChange",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pinAuth/requestChange",
                         "Method": "POST",
                         "AllowedScopes": [ "onbehalfRequestChangePin", "clientRequestChangePin" ]
                     }
@@ -1422,12 +1422,12 @@ This API will be return amount of funds available in SAW wallets along with spec
                 "LastCalculatedDateTime": "2016-03-15T14:32:22Z",
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "Transfer": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     }
@@ -1505,22 +1505,22 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "ViewBalance": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "Transfer": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "GetWalletTransactionStatus": {
-                        "Href": "http://localhost/transactions/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
@@ -1536,22 +1536,22 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "ViewBalance": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
                     "Transfer": {
-                        "Href": "http://localhost/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
                     },
                     "GetWalletTransactionStatus": {
-                        "Href": "http://localhost/transactions/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
@@ -1640,7 +1640,7 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/transactions/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
@@ -1658,7 +1658,7 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/transactions/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
@@ -1676,7 +1676,7 @@ All `Details` fields are optional and will be provided only if available in the 
                 },
                 "_Links": {
                     "Self": {
-                        "Href": "http://localhost/transactions/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
