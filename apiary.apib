@@ -44,7 +44,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateCustomer|/customers/{identifier}|PUT|staffUpdateCustomerPersonal|
 |RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
 |CanCreateSaw|/customers/{identifier}/sawEligible|GET|staffUpgradeCustomer|
-|UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer|
+|UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
 |GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
@@ -92,7 +92,7 @@ The following table explains what should be supplied as a part of auth server re
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
 |Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffAddCard <br/>staffUpdateCard|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientRequestChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin <br/>onbehalfUpgradeCustomer|
 
 <a name="client-credentials-access-token"></a>
 ## Client Credentials Access Token
@@ -291,7 +291,7 @@ This endpoint provides HAREOAS-centric set of links to resources and actions ava
 
     + Headers 
             
-            Authorization: Bearer (client credential/resource owner token)
+            Authorization: Bearer (client credentials/resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -507,7 +507,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -645,7 +645,7 @@ This API will be called when a customer has had a new retail account created. Th
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
     
     + Body
@@ -723,7 +723,7 @@ This API will be called when a customer has an existing retail or digital accoun
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -820,7 +820,7 @@ This API will be called when a customer has an existing retail or digital accoun
                     "UpgradeToSaw": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw",
                         "Method": "POST",
-                        "AllowedScopes": [ "staffUpgradeCustomer" ]
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
                     }
                 }
             }
@@ -845,7 +845,7 @@ This API will be called when a customer has an existing retail or digital accoun
 
 ### Upgrade to SAW [POST /customers/{identifier}/upgradeToSaw]
 
-**Allowed scopes**: `staffUpgradeCustomer`
+**Allowed scopes**: `staffUpgradeCustomer`, `onbehalfUpgradeCustomer`
 
 This API will be called when a customer has an existing retail and either has an existing digital account or requires a new digital account. If a customer has a digital account then the username will be supplied, else NULL indicating a new account should be created from the Customers known Email address
 
@@ -856,7 +856,7 @@ This API will be called when a customer has an existing retail and either has an
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials/resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
@@ -952,7 +952,7 @@ Get all suspension information for a single customer
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body  
@@ -1048,7 +1048,7 @@ Acceptable `Suspension.Type` values:
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body  
@@ -1102,7 +1102,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body  
@@ -1146,7 +1146,7 @@ To update customer profile by removing the barred/suspended status
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 204 (application/json)
@@ -1325,7 +1325,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
 
     + Headers 
             
-            Authorization: Bearer (client credential/resource owner token)
+            Authorization: Bearer (client credentials/resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -1375,7 +1375,7 @@ This API will be return amount of funds available in SAW wallets along with spec
 
     + Headers 
             
-            Authorization: Bearer (client credential/resource owner token)
+            Authorization: Bearer (client credentials/resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -1626,7 +1626,7 @@ All `Details` fields are optional and will be provided only if available in the 
 
     + Headers 
             
-            Authorization: Bearer (client credential token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
