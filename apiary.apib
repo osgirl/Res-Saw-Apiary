@@ -714,7 +714,12 @@ This API will be called when a customer has had a new retail account created. Th
 
 **Allowed scopes**: `staffUpgradeCustomer`, `onbehalfUpgradeCustomer`
 
-This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
+This API will be called when a customer has an existing retail or digital accounts.
+If a customer has already got a digital account, but not a retail one, then a new access token
+for `onbehalfUpgradeCustomer` scope must be obtained, supplying his digital `username` and
+`password`. Scope `staffUpgradeCustomer` should be used if the customer has alrady got
+a retail account or both, digital and retail.
+
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -855,7 +860,7 @@ This API will be called when a customer has an existing retail and either has an
 digital account or requires a new digital account. If a customer has already got a digital account then
 a new access token for `onbehalfUpgradeCustomer` scope must be obtained, supplying his digital
 `username` and `password`. If `staffUpgradeCustomer` scope is used this indicates that a new
-account should be created from the customer's known email address.
+digital account should be created from the customer's known email address.
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
