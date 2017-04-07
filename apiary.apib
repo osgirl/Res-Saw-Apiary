@@ -43,7 +43,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |SearchCustomerByMembershipCard|/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}|GET|readonlyCustomerSearch|
 |UpdateCustomer|/customers/{identifier}|PUT|staffUpdateCustomerPersonal|
 |RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
-|CanCreateSaw|/customers/{identifier}/sawEligible|GET|staffUpgradeCustomer|
+|CanCreateSaw|/customers/{identifier}/sawEligible|GET|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
 |UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
 |GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
@@ -359,7 +359,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "CanCreateSaw": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
                         "Method": "POST",
-                        "AllowedScopes": [ "staffUpgradeCustomer" ]
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
                     },
                     "GetWalletTransactionStatus": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
@@ -712,7 +712,7 @@ This API will be called when a customer has had a new retail account created. Th
 
 ### Can Create SAW [GET /customers/{identifier}/sawEligible]
 
-**Allowed scopes**: `staffUpgradeCustomer`
+**Allowed scopes**: `staffUpgradeCustomer`, `onbehalfUpgradeCustomer`
 
 This API will be called when a customer has an existing retail or digital accounts. If a customer has a digital account then the player id should be supplied. The player id can be obtained by performaing a username search.
 
@@ -819,7 +819,7 @@ This API will be called when a customer has an existing retail or digital accoun
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffUpgradeCustomer" ]
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
                     },
                     "UpgradeToSaw": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/upgradeToSaw",
