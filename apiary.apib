@@ -907,9 +907,60 @@ digital account should be created from the customer's known email address.
                 "Message": "Internal Error"
             }
 
-## Agreements [/customers/agreements/{identifier}]
+## Agreements [/customers/{identifier}/agreements]
 
-### Update Agreement [PUT]
+### Get Agreements [GET]
+
+**Allowed scopes**: `staffUpdateCustomerAgreement`
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
++ Response 200 (application/json)
+
+            {
+                "Agreements": [
+                    {
+                        "AgreedDate": "2016-01-30",
+                        "Type": "PoPF",
+                        "_Links": {
+                            "UpdateAgreement": {
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                                "Method": "PUT",
+                                "AllowedScopes": [ "staffUpdateCustomerAgreement" ]
+                            }
+                        }
+                    }
+                ],
+                "_Links": {
+                    "Self": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/agreements",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffUpdateCustomerAgreement" ]
+                    }
+                }
+            }
+
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
+### Update Agreement [PUT /customers/agreements/{identifier}]
 
 **Allowed scopes**: `staffUpdateCustomerAgreement`
 
