@@ -917,7 +917,7 @@ This API will be used to update Protection of Player Funds flag as an when is re
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
 This functionality requires cusotmer to authorise in form of entering their correct PIN for the SAW account. Neon application will be required to generate a Resource owner token for the customer to be able to call this API.
 
-Acceptable `AgreementType` values: `PoPF`
+Acceptable `Type` values: `PoPF`
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -932,9 +932,8 @@ Acceptable `AgreementType` values: `PoPF`
     + Body  
             
             {
-                "VersionDate": "2016-01-30",
                 "AgreedDate": "2016-01-30",
-                "AgreementType": "PoPF"
+                "Type": "PoPF"
             }
 
 + Response 204 (application/json)
