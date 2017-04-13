@@ -56,7 +56,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |RegisterMembershipCard|/customers/{identifier}/membershipCards|POST|staffAddCard|
 |UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|staffUpdateCard|
 |UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerAgreement|
-|RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|onbehalfRequestChangePin<br/>clientRequestChangePin|
+|RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|staffRequestChangePin|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
 |Transfer|/customers/{identifier}/finances/transfers/{transactionId}|POST|clientWalletTransfer<br/>onbehalfWalletTransfer|
 |GetWalletTransactionStatus|/transactions/{transactionId}|GET|staffWalletGetTransactionStatus|
@@ -93,9 +93,9 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerContactDetails <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffAddCard <br/>staffUpdateCard|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientRequestChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin <br/>onbehalfUpgradeCustomer|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerContactDetails <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffAddCard <br/>staffUpdateCard <br/>staffRequestChangePin|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer|
 
 <a name="client-credentials-access-token"></a>
 ## Client Credentials Access Token
@@ -412,7 +412,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "RequestPinChange": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
                         "Method": "POST",
-                        "AllowedScopes": [ "onbehalfRequestChangePin", "clientRequestChangePin" ]
+                        "AllowedScopes": [ "staffRequestChangePin" ]
                     },
                     "ViewBalance": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
@@ -442,7 +442,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "RequestPinChange": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication",
                         "Method": "POST",
-                        "AllowedScopes": [ "onbehalfRequestChangePin", "clientRequestChangePin" ]
+                        "AllowedScopes": [ "staffRequestChangePin" ]
                     },
                     "Transfer": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
@@ -1556,7 +1556,7 @@ Acceptable `Status` values: `Active`, `Inactive`
 
 ### Request PIN Change [POST]
 
-**Allowed scopes**: `onbehalfRequestChangePin`, `clientRequestChangePin`
+**Allowed scopes**: `staffRequestChangePin`
 
 Allows a member of staff to request a pin change on behalf of the customer. This is for when the customer has forgotten thier current pin. Once requested the customer will complete the journey on their own device.
 
@@ -1567,7 +1567,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
 
     + Headers 
             
-            Authorization: Bearer (client credentials/resource owner token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -1577,7 +1577,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pinAuth/requestChange",
                         "Method": "POST",
-                        "AllowedScopes": [ "onbehalfRequestChangePin", "clientRequestChangePin" ]
+                        "AllowedScopes": [ "staffRequestChangePin" ]
                     }
                 }
             }
