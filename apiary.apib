@@ -41,7 +41,10 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |Self|Refers to the resource it's attached to|
 |Journeys|/journeys|GET|any|
 |SearchCustomerByMembershipCard|/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}|GET|readonlyCustomerSearch|
-|UpdateCustomer|/customers/{identifier}|PUT|staffUpdateCustomerPersonal|
+|UpdateCustomerPersonal|/customers/{identifier}/personal|PUT|staffUpdateCustomerPersonal|
+|UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
+|UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|staffUpdateCustomerContactDetails|
+|UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
 |RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
 |CanCreateSaw|/customers/{identifier}/sawEligible|GET|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
 |UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
@@ -90,7 +93,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffAddCard <br/>staffUpdateCard|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerContactDetails <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffAddCard <br/>staffUpdateCard|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientRequestChangePin <br/>clientWalletTransfer <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfRequestChangePin <br/>onbehalfUpgradeCustomer|
 
@@ -341,10 +344,25 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
-                    "UpdateCustomer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                    "UpdateCustomerPersonal": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
                         "Method": "PUT",
                         "AllowedScopes": [ "staffUpdateCustomerPersonal" ]
+                    },
+                    "UpdateCustomerAddress": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/address",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "staffUpdateCustomerAddress" ]
+                    },
+                    "UpdateCustomerContactDetails": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "staffUpdateCustomerContactDetails" ]
+                    },
+                    "UpdateCustomerConsents": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/consents",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "staffUpdateCustomerConsents" ]
                     },
                     "UpdateAgreement": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
@@ -550,7 +568,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                 "Message": "Internal Error"
             }
 
-### Update Customer [PUT /customers/{identifier}]
+### Update Personal Information [PUT /customers/{identifier}/personal]
 
 **Allowed scopes**: `staffUpdateCustomerPersonal`
 
@@ -576,28 +594,188 @@ This API is to update an existing customers information once they have been iden
                 "DateOfBirth": "1955-01-30",
                 "Gender": "M",
                 "Nationality": "GB",
-                "Occupation": "Clerk",
-                "VipGrade": "Black",
-                "Address": {
-                    "Line1": "Flat 57",
-                    "Line2": "10 Downing Street",
-                    "Town": "London",
-                    "Postcode": "WC2B 4AA",
-                    "County": "Greater London",
-                    "Country": "GB"
-                },
-                "ContactDetails": {
-                    "HomePhone": "07886028945",
-                    "BusinessPhone": "07886028946",
-                    "MobilePhone": "07886028947",
-                    "Email": "jack@rank.com"
-                },
-                "AllowedMarketingContacts": {
-                    "IsHomeContactallowed": true,
-                    "IsMobileContactAllowed": true,
-                    "IsEmailContactAllowed": true,
-                    "IsSMSContactAllowed": true
+                "Occupation": "Clerk"
+            }
+            
++ Response 200 (application/json)
+
+            {
+                "_Links": {
+                    "Journeys": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
+                        "Method": "GET"
+                    }
                 }
+            }
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Update Address [PUT /customers/{identifier}/address]
+
+**Allowed scopes**: `staffUpdateCustomerAddress`
+
+This API is to update an existing customers information once they have been identified as a SAW customer.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "Line1": "Flat 57",
+                "Line2": "10 Downing Street",
+                "Town": "London",
+                "Postcode": "WC2B 4AA",
+                "County": "Greater London",
+                "Country": "GB"
+            }
+            
++ Response 200 (application/json)
+
+            {
+                "_Links": {
+                    "Journeys": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
+                        "Method": "GET"
+                    }
+                }
+            }
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Update Contact Details [PUT /customers/{identifier}/contactDetails]
+
+**Allowed scopes**: `staffUpdateCustomerContactDetails`
+
+This API is to update an existing customers information once they have been identified as a SAW customer.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "LandlinePhone": "07886028945",
+                "MobilePhone": "07886028947",
+                "Email": "jack@rank.com"
+            }
+            
++ Response 200 (application/json)
+
+            {
+                "_Links": {
+                    "Journeys": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
+                        "Method": "GET"
+                    }
+                }
+            }
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Update Consents [PUT /customers/{identifier}/consents]
+
+**Allowed scopes**: `staffUpdateCustomerConsents`
+
+This API is to update an existing customers information once they have been identified as a SAW customer.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "PostConsentFrom": "2017-03-03T10:00:00",
+                "LandlinePhoneConsentFrom": null,
+                "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
+                "EmailConsentFrom": "2017-01-25T10:00:00"
             }
             
 + Response 200 (application/json)
