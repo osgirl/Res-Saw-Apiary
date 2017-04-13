@@ -1212,10 +1212,10 @@ Get all suspension information for a single customer
            {    
                 "Suspensions": [
                     {
-                        "Reason": "SelfExcluded",
                         "From": "2016-01-30",
-                        "To": "2016-06-30",
-                        "Site": "",
+                        "ProposedTo": "2016-06-30",
+                        "Channel": "Digital",
+                        "Brand": "Grosvenor",
                         "Type": "SelfExcluded",
                         "_Links": {
                             "UpdateSuspension": {
@@ -1231,10 +1231,11 @@ Get all suspension information for a single customer
                         }
                     },
                     {
-                        "Reason": "Bad behaviour",
                         "From": "2016-01-30",
                         "To": "2016-02-30",
                         "Site": "67891",
+                        "Channel": "Retail",
+                        "Brand": "Grosvenor",
                         "Type": "Suspended",
                         "_Links": {
                             "UpdateSuspension": {
@@ -1296,10 +1297,12 @@ Acceptable `Type` values:
     + Body  
             
             {
-                "Reason": "Bad behaviour",
                 "From": "2016-01-30",
                 "To": "2016-01-30",
+                "ProposedTo": "2016-01-30",
                 "Site": "12345",
+                "Channel": "Retail",
+                "Brand": "Grosvenor",
                 "Type": "SelfExcluded"
             }
            
@@ -1350,10 +1353,12 @@ To update customer profile as barred/suspended by the SAW staff member by select
     + Body  
             
             {
-                "Reason": "Bad behaviour",
                 "From": "2016-01-30",
                 "To": "2016-01-30",
+                "ProposedTo": "2017-01-30",
                 "Site": "12345",
+                "Channel": "Retail",
+                "Brand": "Grosvenor",
                 "Type": "SelfExcluded"
             }
            
