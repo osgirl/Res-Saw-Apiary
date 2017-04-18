@@ -524,19 +524,16 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
 + Response 200 (application/json)
 
             {
-                "Title": "Mr",
-                "FirstName": "John",
-                "MiddleName": "Dan",
-                "LastName": "Jackson",
-                "DateOfBirth": "1955-01-30",
-                "Gender": "M",
-                "Nationality": "GB",
-                "Occupation": "Clerk",
-                "VipGrade": "Black",
-                "RetailId": "12345678",
-                "DigitalId": "12345678",
-                "DigitalUsername": "johnSilver777",
-                "FirstRegisteredClubNumber": "45611",
+                "Personal": {
+                    "Title": "Mr",
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson",
+                    "DateOfBirth": "1955-01-30",
+                    "Gender": "M",
+                    "Nationality": "GB",
+                    "Occupation": "Clerk"
+                },
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
@@ -546,11 +543,20 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "Country": "GB"
                 },
                 "ContactDetails": {
-                    "HomePhone": "07886028945",
-                    "BusinessPhone": "07886028946",
+                    "LandlinePhone": "07886028945",
                     "MobilePhone": "07886028947",
                     "Email": "jack@rank.com"
-                }
+                },
+                "AllowedMarketingContacts": {
+                    "PostConsentFrom": "2017-03-03T10:00:00",
+                    "LandlinePhoneConsentFrom": null,
+                    "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
+                    "EmailConsentFrom": "2017-01-25T10:00:00"
+                },
+                "RetailId": "12345678",
+                "DigitalId": "12345678",
+                "DigitalUsername": "johnSilver777",
+                "FirstRegisteredClubNumber": "45611"
             }
 
 + Response 204 (application/json)
@@ -880,17 +886,16 @@ This API will be called when a customer has had a new retail account created. Th
     + Body
     
             {
-                "Title": "Mr",
-                "FirstName": "John",
-                "MiddleName": "Dan",
-                "LastName": "Jackson",
-                "DateOfBirth": "1955-01-30",
-                "Gender": "M",
-                "Nationality": "GB",
-                "Occupation": "Clerk",
-                "VipGrade": "Black",
-                "RetailId": "12345678",
-                "FirstRegisteredClubNumber": "45611",
+                "Personal": {
+                    "Title": "Mr",
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson",
+                    "DateOfBirth": "1955-01-30",
+                    "Gender": "M",
+                    "Nationality": "GB",
+                    "Occupation": "Clerk"
+                },
                 "Address": {
                     "Line1": "Flat 57",
                     "Line2": "10 Downing Street",
@@ -900,17 +905,18 @@ This API will be called when a customer has had a new retail account created. Th
                     "Country": "GB"
                 },
                 "ContactDetails": {
-                    "HomePhone": "07886028945",
-                    "BusinessPhone": "07886028946",
+                    "LandlinePhone": "07886028945",
                     "MobilePhone": "07886028947",
                     "Email": "jack@rank.com"
                 },
                 "AllowedMarketingContacts": {
-                    "IsHomeContactallowed": true,
-                    "IsMobileContactAllowed": true,
-                    "IsEmailContactAllowed": true,
-                    "IsSMSContactAllowed": true
-                }
+                    "PostConsentFrom": "2017-03-03T10:00:00",
+                    "LandlinePhoneConsentFrom": null,
+                    "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
+                    "EmailConsentFrom": "2017-01-25T10:00:00"
+                },
+                "RetailId": "12345678",
+                "FirstRegisteredClubNumber": "45611"
             }
 
 + Response 200 (application/json)
@@ -993,16 +999,15 @@ a retail account or both, digital and retail.
                         "Country": "GB"
                     },
                     "ContactDetails": {
-                        "HomePhone": "07886028945",
-                        "BusinessPhone": "07886028946",
+                        "LandlinePhone": "07886028945",
                         "MobilePhone": "07886028947",
                         "Email": "jack@rank.com"
                     },
                     "AllowedMarketingContacts": {
-                        "IsHomeContactallowed": true,
-                        "IsMobileContactAllowed": true,
-                        "IsEmailContactAllowed": true,
-                        "IsSMSContactAllowed": true
+                        "PostConsentFrom": "2017-03-03T10:00:00",
+                        "LandlinePhoneConsentFrom": null,
+                        "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
+                        "EmailConsentFrom": "2017-01-25T10:00:00"
                     }
                 },
                 "RejectionReasons" : [
