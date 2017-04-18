@@ -52,8 +52,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
 |RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
-|GetMembershipCards|/customers/{identifier}/membershipCards|GET|staffAddCard|
-|RegisterOrReplaceMembershipCard|/customers/{identifier}/membershipCards|PUT|staffAddCard|
+|UpdateMembershipCard|/customers/{identifier}/membershipCard|PUT|staffUpdateMembershipCard|
 |UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerAgreement|
 |RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|staffRequestChangePin|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
@@ -92,7 +91,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerContactDetails <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffAddCard <br/>staffUpdateCard <br/>staffRequestChangePin|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffWalletGetBalance <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerContactDetails <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerAgreement <br/>staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffWalletGetTransactionStatus <br/>staffUpdateMembershipCard <br/>staffUpdateCard <br/>staffRequestChangePin|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer|
 
@@ -383,15 +382,10 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     },
-                    "GetMembershipCards": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
+                    "UpdateMembershipCard": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCard",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffAddCard" ]
-                    },
-                    "RegisterMembershipCard": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffAddCard" ]
+                        "AllowedScopes": [ "staffUpdateMembershipCard" ]
                     }
                 }
             }
@@ -812,6 +806,64 @@ This API is to update an existing customers information once they have been iden
                 "Message": "Internal Error"
             }
            
+### Update Membership Card [PUT /customers/{identifier}/membershipCard]
+
+This API is to update an existing customers information once they have been identified as a SAW customer.
+
+**Allowed scopes**: `staffUpdateMembershipCard`
+
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "MembershipCardNumber": 123123123
+            }
+    
++ Response 200 (application/json)
+
+            {
+                "_Links": {
+                    "Journeys": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
+                        "Method": "GET"
+                    }
+                }
+            }
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
 ### Register Retail Customer [POST]
 
 **Allowed scopes**: `staffRegisterRetailCustomer`
@@ -1401,98 +1453,6 @@ To update customer profile by removing the barred/suspended status
 
             {
                 "Message": "Not a SAW customer"
-            }
-
-## Membership Cards [/customers/{identifier}/membershipCards]
-
-### Get Registered Cards [GET]
-
-**Allowed scopes**: `staffAddCard`
-
-Allows registered customers get all assoicated cards
-            
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-    
-+ Response 200 (application/json)
-    
-            {
-                "MembershipCards": [
-                    {
-                        "CardNumber" : 123123123
-                    }
-                ],
-                "_Links": {
-                    "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "GET",
-                        "AllowedScopes": [ "staffAddCard" ]
-                    },
-                    "RegisterOrReplaceMembershipCard": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "staffAddCard" ]
-                    }
-                }
-            }
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Register or Replace a Card [PUT]
-
-**Allowed scopes**: `staffAddCard`
-
-Allows registered customers to add new or additional cards
-            
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-    
-    + Body
-    
-            {
-                "CardNumber" : 123123123
-            }
-            
-+ Response 200 (application/json)
-
-           {
-                "_Links": {
-                    "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "staffAddCard" ]
-                    }
-                }
-            }
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
             }
             
 ## Security [/customers/{identifier}/authentication/pinAuth/requestChange]
