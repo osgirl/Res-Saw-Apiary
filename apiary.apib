@@ -53,8 +53,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
 |RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
 |GetMembershipCards|/customers/{identifier}/membershipCards|GET|staffAddCard|
-|RegisterMembershipCard|/customers/{identifier}/membershipCards|POST|staffAddCard|
-|UpdateMembershipCard|/customers/membershipCards/{identifier}|PUT|staffUpdateCard|
+|RegisterOrReplaceMembershipCard|/customers/{identifier}/membershipCards|PUT|staffAddCard|
 |UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerAgreement|
 |RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|staffRequestChangePin|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
@@ -1424,15 +1423,7 @@ Allows registered customers get all assoicated cards
             {
                 "MembershipCards": [
                     {
-                        "CardNumber" : 123123123,
-                        "Status": "Active",
-                        "_Links": {
-                            "UpdateMembershipCard": {
-                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                                "Method": "PUT",
-                                "AllowedScopes": [ "staffUpdateCard" ]
-                            }
-                        }
+                        "CardNumber" : 123123123
                     }
                 ],
                 "_Links": {
@@ -1441,9 +1432,9 @@ Allows registered customers get all assoicated cards
                         "Method": "GET",
                         "AllowedScopes": [ "staffAddCard" ]
                     },
-                    "RegisterMembershipCard": {
+                    "RegisterOrReplaceMembershipCard": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "POST",
+                        "Method": "PUT",
                         "AllowedScopes": [ "staffAddCard" ]
                     }
                 }
@@ -1461,7 +1452,7 @@ Allows registered customers get all assoicated cards
                 "Message": "Internal Error"
             }
 
-### Register New Card [POST]
+### Register or Replace a Card [PUT]
 
 **Allowed scopes**: `staffAddCard`
 
@@ -1486,11 +1477,6 @@ Allows registered customers to add new or additional cards
                 "_Links": {
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCards",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffAddCard" ]
-                    },
-                    "UpdateMembershipCard": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
                         "AllowedScopes": [ "staffAddCard" ]
                     }
@@ -1508,54 +1494,6 @@ Allows registered customers to add new or additional cards
             {
                 "Message": "Internal Error"
             }
-            
-### Update Card Status [PUT /customers/membershipCards/{identifier}]
-
-**Allowed scopes**: `staffUpdateCard`
-
-Allows registered customers to update their card status.
-
-Acceptable `Status` values: `Active`, `Inactive`
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
-  
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-    + Body
-    
-            {
-                "Status" : "Inactive"
-            }
-
-+ Response 200 (application/json)
-
-           {
-                "_Links": {
-                    "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/membershipCards/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateCard" ]
-                    }
-                }
-            }
-
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
             
 ## Security [/customers/{identifier}/authentication/pinAuth/requestChange]
 
