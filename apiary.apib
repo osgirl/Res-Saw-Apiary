@@ -1329,11 +1329,13 @@ Get all suspension information for a single customer
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
 Acceptable `Type` values:
-* `Deceased` - self explanatory
-* `Barred` - retail barring in one or more clubs, also mapped to Refused Membership in retail (which may be for one or more clubs)
-* `Suspect` - equivalent to digital and retail Suspended status
-* `SelfExcluded` - digital and/or retail self exclusion (self-cancellation for retail)
+* `Barred` - retail barring in one or more clubs
+* `RefusedMembership` - retail exclusion from (usually) a single club
+* `Resigned` - retail barring on request of the customer that will prevent entry to one or more clubs
+* `SelfExcluded` - digital and/or retail self-exclusion (self-cancellation for retail)
 * `TakeABreak` - digital only, not allowed to play for a set period
+* `Suspect` - digital only, we suspect the customer of fraud or other undesirable behaviour (such as a chargeback)
+* `BadDebt` - retail only, mapped from the Bad Debtors file in Neon
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
