@@ -470,31 +470,31 @@ This endpoint is a replacement for the existing Grosvenor Customer look service 
 Model for the resource if defined below:
 | Name                                                  | Type      | Required          | Description                                                                           |Example                    |
 |:---                                                   |:---       |:--:               |:---                                                                                   |:---                       |
-|Title                                                  |string[25] |**yes**            |Allowed values: "Mr", "Mrs", "Miss", ...                                               |"Mr"                       |
-|FirstName                                              |string[40] |**yes**            |                                                                                       |"John"                     |
-|MiddleName                                             |string[40] |**optional**       |                                                                                       |"Dan"                      |
-|LastName                                               |string[40] |**yes**            |                                                                                       |"Jackson"                  |
-|DateOfBirth                                            |date       |**yes**            |                                                                                       |"1955-01-30"               |
-|Gender                                                 |string[1]  |**yes**            |Allowed values: "U" for Unknown, "F" for Female, "M" for Male                          |"M"                        |
-|Nationality                                            |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
-|Occupation                                             |string[40] |**optional**       |                                                                                       |"Clerk"                    |
-|VipGrade                                               |string[30] |**yes**            |                                                                                       |"Black"                    |
-|RetailId                                               |string[10] |**yes**            |Up to 10 digits allowed.                                                               |"1234567890"               |
-|FirstRegisteredClubNumber                              |string[5]  |**yes**            |                                                                                       |"50106"                    |
-|Address.Line1                                          |string[?]  |**yes**            |                                                                                       |"Flat 2"                   |
-|Address.Line2                                          |string[?]  |**yes**            |                                                                                       |"10 Downing Street"        |
-|Address.Town                                           |string[?]  |**yes**            |                                                                                       |"London"                   |
-|Address.Postcode                                       |string[?]  |**yes**            |                                                                                       |"WC2B 4AA"                 |
-|Address.County                                         |string[?]  |**optional**       |                                                                                       |"Greater London"           |
+|Personal.Title                                         |string[?]  |**yes**            |Allowed values: "Mr", "Mrs", "Miss", ...                                               |"Mr"                       |
+|Personal.FirstName                                     |string[25] |**yes**            |                                                                                       |"John"                     |
+|Personal.MiddleName                                    |string[25] |**optional**       |                                                                                       |"Dan"                      |
+|Personal.LastName                                      |string[25] |**yes**            |                                                                                       |"Jackson"                  |
+|Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
+|Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
+|Personal.Nationality                                   |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
+|Personal.Occupation                                    |string[40] |**optional**       |                                                                                       |"Clerk"                    |
+|Address.Line1                                          |string[400]|**yes**            |                                                                                       |"Flat 2"                   |
+|Address.Line2                                          |string[400]|**yes**            |                                                                                       |"10 Downing Street"        |
+|Address.Town                                           |string[100]|**yes**            |                                                                                       |"London"                   |
+|Address.Postcode                                       |string[10] |**yes**            |                                                                                       |"WC2B 4AA"                 |
+|Address.County                                         |string[20] |**optional**       |                                                                                       |"Greater London"           |
 |Address.Country                                        |string[2]  |**yes**            |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"GB"                       |
-|ContactDetails.HomePhone                               |string[?]  |**optional**       |                                                                                       |"07886028945"              |
-|ContactDetails.BusinessPhone                           |string[?]  |**optional**       |                                                                                       |"07886028946"              |
-|ContactDetails.MobilePhone                             |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"07886028947"              |
+|ContactDetails.LandlinePhone                           |string[20] |**optional**       |                                                                                       |"07886028945"              |
+|ContactDetails.MobilePhone                             |string[20] |**optional** (either Mobile or Email must be supplied)|                                                    |"07886028947"              |
 |ContactDetails.Email                                   |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"john@rank.com"            |
-|AllowedMarketingContacts.IsHomeContactallowed          |bool       |**optional**       |Whether to allow marketing contacts via post                                           |true                       |
-|AllowedMarketingContacts.IsMobileContactAllowed        |bool       |**optional**       |Whether to allow marketing contacts via mobile phone                                   |true                       |
-|AllowedMarketingContacts.IsEmailContactAllowed         |bool       |**optional**       |Whether to allow marketing contacts via email                                          |true                       |
-|AllowedMarketingContacts.IsSMSContactAllowed           |bool       |**optional**       |Whether to allow marketing contacts via SMS                                            |true                       |
+|MarketingConsents.PostConsentFrom                      |datetime   |**optional**       |The date marketing contacts via post were allowed                                      |"2017-01-25T10:00:00"      |
+|MarketingConsents.LandlinePhoneConsentFrom             |datetime   |**optional**       |The date marketing contacts via mobile phone were allowed                              |"2017-01-25T10:00:00"      |
+|MarketingConsents.MobilePhoneConsentFrom               |datetime   |**optional**       |The date marketing marketing contacts via email were allowed                           |"2017-01-25T10:00:00"      |
+|MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing marketing contacts via SMS were allowed                             |"2017-01-25T10:00:00"      |
+|RetailId                                               |string[?]  |**yes**            |Up to 10 digits allowed.                                                               |"4124681094"               |
+|DigitalId                                              |string[?]  |**yes**            |                                                                                       |"1234567890"               |
+|DigitalUsername                                        |string[15] |**yes**            |                                                                                       |"johnSilver777"            |
+|FirstRegisteredClubNumber                              |string[6]  |**yes**            |                                                                                       |"50106"                    |
 
 For registration following input validation in place
 
@@ -547,7 +547,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "MobilePhone": "07886028947",
                     "Email": "jack@rank.com"
                 },
-                "AllowedMarketingContacts": {
+                "MarketingConsents": {
                     "PostConsentFrom": "2017-03-03T10:00:00",
                     "LandlinePhoneConsentFrom": null,
                     "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
@@ -909,7 +909,7 @@ This API will be called when a customer has had a new retail account created. Th
                     "MobilePhone": "07886028947",
                     "Email": "jack@rank.com"
                 },
-                "AllowedMarketingContacts": {
+                "MarketingConsents": {
                     "PostConsentFrom": "2017-03-03T10:00:00",
                     "LandlinePhoneConsentFrom": null,
                     "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
@@ -1003,7 +1003,7 @@ a retail account or both, digital and retail.
                         "MobilePhone": "07886028947",
                         "Email": "jack@rank.com"
                     },
-                    "AllowedMarketingContacts": {
+                    "MarketingConsents": {
                         "PostConsentFrom": "2017-03-03T10:00:00",
                         "LandlinePhoneConsentFrom": null,
                         "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
