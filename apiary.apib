@@ -495,6 +495,7 @@ Model for the resource if defined below:
 |DigitalId                                              |string[?]  |**optional**       |                                                                                       |"1234567890"               |
 |DigitalUsername                                        |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
 |FirstRegisteredClubNumber                              |string[6]  |**yes**            |                                                                                       |"50106"                    |
+|MembershipCardNumber                                   |string[?]  |**optional**       |                                                                                       |"123123123"                |
 
 For registration following input validation in place
 
@@ -556,7 +557,8 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                 "RetailId": "12345678",
                 "DigitalId": "12345678",
                 "DigitalUsername": "johnSilver777",
-                "FirstRegisteredClubNumber": "45611"
+                "FirstRegisteredClubNumber": "45611",
+                "MembershipCardNumber": "123123123"
             }
 
 + Response 204 (application/json)
@@ -832,7 +834,7 @@ This API is to update an existing customers information once they have been iden
     + Body
     
             {
-                "MembershipCardNumber": 123123123
+                "MembershipCardNumber": "123123123"
             }
     
 + Response 200 (application/json)
@@ -981,15 +983,16 @@ a retail account or both, digital and retail.
                     "87654321"
                 ],
                 "GoldenRecord" : {
-                    "Title": "Mr",
-                    "FirstName": "John",
-                    "MiddleName": "Dan",
-                    "LastName": "Jackson",
-                    "DateOfBirth": "1955-01-30",
-                    "Gender": "M",
-                    "Nationality": "GB",
-                    "Occupation": "Clerk",
-                    "VipGrade": "Black",
+                    "Personal": {
+                        "Title": "Mr",
+                        "FirstName": "John",
+                        "MiddleName": "Dan",
+                        "LastName": "Jackson",
+                        "DateOfBirth": "1955-01-30",
+                        "Gender": "M",
+                        "Nationality": "GB",
+                        "Occupation": "Clerk"
+                    },
                     "Address": {
                         "Line1": "Flat 57",
                         "Line2": "10 Downing Street",
