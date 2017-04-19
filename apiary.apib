@@ -43,7 +43,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |SearchCustomerByMembershipCard|/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}|GET|readonlyCustomerSearch|
 |UpdateCustomerPersonal|/customers/{identifier}/personal|PUT|staffUpdateCustomerPersonal|
 |UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
-|UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|staffUpdateCustomerContactDetails|
+|UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|clientUpdateCustomerContactDetails|
 |UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
 |UpdateMembershipCard|/customers/{identifier}/membershipCard|PUT|staffUpdateMembershipCard|
 |RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
@@ -91,8 +91,8 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerContactDetails <br/>staffUpdateCustomerConsents <br/>staffUpdateMembershipCard <br/>staffUpdateCustomerAgreement <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateMembershipCard <br/>staffUpdateCustomerAgreement <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer|
 
 <a name="client-credentials-access-token"></a>
@@ -355,7 +355,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "UpdateCustomerContactDetails": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
                         "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateCustomerContactDetails" ]
+                        "AllowedScopes": [ "clientUpdateCustomerContactDetails" ]
                     },
                     "UpdateCustomerConsents": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/consents",
@@ -474,6 +474,7 @@ Model for the resource if defined below:
 |Personal.FirstName                                     |string[25] |**yes**            |                                                                                       |"John"                     |
 |Personal.MiddleName                                    |string[25] |**optional**       |                                                                                       |"Dan"                      |
 |Personal.LastName                                      |string[25] |**yes**            |                                                                                       |"Jackson"                  |
+|Personal.PreferredName                                 |string[25] |**yes**            |                                                                                       |"Jackson"                  |
 |Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
 |Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
 |Personal.Nationality                                   |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
@@ -488,9 +489,11 @@ Model for the resource if defined below:
 |ContactDetails.MobilePhone                             |string[20] |**optional** (either Mobile or Email must be supplied)|                                                    |"07886028947"              |
 |ContactDetails.Email                                   |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"john@rank.com"            |
 |MarketingConsents.PostConsentFrom                      |datetime   |**optional**       |The date marketing contacts via post were allowed                                      |"2017-01-25T10:00:00"      |
-|MarketingConsents.LandlinePhoneConsentFrom             |datetime   |**optional**       |The date marketing contacts via mobile phone were allowed                              |"2017-01-25T10:00:00"      |
-|MarketingConsents.MobilePhoneConsentFrom               |datetime   |**optional**       |The date marketing marketing contacts via email were allowed                           |"2017-01-25T10:00:00"      |
-|MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing marketing contacts via SMS were allowed                             |"2017-01-25T10:00:00"      |
+|MarketingConsents.LandlineConsentFrom                  |datetime   |**optional**       |The date marketing contacts via landline phone were allowed                              |"2017-01-25T10:00:00"      |
+|MarketingConsents.MobileConsentFrom                    |datetime   |**optional**       |The date marketing contacts via mobile phone were allowed                           |"2017-01-25T10:00:00"      |
+|MarketingConsents.SMSConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                             |"2017-01-25T10:00:00"      |
+|MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                           |"2017-01-25T10:00:00"      |
+|MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                             |"2017-01-25T10:00:00"      |
 |RetailId                                               |string[?]  |**yes**            |Up to 10 digits allowed.                                                               |"4124681094"               |
 |DigitalId                                              |string[?]  |**optional**       |                                                                                       |"1234567890"               |
 |DigitalUsername                                        |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
@@ -530,6 +533,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "FirstName": "John",
                     "MiddleName": "Dan",
                     "LastName": "Jackson",
+                    "PreferredName": "Johnny",
                     "DateOfBirth": "1955-01-30",
                     "Gender": "M",
                     "Nationality": "GB",
@@ -550,9 +554,11 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                 },
                 "MarketingConsents": {
                     "PostConsentFrom": "2017-03-03T10:00:00",
-                    "LandlinePhoneConsentFrom": null,
-                    "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
-                    "EmailConsentFrom": "2017-01-25T10:00:00"
+                    "LandlineConsentFrom": null,
+                    "MobileConsentFrom": "2017-01-25T10:00:00",
+                    "SMSConsentFrom": "2017-01-25T10:00:00",
+                    "EmailConsentFrom": "2017-01-25T10:00:00",
+                    "PushConsentFrom":"2017-01-25T10:00:00",
                 },
                 "RetailId": "12345678",
                 "DigitalId": "12345678",
@@ -697,7 +703,7 @@ This API is to update an existing customers information once they have been iden
 
 ### Update Contact Details [PUT /customers/{identifier}/contactDetails]
 
-**Allowed scopes**: `staffUpdateCustomerContactDetails`
+**Allowed scopes**: `clientUpdateCustomerContactDetails`
 
 This API is to update an existing customers information once they have been identified as a SAW customer.
 
