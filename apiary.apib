@@ -41,20 +41,21 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |Self|Refers to the resource it's attached to|
 |Journeys|/journeys|GET|any|
 |SearchCustomerByMembershipCard|/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}|GET|readonlyCustomerSearch|
-|UpdateCustomerPersonal|/customers/{identifier}/personal|PUT|staffUpdateCustomerPersonal|
-|UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
-|UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|clientUpdateCustomerContactDetails|
-|UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
-|UpdateMembershipCard|/customers/{identifier}/membershipCard|PUT|staffUpdateMembershipCard|
 |RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
 |CanCreateSaw|/customers/{identifier}/sawEligible|GET|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
 |UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
+|UpdateCustomerPersonal|/customers/{identifier}/personal|PUT|staffUpdateCustomerPersonal|
+|UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
+|UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
+|UpdateCustomerMembershipCard|/customers/{identifier}/membershipCard|PUT|staffUpdateCustomerMembershipCard|
 |GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
 |RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
-|UpdateAgreement|/customers/agreements/{identifier}|PUT|staffUpdateCustomerAgreement|
 |RequestPinChange|/customers/{identifier}/authentication/pinAuth/requestChange|POST|staffRequestChangePin|
+|GetCustomerAgreements|/customers/{identifier}/agreements|GET|staffGetCustomerAgreements|
+|UpdateCustomerAgreement|/customers/agreements/{identifier}|PUT|onbehalfUpdateCustomerAgreement|
+|UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|clientUpdateCustomerContactDetails|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
 |Transfer|/customers/{identifier}/finances/transfers/{transactionId}|POST|clientWalletTransfer<br/>onbehalfWalletTransfer|
 |GetWalletTransactionStatus|/transactions/{transactionId}|GET|staffWalletGetTransactionStatus|
@@ -91,9 +92,9 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateMembershipCard <br/>staffUpdateCustomerAgreement <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembershipCard <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
 
 <a name="client-credentials-access-token"></a>
 ## Client Credentials Access Token
@@ -365,7 +366,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "UpdateAgreement": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateCustomerAgreement" ]
+                        "AllowedScopes": [ "onbehalfUpdateCustomerAgreement" ]
                     },
                     "RegisterRetailCustomer": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers",
@@ -588,7 +589,7 @@ This API is to update an existing customers information once they have been iden
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
@@ -652,7 +653,7 @@ This API is to update an existing customers information once they have been iden
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
@@ -773,7 +774,7 @@ This API is to update an existing customers information once they have been iden
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
@@ -834,7 +835,7 @@ This API is to update an existing customers information once they have been iden
 
     + Headers 
             
-            Authorization: Bearer (resource owner token)
+            Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
     + Body
@@ -971,7 +972,7 @@ a retail account or both, digital and retail.
 
     + Headers 
             
-            Authorization: Bearer (client credentials token)
+            Authorization: Bearer (client credentials/resource owner token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
 + Response 200 (application/json)
@@ -1154,7 +1155,7 @@ digital account should be created from the customer's known email address.
 
 ### Get Agreements [GET]
 
-**Allowed scopes**: `staffUpdateCustomerAgreement`
+**Allowed scopes**: `staffGetCustomerAgreements`
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -1205,7 +1206,7 @@ digital account should be created from the customer's known email address.
 
 ### Update Agreement [PUT /customers/agreements/{identifier}]
 
-**Allowed scopes**: `staffUpdateCustomerAgreement`
+**Allowed scopes**: `onbehalfUpdateCustomerAgreement`
 
 This API will be used to update Protection of Player Funds flag as an when is required by the terms.
 Neon will get the information about the current PoPF status for the customer in lookup API call (above)
