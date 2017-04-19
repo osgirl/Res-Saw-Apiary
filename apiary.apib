@@ -561,11 +561,24 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "EmailConsentFrom": "2017-01-25T10:00:00",
                     "PushConsentFrom":"2017-01-25T10:00:00",
                 },
-                "RetailId": "12345678",
-                "DigitalId": "12345678",
-                "DigitalUsername": "johnSilver777",
-                "FirstRegisteredClubNumber": "45611",
-                "MembershipCardNumber": "123123123"
+                "Verifications":{
+                    "IssuerDetails":"",
+                    "VerificationDate":"2017-01-25T10:00:00",
+                    "DocumentNumber": "435345345",
+                    "DocumentType": "Passport",
+                    "Pass":"True",
+                    "VerificationType":"CustomerNotPresent"
+                },
+                "Memberships": [
+                    "Membership": {
+                        "RetailId": "12345678",
+                        "FirstRegisteredClubNumber": "45611",
+                        "MembershipCardNumber": "123123123"
+                    }, 
+                    "Membership": {
+                        "DigitalId": "12345678",
+                        "DigitalUsername": "johnSilver777",
+                }]
             }
 
 + Response 204 (application/json)
