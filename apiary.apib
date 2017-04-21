@@ -495,11 +495,15 @@ Model for the resource if defined below:
 |MarketingConsents.SMSConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                             |"2017-01-25T10:00:00"      |
 |MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                           |"2017-01-25T10:00:00"      |
 |MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                             |"2017-01-25T10:00:00"      |
-|RetailId                                               |string[?]  |**yes**            |Up to 10 digits allowed.                                                               |"4124681094"               |
-|DigitalId                                              |string[?]  |**optional**       |                                                                                       |"1234567890"               |
-|DigitalUsername                                        |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
-|FirstRegisteredClubNumber                              |string[6]  |**yes**            |                                                                                       |"50106"                    |
-|MembershipCardNumber                                   |string[?]  |**optional**       |                                                                                       |"123123123"                |
+|Membership.MembershipId                                |string[?]  |**yes**            |The Retail or Digital customer identifier                                                               |"4124681094"               |
+|Membership.Username                                    |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
+|Membership.RegisteredClubNumber                        |string[6]  |**yes**            |                                                                                       |"50106"                    |
+|Membership.MembershipCardNumber                        |string[?]  |**optional**       |                                                                                       |"123123123"                |
+|Membership.Status                                      |string[?]  |**optional**       |                                                                                       |"Active"                |
+|Membership.Channel                                     |string[?]  |**optional**       |                                                                                       |"Retail"                |
+|Membership.Brand                                       |string[?]  |**optional**       |                                                                                       |"Grosvenor"                |
+|Membership.VIPGrade                                    |string[?]  |**optional**       |                                                                                       |"Black               |
+|Membership.DatePartOfSAW                               |datetime   |**optional**       | Date the membership became part of a single account and wallet                        |"2017-01-25T10:00:00"      |
 
 For registration following input validation in place
 
@@ -571,13 +575,23 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                 },
                 "Memberships": [
                     "Membership": {
-                        "RetailId": "12345678",
-                        "FirstRegisteredClubNumber": "45611",
+                        "MembershipId": "12345678",
+                        "RegisteredClubNumber": "45611",
                         "MembershipCardNumber": "123123123"
+                        "Status" : "Active",
+                        "Channel" : "Retail",
+                        "Brand" : "Grosvenor",
+                        "VIPGrade":"Black",
+                        "DatePartOfSAW": "NULL"
                     }, 
                     "Membership": {
-                        "DigitalId": "12345678",
-                        "DigitalUsername": "johnSilver777",
+                        "MembershipId": "12345678",
+                        "Username": "johnSilver777",
+                        "Status" : "Locked",
+                        "Channel" : "Digital",
+                        "Brand" : "Grosvenor",
+                        "VIPGrade": "40",
+                        "DatePartOfSAW": "2017-01-25T10:00:00"
                 }]
             }
 
@@ -952,9 +966,10 @@ This API will be called when a customer has had a new retail account created. Th
                 },
                 "Memberships": [
                     "Membership": {
-                        "RetailId": "12345678",
-                        "FirstRegisteredClubNumber": "45611",
-                        "MembershipCardNumber": "123123123"
+                        "MembershipId": "12345678",
+                        "RegisteredClubNumber": "45611",
+                        "MembershipCardNumber": "123123123",
+                        "VIPGrade":"Black",
                     }, 
                 }]
             }
@@ -1061,10 +1076,15 @@ a retail account or both, digital and retail.
                     },
                     "Memberships": [
                         "Membership": {
-                            "RetailId": "12345678",
-                            "FirstRegisteredClubNumber": "45611",
+                            "MembershipId": "12345678",
+                            "RegisteredClubNumber": "45611",
                             "MembershipCardNumber": "123123123"
-                        }, 
+                            "Status" : "Active",
+                            "Channel" : "Retail",
+                            "Brand" : "Grosvenor",
+                            "VIPGrade":"Black",
+                            "DatePartOfSAW": "NULL"
+                        } 
                     }]
                 },
                 "RejectionReasons" : [
