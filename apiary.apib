@@ -495,6 +495,12 @@ Model for the resource if defined below:
 |MarketingConsents.SMSConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                             |"2017-01-25T10:00:00"      |
 |MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                           |"2017-01-25T10:00:00"      |
 |MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                             |"2017-01-25T10:00:00"      |
+|Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                                               |"GB passport"               |
+|Verifications.VerificationDate                         |datetime |**yes**       |                                                                                       |"2017-01-25T10:00:00"           |
+|Verifications.DocumentNumber                           |string[6]  |**yes**            |                                                                                       |"50106"                    |
+|Verifications.DocumentType                             |string[?]  |**yes**       |                                                                                       |"Passport"                |
+|Verifications.Pass                                     |string[?]  |**yes**       |  True or False                                                                                      |"False"                |
+|Verifications.VerificationType                         |string[?]  |**yes**       |                                                                                       |"CustomerNotPresent"                |
 |Membership.MembershipId                                |string[?]  |**yes**            |The Retail or Digital customer identifier                                                               |"4124681094"               |
 |Membership.Username                                    |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
 |Membership.RegisteredClubNumber                        |string[6]  |**yes**            |                                                                                       |"50106"                    |
