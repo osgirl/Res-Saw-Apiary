@@ -475,7 +475,7 @@ Model for the resource if defined below:
 |Personal.FirstName                                     |string[25] |**yes**            |                                                                                       |"John"                     |
 |Personal.MiddleName                                    |string[25] |**optional**       |                                                                                       |"Dan"                      |
 |Personal.LastName                                      |string[25] |**yes**            |                                                                                       |"Jackson"                  |
-|Personal.PreferredName                                 |string[25] |**yes**            |                                                                                       |"Jackson"                  |
+|Personal.PreferredName                                 |string[25] |**yes**            |                                                                                       |"Jacko"                  |
 |Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
 |Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
 |Personal.Nationality                                   |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
@@ -612,6 +612,7 @@ This API is to update an existing customers information once they have been iden
                 "FirstName": "John",
                 "MiddleName": "Dan",
                 "LastName": "Jackson",
+                "PreferredName": "Johnny",
                 "DateOfBirth": "1955-01-30",
                 "Gender": "M",
                 "Nationality": "GB",
@@ -796,7 +797,8 @@ This API is to update an existing customers information once they have been iden
                 "PostConsentFrom": "2017-03-03T10:00:00",
                 "LandlinePhoneConsentFrom": null,
                 "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
-                "EmailConsentFrom": "2017-01-25T10:00:00"
+                "EmailConsentFrom": "2017-01-25T10:00:00",
+                "PushConsentFrom":"2017-01-25T10:00:00",
             }
             
 + Response 200 (application/json)
@@ -913,6 +915,7 @@ This API will be called when a customer has had a new retail account created. Th
                     "FirstName": "John",
                     "MiddleName": "Dan",
                     "LastName": "Jackson",
+                    "PreferredName": "Johnny",
                     "DateOfBirth": "1955-01-30",
                     "Gender": "M",
                     "Nationality": "GB",
@@ -933,12 +936,27 @@ This API will be called when a customer has had a new retail account created. Th
                 },
                 "MarketingConsents": {
                     "PostConsentFrom": "2017-03-03T10:00:00",
-                    "LandlinePhoneConsentFrom": null,
-                    "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
-                    "EmailConsentFrom": "2017-01-25T10:00:00"
+                    "LandlineConsentFrom": null,
+                    "MobileConsentFrom": "2017-01-25T10:00:00",
+                    "SMSConsentFrom": "2017-01-25T10:00:00",
+                    "EmailConsentFrom": "2017-01-25T10:00:00",
+                    "PushConsentFrom":"2017-01-25T10:00:00",
                 },
-                "RetailId": "12345678",
-                "FirstRegisteredClubNumber": "45611"
+                "Verifications":{
+                    "IssuerDetails":"",
+                    "VerificationDate":"2017-01-25T10:00:00",
+                    "DocumentNumber": "435345345",
+                    "DocumentType": "Passport",
+                    "Pass":"True",
+                    "VerificationType":"CustomerNotPresent"
+                },
+                "Memberships": [
+                    "Membership": {
+                        "RetailId": "12345678",
+                        "FirstRegisteredClubNumber": "45611",
+                        "MembershipCardNumber": "123123123"
+                    }, 
+                }]
             }
 
 + Response 200 (application/json)
@@ -1030,8 +1048,24 @@ a retail account or both, digital and retail.
                         "PostConsentFrom": "2017-03-03T10:00:00",
                         "LandlinePhoneConsentFrom": null,
                         "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
-                        "EmailConsentFrom": "2017-01-25T10:00:00"
-                    }
+                        "EmailConsentFrom": "2017-01-25T10:00:00",
+                        "PushConsentFrom":"2017-01-25T10:00:00",
+                    },
+                    "Verifications":{
+                        "IssuerDetails":"",
+                        "VerificationDate":"2017-01-25T10:00:00",
+                        "DocumentNumber": "435345345",
+                        "DocumentType": "Passport",
+                        "Pass":"True",
+                        "VerificationType":"CustomerNotPresent"
+                    },
+                    "Memberships": [
+                        "Membership": {
+                            "RetailId": "12345678",
+                            "FirstRegisteredClubNumber": "45611",
+                            "MembershipCardNumber": "123123123"
+                        }, 
+                    }]
                 },
                 "RejectionReasons" : [
                     {
@@ -1275,23 +1309,14 @@ Get all suspension information for a single customer
             
             Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body  
-            
-            {
-                "Reason": "Bad behaviour",
-                "From": "2016-01-30",
-                "To": "2016-01-30",
-                "Site": "12345",
-                "Type": "SelfExcluded"
-            }
-           
+         
 + Response 200 (application/json)
   
            {    
                 "Suspensions": [
                     {
                         "From": "2016-01-30",
+                        "To": "2016-02-30",
                         "ProposedTo": "2016-06-30",
                         "Channel": "Digital",
                         "Brand": "Grosvenor",
@@ -1312,6 +1337,7 @@ Get all suspension information for a single customer
                     {
                         "From": "2016-01-30",
                         "To": "2016-02-30",
+                        "ProposedTo": "2016-06-30",
                         "Site": "67891",
                         "Channel": "Retail",
                         "Brand": "Grosvenor",
@@ -1382,8 +1408,6 @@ Acceptable `Type` values:
                 "To": "2016-01-30",
                 "ProposedTo": "2016-01-30",
                 "Site": "12345",
-                "Channel": "Retail",
-                "Brand": "Grosvenor",
                 "Type": "SelfExcluded"
             }
            
@@ -1438,8 +1462,6 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "To": "2016-01-30",
                 "ProposedTo": "2017-01-30",
                 "Site": "12345",
-                "Channel": "Retail",
-                "Brand": "Grosvenor",
                 "Type": "SelfExcluded"
             }
            
