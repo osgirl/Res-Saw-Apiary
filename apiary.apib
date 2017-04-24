@@ -475,7 +475,7 @@ Model for the resource if defined below:
 |Personal.FirstName                                     |string[25] |**yes**            |                                                                                       |"John"                     |
 |Personal.MiddleName                                    |string[25] |**optional**       |                                                                                       |"Dan"                      |
 |Personal.LastName                                      |string[25] |**yes**            |                                                                                       |"Jackson"                  |
-|Personal.PreferredName                                 |string[25] |**yes**            |                                                                                       |"Jacko"                  |
+|Personal.PreferredName                                 |string[25] |**optional**            |                                                                                       |"Jacko"                  |
 |Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
 |Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
 |Personal.Nationality                                   |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
@@ -569,7 +569,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "MobileConsentFrom": "2017-01-25T10:00:00",
                     "SMSConsentFrom": "2017-01-25T10:00:00",
                     "EmailConsentFrom": "2017-01-25T10:00:00",
-                    "PushConsentFrom":"2017-01-25T10:00:00",
+                    "PushConsentFrom":"2017-01-25T10:00:00"
                 },
                 "Verifications":{
                     "IssuerDetails":"",
@@ -580,17 +580,17 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "VerificationType":"CustomerNotPresent"
                 },
                 "Memberships": [
-                    "Membership": {
+                    {
                         "MembershipId": "12345678",
                         "RegisteredClubNumber": "45611",
-                        "MembershipCardNumber": "123123123"
+                        "MembershipCardNumber": "123123123",
                         "Status" : "Active",
                         "Channel" : "Retail",
                         "Brand" : "Grosvenor",
                         "VIPGrade":"Black",
                         "DatePartOfSAW": "NULL"
                     }, 
-                    "Membership": {
+                    {
                         "MembershipId": "12345678",
                         "Username": "johnSilver777",
                         "Status" : "Locked",
@@ -818,7 +818,7 @@ This API is to update an existing customers information once they have been iden
                 "LandlinePhoneConsentFrom": null,
                 "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
                 "EmailConsentFrom": "2017-01-25T10:00:00",
-                "PushConsentFrom":"2017-01-25T10:00:00",
+                "PushConsentFrom":"2017-01-25T10:00:00"
             }
             
 + Response 200 (application/json)
@@ -960,7 +960,7 @@ This API will be called when a customer has had a new retail account created. Th
                     "MobileConsentFrom": "2017-01-25T10:00:00",
                     "SMSConsentFrom": "2017-01-25T10:00:00",
                     "EmailConsentFrom": "2017-01-25T10:00:00",
-                    "PushConsentFrom":"2017-01-25T10:00:00",
+                    "PushConsentFrom":"2017-01-25T10:00:00"
                 },
                 "Verifications":{
                     "IssuerDetails":"",
@@ -971,13 +971,13 @@ This API will be called when a customer has had a new retail account created. Th
                     "VerificationType":"CustomerNotPresent"
                 },
                 "Memberships": [
-                    "Membership": {
+                    {
                         "MembershipId": "12345678",
                         "RegisteredClubNumber": "45611",
                         "MembershipCardNumber": "123123123",
-                        "VIPGrade":"Black",
-                    }, 
-                }]
+                        "VIPGrade":"Black"
+                    }
+                ]
             }
 
 + Response 200 (application/json)
