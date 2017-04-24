@@ -475,7 +475,7 @@ Model for the resource if defined below:
 |Personal.FirstName                                     |string[25] |**yes**            |                                                                                       |"John"                     |
 |Personal.MiddleName                                    |string[25] |**optional**       |                                                                                       |"Dan"                      |
 |Personal.LastName                                      |string[25] |**yes**            |                                                                                       |"Jackson"                  |
-|Personal.PreferredName                                 |string[25] |**optional**            |                                                                                       |"Jacko"                  |
+|Personal.PreferredName                                 |string[25] |**optional**       |                                                                                       |"Johnny"                  |
 |Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
 |Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
 |Personal.Nationality                                   |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
@@ -490,25 +490,25 @@ Model for the resource if defined below:
 |ContactDetails.MobilePhone                             |string[20] |**optional** (either Mobile or Email must be supplied)|                                                    |"07886028947"              |
 |ContactDetails.Email                                   |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"john@rank.com"            |
 |MarketingConsents.PostConsentFrom                      |datetime   |**optional**       |The date marketing contacts via post were allowed                                      |"2017-01-25T10:00:00"      |
-|MarketingConsents.LandlineConsentFrom                  |datetime   |**optional**       |The date marketing contacts via landline phone were allowed                              |"2017-01-25T10:00:00"      |
-|MarketingConsents.MobileConsentFrom                    |datetime   |**optional**       |The date marketing contacts via mobile phone were allowed                           |"2017-01-25T10:00:00"      |
-|MarketingConsents.SMSConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                             |"2017-01-25T10:00:00"      |
-|MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                           |"2017-01-25T10:00:00"      |
-|MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                             |"2017-01-25T10:00:00"      |
-|Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                                               |"GB passport"               |
-|Verifications.VerificationDate                         |datetime |**yes**       |                                                                                       |"2017-01-25T10:00:00"           |
+|MarketingConsents.LandlineConsentFrom                  |datetime   |**optional**       |The date marketing contacts via landline phone were allowed                            |"2017-01-25T10:00:00"      |
+|MarketingConsents.MobileConsentFrom                    |datetime   |**optional**       |The date marketing contacts via mobile phone were allowed                              |"2017-01-25T10:00:00"      |
+|MarketingConsents.SmsConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                                       |"2017-01-25T10:00:00"      |
+|MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                                     |"2017-01-25T10:00:00"      |
+|MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                                      |"2017-01-25T10:00:00"      |
+|Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"GB passport"              |
+|Verifications.VerificationDate                         |datetime   |**yes**            |                                                                                       |"2017-01-25T10:00:00"      |
 |Verifications.DocumentNumber                           |string[6]  |**yes**            |                                                                                       |"50106"                    |
-|Verifications.DocumentType                             |string[?]  |**yes**       |                                                                                       |"Passport"                |
-|Verifications.Pass                                     |string[?]  |**yes**       |  True or False                                                                                      |"False"                |
-|Verifications.VerificationType                         |string[?]  |**yes**       |                                                                                       |"CustomerNotPresent"                |
-|Membership.MembershipId                                |string[?]  |**yes**            |The Retail or Digital customer identifier                                                               |"4124681094"               |
+|Verifications.DocumentType                             |string[?]  |**yes**            |                                                                                       |"Passport"                 |
+|Verifications.Pass                                     |string[?]  |**yes**            |True or False                                                                          |"False"                    |
+|Verifications.VerificationType                         |string[?]  |**yes**            |                                                                                       |"CustomerNotPresent"       |
+|Membership.MembershipId                                |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"4124681094"               |
 |Membership.Username                                    |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
 |Membership.RegisteredClubNumber                        |string[6]  |**yes**            |                                                                                       |"50106"                    |
 |Membership.MembershipCardNumber                        |string[?]  |**optional**       |                                                                                       |"123123123"                |
-|Membership.Status                                      |string[?]  |**optional**       |                                                                                       |"Active"                |
-|Membership.Channel                                     |string[?]  |**optional**       |                                                                                       |"Retail"                |
+|Membership.Status                                      |string[?]  |**optional**       |                                                                                       |"Active"                   |
+|Membership.Channel                                     |string[?]  |**optional**       |                                                                                       |"Retail"                   |
 |Membership.Brand                                       |string[?]  |**optional**       |                                                                                       |"Grosvenor"                |
-|Membership.VIPGrade                                    |string[?]  |**optional**       |                                                                                       |"Black               |
+|Membership.VipGrade                                    |string[?]  |**optional**       |                                                                                       |"Black"                    |
 |Membership.DatePartOfSAW                               |datetime   |**optional**       | Date the membership became part of a single account and wallet                        |"2017-01-25T10:00:00"      |
 
 For registration following input validation in place
@@ -547,7 +547,6 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "PreferredName": "Johnny",
                     "DateOfBirth": "1955-01-30",
                     "Gender": "M",
-                    "Nationality": "GB",
                     "Occupation": "Clerk"
                 },
                 "Address": {
@@ -567,17 +566,18 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "PostConsentFrom": "2017-03-03T10:00:00",
                     "LandlineConsentFrom": null,
                     "MobileConsentFrom": "2017-01-25T10:00:00",
-                    "SMSConsentFrom": "2017-01-25T10:00:00",
+                    "SmsConsentFrom": "2017-01-25T10:00:00",
                     "EmailConsentFrom": "2017-01-25T10:00:00",
                     "PushConsentFrom":"2017-01-25T10:00:00"
                 },
-                "Verifications":{
-                    "IssuerDetails":"",
-                    "VerificationDate":"2017-01-25T10:00:00",
+                "Verifications": {
+                    "IssuerDetails": "HM Passport Office",
+                    "VerificationDate": "2017-01-25T10:00:00",
                     "DocumentNumber": "435345345",
                     "DocumentType": "Passport",
-                    "Pass":"True",
-                    "VerificationType":"CustomerNotPresent"
+                    "Pass": true,
+                    "VerificationType": "CustomerNotPresent",
+                    "Nationality": "GB"
                 },
                 "Memberships": [
                     {
@@ -587,8 +587,8 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                         "Status" : "Active",
                         "Channel" : "Retail",
                         "Brand" : "Grosvenor",
-                        "VIPGrade":"Black",
-                        "DatePartOfSAW": "NULL"
+                        "VipGrade": "Black",
+                        "DatePartOfSAW": null
                     }, 
                     {
                         "MembershipId": "12345678",
@@ -596,7 +596,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                         "Status" : "Locked",
                         "Channel" : "Digital",
                         "Brand" : "Grosvenor",
-                        "VIPGrade": "40",
+                        "VipGrade": "40",
                         "DatePartOfSAW": "2017-01-25T10:00:00"
                 }]
             }
@@ -938,7 +938,6 @@ This API will be called when a customer has had a new retail account created. Th
                     "PreferredName": "Johnny",
                     "DateOfBirth": "1955-01-30",
                     "Gender": "M",
-                    "Nationality": "GB",
                     "Occupation": "Clerk"
                 },
                 "Address": {
@@ -961,21 +960,22 @@ This API will be called when a customer has had a new retail account created. Th
                     "SMSConsentFrom": "2017-01-25T10:00:00",
                     "EmailConsentFrom": "2017-01-25T10:00:00",
                     "PushConsentFrom":"2017-01-25T10:00:00"
-                },
-                "Verifications":{
-                    "IssuerDetails":"",
-                    "VerificationDate":"2017-01-25T10:00:00",
+                ms
+                "Verifications": {
+                    "IssuerDetails": "HM Passport Office",
+                    "VerificationDate": "2017-01-25T10:00:00",
                     "DocumentNumber": "435345345",
                     "DocumentType": "Passport",
-                    "Pass":"True",
-                    "VerificationType":"CustomerNotPresent"
+                    "Pass": true,
+                    "VerificationType": "CustomerNotPresent",
+                    "Nationality": "GB"
                 },
                 "Memberships": [
                     {
                         "MembershipId": "12345678",
                         "RegisteredClubNumber": "45611",
                         "MembershipCardNumber": "123123123",
-                        "VIPGrade":"Black"
+                        "VipGrade": "Black"
                     }
                 ]
             }
@@ -1049,7 +1049,6 @@ a retail account or both, digital and retail.
                         "LastName": "Jackson",
                         "DateOfBirth": "1955-01-30",
                         "Gender": "M",
-                        "Nationality": "GB",
                         "Occupation": "Clerk"
                     },
                     "Address": {
@@ -1073,12 +1072,13 @@ a retail account or both, digital and retail.
                         "PushConsentFrom":"2017-01-25T10:00:00",
                     },
                     "Verifications":{
-                        "IssuerDetails":"",
-                        "VerificationDate":"2017-01-25T10:00:00",
+                        "IssuerDetails": "HM Passport Office",
+                        "VerificationDate": "2017-01-25T10:00:00",
                         "DocumentNumber": "435345345",
                         "DocumentType": "Passport",
-                        "Pass":"True",
-                        "VerificationType":"CustomerNotPresent"
+                        "Pass": true,
+                        "VerificationType": "CustomerNotPresent",
+                        "Nationality": "GB"
                     },
                     "Memberships": [
                         "Membership": {
@@ -1088,8 +1088,8 @@ a retail account or both, digital and retail.
                             "Status" : "Active",
                             "Channel" : "Retail",
                             "Brand" : "Grosvenor",
-                            "VIPGrade":"Black",
-                            "DatePartOfSAW": "NULL"
+                            "VipGrade": "Black",
+                            "DatePartOfSAW": null
                         } 
                     }]
                 },
