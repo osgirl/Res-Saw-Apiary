@@ -509,7 +509,7 @@ Model for the resource if defined below:
 |Membership.Channel                                     |string[?]  |**optional**       |                                                                                       |"Retail"                   |
 |Membership.Brand                                       |string[?]  |**optional**       |                                                                                       |"Grosvenor"                |
 |Membership.VipGrade                                    |string[?]  |**optional**       |                                                                                       |"Black"                    |
-|Membership.DatePartOfSAW                               |datetime   |**optional**       | Date the membership became part of a single account and wallet                        |"2017-01-25T10:00:00"      |
+|Membership.DatePartOfSaw                               |datetime   |**optional**       | Date the membership became part of a single account and wallet                        |"2017-01-25T10:00:00"      |
 
 For registration following input validation in place
 
@@ -588,7 +588,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                         "Channel" : "Retail",
                         "Brand" : "Grosvenor",
                         "VipGrade": "Black",
-                        "DatePartOfSAW": null
+                        "DatePartOfSaw": null
                     }, 
                     {
                         "MembershipId": "12345678",
@@ -597,7 +597,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                         "Channel" : "Digital",
                         "Brand" : "Grosvenor",
                         "VipGrade": "40",
-                        "DatePartOfSAW": "2017-01-25T10:00:00"
+                        "DatePartOfSaw": "2017-01-25T10:00:00"
                 }]
             }
 
@@ -960,7 +960,7 @@ This API will be called when a customer has had a new retail account created. Th
                     "SMSConsentFrom": "2017-01-25T10:00:00",
                     "EmailConsentFrom": "2017-01-25T10:00:00",
                     "PushConsentFrom":"2017-01-25T10:00:00"
-                ms
+                },
                 "Verifications": {
                     "IssuerDetails": "HM Passport Office",
                     "VerificationDate": "2017-01-25T10:00:00",
@@ -1089,7 +1089,7 @@ a retail account or both, digital and retail.
                             "Channel" : "Retail",
                             "Brand" : "Grosvenor",
                             "VipGrade": "Black",
-                            "DatePartOfSAW": null
+                            "DatePartOfSaw": null
                         } 
                     }]
                 },
