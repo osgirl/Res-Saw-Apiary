@@ -502,7 +502,6 @@ Model for the resource is defined below:
 |Membership.Status                                      |string[?]  |**optional**       |                                                                                       |"Active"                   |
 |Membership.Channel                                     |string[?]  |**optional**       |                                                                                       |"Retail"                   |
 |Membership.Brand                                       |string[?]  |**optional**       |                                                                                       |"Grosvenor"                |
-|Membership.VipGrade                                    |string[?]  |**optional**       |                                                                                       |"Black"                    |
 |Membership.DatePartOfSaw                               |datetime   |**optional**       | Date the membership became part of a single account and wallet                        |"2017-01-25T10:00:00"      |
 
 For registration following input validation in place
@@ -585,7 +584,6 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
                         "Status" : "Closed",
                         "Channel" : "Retail",
                         "Brand" : "Grosvenor",
-                        "VipGrade": "Black",
                         "DatePartOfSaw": null
                     },
                     {
@@ -595,7 +593,6 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
                         "Status" : "Active",
                         "Channel" : "Retail",
                         "Brand" : "Grosvenor",
-                        "VipGrade": "Black",
                         "DatePartOfSaw": "2017-01-25T10:00:00"
                     },
                     {
@@ -604,7 +601,6 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
                         "Status" : "Active",
                         "Channel" : "Digital",
                         "Brand" : "Grosvenor",
-                        "VipGrade": "40",
                         "DatePartOfSaw": "2017-01-25T10:00:00"
                     }
                 ]
@@ -1002,8 +998,7 @@ This API will be called when a customer has had a new retail account created. Th
                     {
                         "MembershipId": "12345678",
                         "RegisteredClubNumber": "45611",
-                        "MembershipCardNumber": "123123123",
-                        "VipGrade": "Black"
+                        "MembershipCardNumber": "123123123"
                     }
                 ]
             }
@@ -1120,7 +1115,6 @@ a retail account or both, digital and retail.
                             "Status" : "Active",
                             "Channel" : "Retail",
                             "Brand" : "Grosvenor",
-                            "VipGrade": "Black",
                             "DatePartOfSaw": null
                         } 
                     }]
