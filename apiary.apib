@@ -49,9 +49,9 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
 |UpdateCustomerMembership|/customers/memberships/{identifier}|PUT|staffUpdateCustomerMembership|
 |AddCustomerVerification|/customers/verifications/{identifier}|POST|staffAddCustomerVerification|
-|GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
-|AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
-|UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
+|GetSuspensions|/customers/{identifier}/suspensions|GET|staffGetAccountSuspension|
+|AddSuspension|/customers/{identifier}/suspensions|POST|staffAddAccountSuspension|
+|UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffUpdateAccountSuspension|
 |RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
 |RequestPinChange|/customers/{identifier}/authentication/pin/requestChange|POST|staffRequestPinChange|
 |GetCustomerAgreements|/customers/{identifier}/agreements|GET|staffGetCustomerAgreements|
@@ -93,7 +93,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestPinChange <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffGetAccountSuspension <br/>staffAddAccountSuspension <br/>staffUpdateAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestPinChange <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
 
@@ -332,12 +332,12 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "GetSuspensions": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                        "AllowedScopes": [ "staffGetAccountSuspension" ]
                     },
                     "AddSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
-                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                        "AllowedScopes": [ "staffAddAccountSuspension" ]
                     },
                     "ViewBalance": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
@@ -1354,7 +1354,7 @@ Acceptable `Type` values: `PoPF`
 
 ### Get Suspensions [GET]
 
-**Allowed scopes**: `staffSetAccountSuspension`
+**Allowed scopes**: `staffGetAccountSuspension`
 
 Get all suspension information for a single customer
 
@@ -1383,7 +1383,7 @@ Get all suspension information for a single customer
                             "UpdateSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": [ "staffSetAccountSuspension" ]
+                                "AllowedScopes": [ "staffUpdateAccountSuspension" ]
                             },
                             "RemoveSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
@@ -1404,7 +1404,7 @@ Get all suspension information for a single customer
                             "UpdateSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": [ "staffSetAccountSuspension" ]
+                                "AllowedScopes": [ "staffUpdateAccountSuspension" ]
                             },
                             "RemoveSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
@@ -1418,12 +1418,12 @@ Get all suspension information for a single customer
                      "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                        "AllowedScopes": [ "staffGetAccountSuspension" ]
                     },
                     "AddSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                          "Method": "POST",
-                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                        "AllowedScopes": [ "staffAddAccountSuspension" ]
                     }
                 }
             }
@@ -1436,7 +1436,7 @@ Get all suspension information for a single customer
 
 ### Add Suspension [POST]
 
-**Allowed scopes**: `staffSetAccountSuspension`
+**Allowed scopes**: `staffAddAccountSuspension`
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
@@ -1475,12 +1475,12 @@ Acceptable `Type` values:
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
-                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                        "AllowedScopes": [ "staffAddAccountSuspension" ]
                     },
                     "UpdateSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                        "AllowedScopes": [ "staffUpdateAccountSuspension" ]
                     },
                     "RemoveSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
@@ -1529,7 +1529,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": [ "staffSetAccountSuspension" ]
+                        "AllowedScopes": [ "staffUpdateAccountSuspension" ]
                     }
                 }
             }
