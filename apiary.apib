@@ -475,8 +475,9 @@ Model for the resource if defined below:
 |Personal.FirstName                                     |string[25] |**yes**            |                                                                                       |"John"                     |
 |Personal.MiddleName                                    |string[25] |**optional**       |                                                                                       |"Dan"                      |
 |Personal.LastName                                      |string[25] |**yes**            |                                                                                       |"Jackson"                  |
-|Personal.PreferredName                                 |string[25] |**optional**       |                                                                                       |"Johnny"                  |
+|Personal.PreferredName                                 |string[25] |**optional**       |                                                                                       |"Johnny"                   |
 |Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
+|Personal.DateOfDeath                                   |date       |**optional**       |                                                                                       |"1975-01-30"               |
 |Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
 |Personal.Nationality                                   |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
 |Personal.Occupation                                    |string[40] |**optional**       |                                                                                       |"Clerk"                    |
@@ -546,6 +547,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "LastName": "Jackson",
                     "PreferredName": "Johnny",
                     "DateOfBirth": "1955-01-30",
+                    "DateOfDeath": "2200-02-17",
                     "Gender": "M",
                     "Occupation": "Clerk"
                 },
@@ -1067,6 +1069,7 @@ a retail account or both, digital and retail.
                         "MiddleName": "Dan",
                         "LastName": "Jackson",
                         "DateOfBirth": "1955-01-30",
+                        "DateOfDeath": "2200-02-17",
                         "Gender": "M",
                         "Occupation": "Clerk"
                     },
