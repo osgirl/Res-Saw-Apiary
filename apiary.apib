@@ -48,6 +48,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
 |UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
 |UpdateCustomerMembership|/customers/memberships/{identifier}|PUT|staffUpdateCustomerMembership|
+|AddCustomerVerification|/customers/verifications/{identifier}|POST|staffAddCustomerVerification|
 |GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
@@ -92,7 +93,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
 
@@ -655,16 +656,7 @@ This API is to update an existing customers information once they have been iden
                 "Occupation": "Clerk"
             }
             
-+ Response 200 (application/json)
-
-            {
-                "_Links": {
-                    "Journeys": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
-                    }
-                }
-            }
++ Response 204 (application/json)
             
 + Response 424 (application/json)
 
@@ -717,16 +709,7 @@ This API is to update an existing customers information once they have been iden
                 "Country": "GB"
             }
             
-+ Response 200 (application/json)
-
-            {
-                "_Links": {
-                    "Journeys": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
-                    }
-                }
-            }
++ Response 204 (application/json)
             
 + Response 424 (application/json)
 
@@ -776,16 +759,7 @@ This API is to update an existing customers information once they have been iden
                 "Email": "jack@rank.com"
             }
             
-+ Response 200 (application/json)
-
-            {
-                "_Links": {
-                    "Journeys": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
-                    }
-                }
-            }
++ Response 204 (application/json)
             
 + Response 424 (application/json)
 
@@ -837,16 +811,7 @@ This API is to update an existing customers information once they have been iden
                 "PushConsentFrom":"2017-01-25T10:00:00"
             }
             
-+ Response 200 (application/json)
-
-            {
-                "_Links": {
-                    "Journeys": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
-                    }
-                }
-            }
++ Response 204 (application/json)
             
 + Response 424 (application/json)
 
@@ -901,17 +866,63 @@ Acceptable `Status` values:
                 "Status" : "Active"
             }
     
-+ Response 200 (application/json)
++ Response 204 (application/json)
+            
++ Response 424 (application/json)
 
             {
-                "_Links": {
-                    "Journeys": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
-                    }
-                }
+                "Message": "Customer not found"
             }
             
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Add Verification [POST /customers/{identifier}/verifications]
+
+**Allowed scopes**: `staffAddCustomerVerification`
+
+This API is to add new verifications to existing customer profile.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+
+            {
+                "IssuerDetails": "HM Passport Office",
+                "DocumentExpiry": "2020-01-01T00:00:00",
+                "VerificationDate": "2017-01-25T10:00:00",
+                "DocumentNumber": "435345345",
+                "DocumentType": "Passport",
+                "Pass": true,
+                "VerificationType": "CustomerNotPresent",
+                "Nationality": "GB"
+            }
+    
++ Response 204 (application/json)
+
 + Response 424 (application/json)
 
             {
