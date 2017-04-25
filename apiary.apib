@@ -583,23 +583,34 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                 "Memberships": [
                     {
                         "MembershipId": "12345678",
-                        "RegisteredClubNumber": "45611",
+                        "RegisteredClubNumber": "50601",
                         "MembershipCardNumber": "123123123",
-                        "Status" : "Active",
+                        "Status" : "Closed",
                         "Channel" : "Retail",
                         "Brand" : "Grosvenor",
                         "VipGrade": "Black",
                         "DatePartOfSaw": null
+                    },
+                    {
+                        "MembershipId": "67890123",
+                        "RegisteredClubNumber": "50602",
+                        "MembershipCardNumber": "456456456",
+                        "Status" : "Active",
+                        "Channel" : "Retail",
+                        "Brand" : "Grosvenor",
+                        "VipGrade": "Black",
+                        "DatePartOfSaw": "2017-01-25T10:00:00"
                     }, 
                     {
-                        "MembershipId": "12345678",
+                        "MembershipId": "908070605",
                         "Username": "johnSilver777",
-                        "Status" : "Locked",
+                        "Status" : "Active",
                         "Channel" : "Digital",
                         "Brand" : "Grosvenor",
                         "VipGrade": "40",
                         "DatePartOfSaw": "2017-01-25T10:00:00"
-                }]
+                    }
+                ]
             }
 
 + Response 204 (application/json)
