@@ -514,9 +514,9 @@ For registration following input validation in place
 
 **Following fields must follow a valid format:**
 - `ContactDetails.Email` address - valid email format
-- `ContactDetails.HomePhone`, `BusinessPhone`, `MobilePhone` - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 07886028945, +447886029845, etc.)
+- `ContactDetails.LandlinePhone` and `ContactDetails.MobilePhone` - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 07886028945, +447886029845, etc.)
 - `Address.Postcode` - valid UK postcode for UK addresses
-- `DateOfBirth` - must be of legal age (18)
+- `Personal.DateOfBirth` - must be of legal age (18)
 
 ### Search by Membership Card [GET /customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}]
 
