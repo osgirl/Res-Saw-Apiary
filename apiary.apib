@@ -47,7 +47,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateCustomerPersonal|/customers/{identifier}/personal|PUT|staffUpdateCustomerPersonal|
 |UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
 |UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
-|UpdateCustomerMembershipCard|/customers/{identifier}/membershipCard|PUT|staffUpdateCustomerMembershipCard|
+|UpdateCustomerMembership|/customers/{identifier}/membership|PUT|staffUpdateCustomerMembership|
 |GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
@@ -92,7 +92,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembershipCard <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffSetAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestChangePin <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
 
@@ -383,10 +383,10 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "GET",
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     },
-                    "UpdateMembershipCard": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membershipCard",
+                    "UpdateCustomerMembership": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membership",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffUpdateMembershipCard" ]
+                        "AllowedScopes": [ "staffUpdateCustomerMembership" ]
                     }
                 }
             }
@@ -600,7 +600,7 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                         "Brand" : "Grosvenor",
                         "VipGrade": "Black",
                         "DatePartOfSaw": "2017-01-25T10:00:00"
-                    }, 
+                    },
                     {
                         "MembershipId": "908070605",
                         "Username": "johnSilver777",
@@ -868,12 +868,17 @@ This API is to update an existing customers information once they have been iden
                 "Message": "Internal Error"
             }
            
-### Update Membership Card [PUT /customers/{identifier}/membershipCard]
+### Update Membership [PUT /customers/{identifier}/membership]
+
+**Allowed scopes**: `staffUpdateCustomerMembership`
 
 This API is to update an existing customers information once they have been identified as a SAW customer.
 
-**Allowed scopes**: `staffUpdateMembershipCard`
-
+Acceptable `Status` values:
+* `Active` - The account may be used normally.
+* `Locked` - Authentication failed 5 times, the account locked.
+* `Closed` - The account has been closed for any reason, such as it was a duplicate, the customer requested it closed, etc.
+* `Void` - The account was created in error. Accounts in this state are ignored completely.
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -888,7 +893,8 @@ This API is to update an existing customers information once they have been iden
     + Body
     
             {
-                "MembershipCardNumber": "123123123"
+                "MembershipCardNumber": "456456456",
+                "Status" : "Active"
             }
     
 + Response 200 (application/json)
