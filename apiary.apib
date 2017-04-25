@@ -1364,13 +1364,13 @@ Get all suspension information for a single customer
                         }
                     },
                     {
+                        "Reason": "Bad behaviour",
                         "From": "2016-01-30",
                         "To": "2016-02-30",
-                        "ProposedTo": "2016-06-30",
                         "Site": "67891",
                         "Channel": "Retail",
                         "Brand": "Grosvenor",
-                        "Type": "Suspended",
+                        "Type": "Barred",
                         "_Links": {
                             "UpdateSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
@@ -1436,7 +1436,6 @@ Acceptable `Type` values:
                 "From": "2016-01-30",
                 "To": "2016-01-30",
                 "ProposedTo": "2016-01-30",
-                "Site": "12345",
                 "Type": "SelfExcluded"
             }
            
@@ -1487,11 +1486,11 @@ To update customer profile as barred/suspended by the SAW staff member by select
     + Body  
             
             {
+                "Reason": "Bad behaviour",
                 "From": "2016-01-30",
-                "To": "2016-01-30",
-                "ProposedTo": "2017-01-30",
-                "Site": "12345",
-                "Type": "SelfExcluded"
+                "To": "2016-02-30",
+                "Site": "67891",
+                "Type": "Barred"
             }
            
 + Response 200 (application/json)
