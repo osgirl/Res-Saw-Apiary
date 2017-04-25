@@ -47,7 +47,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateCustomerPersonal|/customers/{identifier}/personal|PUT|staffUpdateCustomerPersonal|
 |UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
 |UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
-|UpdateCustomerMembership|/customers/{identifier}/membership|PUT|staffUpdateCustomerMembership|
+|UpdateCustomerMembership|/customers/memberships/{identifier}|PUT|staffUpdateCustomerMembership|
 |GetSuspensions|/customers/{identifier}/suspensions|GET|staffSetAccountSuspension|
 |AddSuspension|/customers/{identifier}/suspensions|POST|staffSetAccountSuspension|
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffSetAccountSuspension|
@@ -384,7 +384,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     },
                     "UpdateCustomerMembership": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/membership",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/memberships/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "GET",
                         "AllowedScopes": [ "staffUpdateCustomerMembership" ]
                     }
@@ -572,16 +572,18 @@ The endpoint for customer lookup from Bede using Membership Card Number and Date
                     "EmailConsentFrom": "2017-01-25T10:00:00",
                     "PushConsentFrom":"2017-01-25T10:00:00"
                 },
-                "Verifications": {
-                    "IssuerDetails": "HM Passport Office",
-                    "DocumentExpiry": "2020-01-01T00:00:00",
-                    "VerificationDate": "2017-01-25T10:00:00",
-                    "DocumentNumber": "435345345",
-                    "DocumentType": "Passport",
-                    "Pass": true,
-                    "VerificationType": "CustomerNotPresent",
-                    "Nationality": "GB"
-                },
+                "Verifications": [
+                    {
+                        "IssuerDetails": "HM Passport Office",
+                        "DocumentExpiry": "2020-01-01T00:00:00",
+                        "VerificationDate": "2017-01-25T10:00:00",
+                        "DocumentNumber": "435345345",
+                        "DocumentType": "Passport",
+                        "Pass": true,
+                        "VerificationType": "CustomerNotPresent",
+                        "Nationality": "GB"
+                    }
+                ],
                 "Memberships": [
                     {
                         "MembershipId": "12345678",
@@ -870,7 +872,7 @@ This API is to update an existing customers information once they have been iden
                 "Message": "Internal Error"
             }
            
-### Update Membership [PUT /customers/{identifier}/membership]
+### Update Membership [PUT /customers/memberships/{identifier}]
 
 **Allowed scopes**: `staffUpdateCustomerMembership`
 
@@ -981,16 +983,18 @@ This API will be called when a customer has had a new retail account created. Th
                     "EmailConsentFrom": "2017-01-25T10:00:00",
                     "PushConsentFrom":"2017-01-25T10:00:00"
                 },
-                "Verifications": {
-                    "IssuerDetails": "HM Passport Office",
-                    "DocumentExpiry": "2020-01-01T00:00:00",
-                    "VerificationDate": "2017-01-25T10:00:00",
-                    "DocumentNumber": "435345345",
-                    "DocumentType": "Passport",
-                    "Pass": true,
-                    "VerificationType": "CustomerNotPresent",
-                    "Nationality": "GB"
-                },
+                "Verifications": [
+                    {
+                        "IssuerDetails": "HM Passport Office",
+                        "DocumentExpiry": "2020-01-01T00:00:00",
+                        "VerificationDate": "2017-01-25T10:00:00",
+                        "DocumentNumber": "435345345",
+                        "DocumentType": "Passport",
+                        "Pass": true,
+                        "VerificationType": "CustomerNotPresent",
+                        "Nationality": "GB"
+                    }
+                ],
                 "Memberships": [
                     {
                         "MembershipId": "12345678",
@@ -1093,16 +1097,18 @@ a retail account or both, digital and retail.
                         "EmailConsentFrom": "2017-01-25T10:00:00",
                         "PushConsentFrom":"2017-01-25T10:00:00",
                     },
-                    "Verifications":{
-                        "IssuerDetails": "HM Passport Office",
-                        "DocumentExpiry": "2020-01-01T00:00:00",
-                        "VerificationDate": "2017-01-25T10:00:00",
-                        "DocumentNumber": "435345345",
-                        "DocumentType": "Passport",
-                        "Pass": true,
-                        "VerificationType": "CustomerNotPresent",
-                        "Nationality": "GB"
-                    },
+                    "Verifications": [
+                        {
+                            "IssuerDetails": "HM Passport Office",
+                            "DocumentExpiry": "2020-01-01T00:00:00",
+                            "VerificationDate": "2017-01-25T10:00:00",
+                            "DocumentNumber": "435345345",
+                            "DocumentType": "Passport",
+                            "Pass": true,
+                            "VerificationType": "CustomerNotPresent",
+                            "Nationality": "GB"
+                        }
+                    ],
                     "Memberships": [
                         "Membership": {
                             "MembershipId": "12345678",
