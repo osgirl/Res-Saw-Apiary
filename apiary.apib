@@ -466,10 +466,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
 
 ## Customers [/customers]
 
-This is a dedicated aggregated endpoint for Customer services.
-This endpoint is a replacement for the existing Grosvenor Customer look service provided by RES v1 API. BEDE uses this API to look customer's retail profile when they chose to join the website. This version of the API includes IsSawCustomer flag, BEDE use this flag to determine whether to present customer with the "digital conversion" journey or not
-
-Model for the resource if defined below:
+Model for the resource is defined below:
 | Name                                                  | Type      | Required          | Description                                                                           |Example                    |
 |:---                                                   |:---       |:--:               |:---                                                                                   |:---                       |
 |Personal.Title                                         |string[?]  |**yes**            |Allowed values: "Mr", "Mrs", "Miss", ...                                               |"Mr"                       |
@@ -525,7 +522,7 @@ For registration following input validation in place
 
 **Allowed scopes**: `readonlyCustomerSearch`
 
-The endpoint for customer lookup from Bede using Membership Card Number and Date of Birth.
+The endpoint for customer lookup from Bede using Membership Card Number and optionally Date of Birth.
 
 + Parameters
     + cardNo: `123456` (string, required)
