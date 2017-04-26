@@ -48,11 +48,11 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateCustomerAddress|/customers/{identifier}/address|PUT|staffUpdateCustomerAddress|
 |UpdateCustomerConsents|/customers/{identifier}/consents|PUT|staffUpdateCustomerConsents|
 |UpdateCustomerMembership|/customers/memberships/{identifier}|PUT|staffUpdateCustomerMembership|
-|AddCustomerVerification|/customers/verifications/{identifier}|POST|staffAddCustomerVerification|
-|GetSuspensions|/customers/{identifier}/suspensions|GET|staffGetAccountSuspension|
-|AddSuspension|/customers/{identifier}/suspensions|POST|staffAddAccountSuspension|
-|UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffUpdateAccountSuspension|
-|RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveAccountSuspension|
+|AddCustomerVerification|/customers/{identifier}/verifications|POST|staffAddCustomerVerification|
+|GetSuspensions|/customers/{identifier}/suspensions|GET|staffGetSuspensions|
+|AddSuspension|/customers/{identifier}/suspensions|POST|staffAddSuspension|
+|UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffUpdateSuspension|
+|RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveSuspension|
 |RequestPinChange|/customers/{identifier}/authentication/pin/requestChange|POST|staffRequestPinChange|
 |GetCustomerAgreements|/customers/{identifier}/agreements|GET|staffGetCustomerAgreements|
 |UpdateCustomerAgreement|/customers/agreements/{identifier}|PUT|onbehalfUpdateCustomerAgreement|
@@ -93,7 +93,7 @@ The following table explains what should be supplied as a part of auth server re
 |Authentication type|Token type|Required parameters|Available scopes|
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffGetAccountSuspension <br/>staffAddAccountSuspension <br/>staffUpdateAccountSuspension <br/>staffRemoveAccountSuspension <br/>staffRequestPinChange <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
+|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffGetSuspensions <br/>staffAddSuspension <br/>staffUpdateSuspension <br/>staffRemoveSuspension <br/>staffRequestPinChange <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
 |Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
 |Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
 
@@ -329,6 +329,16 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
                     },
+                    "RegisterRetailCustomer": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers",
+                        "Method": "POST",
+                        "AllowedScopes": [ "staffRegisterRetailCustomer" ]
+                    },
+                    "CanCreateSaw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Method": "POST",
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                    },
                     "GetSuspensions": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "GET",
@@ -369,16 +379,6 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "PUT",
                         "AllowedScopes": [ "onbehalfUpdateCustomerAgreement" ]
                     },
-                    "RegisterRetailCustomer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffRegisterRetailCustomer" ]
-                    },
-                    "CanCreateSaw": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
-                    },
                     "GetWalletTransactionStatus": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
                         "Method": "GET",
@@ -418,6 +418,11 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
                         "Method": "POST",
                         "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                    },
+                    "UpdateCustomerContactDetails": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
+                        "Method": "PUT",
+                        "AllowedScopes": [ "clientUpdateCustomerContactDetails" ]
                     }
                 }
             }
@@ -433,6 +438,11 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                         "Method": "GET"
+                    },
+                    "CanCreateSaw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Method": "POST",
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
                     },
                     "Transfer": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
@@ -1277,7 +1287,7 @@ digital account should be created from the customer's known email address.
                             "UpdateAgreement": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": [ "staffUpdateCustomerAgreement" ]
+                                "AllowedScopes": [ "onbehalfUpdateCustomerAgreement" ]
                             }
                         }
                     }
