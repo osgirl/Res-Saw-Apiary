@@ -349,11 +349,6 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "POST",
                         "AllowedScopes": [ "staffAddAccountSuspension" ]
                     },
-                    "ViewBalance": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
-                        "Method": "GET",
-                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
-                    },
                     "UpdateCustomerPersonal": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
                         "Method": "PUT",
@@ -364,25 +359,10 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "PUT",
                         "AllowedScopes": [ "staffUpdateCustomerAddress" ]
                     },
-                    "UpdateCustomerContactDetails": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "clientUpdateCustomerContactDetails" ]
-                    },
                     "UpdateCustomerConsents": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/consents",
                         "Method": "PUT",
                         "AllowedScopes": [ "staffUpdateCustomerConsents" ]
-                    },
-                    "UpdateAgreement": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/agreements/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "onbehalfUpdateCustomerAgreement" ]
-                    },
-                    "GetWalletTransactionStatus": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
-                        "Method": "GET",
-                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     },
                     "UpdateCustomerMembership": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/memberships/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
@@ -393,6 +373,26 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pin/requestChange",
                         "Method": "POST",
                         "AllowedScopes": [ "staffRequestPinChange" ]
+                    },
+                    "GetCustomerAgreements": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/agreements",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffGetCustomerAgreements" ]
+                    },
+                    "AddCustomerVerification": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/verifications",
+                        "Method": "POST",
+                        "AllowedScopes": [ "staffAddCustomerVerification" ]
+                    },
+                    "ViewBalance": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
+                    },
+                    "GetWalletTransactionStatus": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
                     }
                 }
             }
