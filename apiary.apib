@@ -613,7 +613,14 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
                         "Brand" : "Grosvenor",
                         "DatePartOfSaw": "2017-01-25T10:00:00"
                     }
-                ]
+                ],
+                "_Links": {
+                    "Journeys": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
+                    }
+                }
             }
 
 + Response 204 (application/json)
@@ -1296,7 +1303,7 @@ digital account should be created from the customer's known email address.
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/agreements",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffUpdateCustomerAgreement" ]
+                        "AllowedScopes": [ "staffGetCustomerAgreements" ]
                     }
                 }
             }
