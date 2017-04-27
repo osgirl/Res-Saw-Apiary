@@ -342,12 +342,12 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "GetSuspensions": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffGetAccountSuspension" ]
+                        "AllowedScopes": [ "staffGetSuspensions" ]
                     },
                     "AddSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
-                        "AllowedScopes": [ "staffAddAccountSuspension" ]
+                        "AllowedScopes": [ "staffAddSuspension" ]
                     },
                     "UpdateCustomerPersonal": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
@@ -482,7 +482,6 @@ Model for the resource is defined below:
 |Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
 |Personal.DateOfDeath                                   |date       |**optional**       |                                                                                       |"1975-01-30"               |
 |Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
-|Personal.Nationality                                   |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
 |Personal.Occupation                                    |string[40] |**optional**       |                                                                                       |"Clerk"                    |
 |Address.Line1                                          |string[400]|**yes**            |                                                                                       |"Flat 2"                   |
 |Address.Line2                                          |string[400]|**yes**            |                                                                                       |"10 Downing Street"        |
@@ -499,12 +498,14 @@ Model for the resource is defined below:
 |MarketingConsents.SmsConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                                       |"2017-01-25T10:00:00"      |
 |MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                                     |"2017-01-25T10:00:00"      |
 |MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                                      |"2017-01-25T10:00:00"      |
-|Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"GB passport"              |
+|Verifications.VerificationType                         |string[?]  |**yes**            |                                                                                       |"CustomerNotPresent"       |
+|Verifications.VerificationPassed                       |string[?]  |**yes**            |True or False                                                                          |"False"                    |
 |Verifications.VerificationDate                         |datetime   |**yes**            |                                                                                       |"2017-01-25T10:00:00"      |
 |Verifications.DocumentNumber                           |string[6]  |**yes**            |                                                                                       |"50106"                    |
 |Verifications.DocumentType                             |string[?]  |**yes**            |                                                                                       |"Passport"                 |
-|Verifications.Pass                                     |string[?]  |**yes**            |True or False                                                                          |"False"                    |
-|Verifications.VerificationType                         |string[?]  |**yes**            |                                                                                       |"CustomerNotPresent"       |
+|Verifications.ExpiryDate                               |datetime   |**optional**       |                                                                                       |"2030-01-25T00:00:00"      |
+|Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"GB passport"              |
+|Verifications.Nationality                              |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
 |Membership.MembershipId                                |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"4124681094"               |
 |Membership.Username                                    |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
 |Membership.RegisteredClubNumber                        |string[6]  |**yes**            |                                                                                       |"50106"                    |
@@ -541,6 +542,10 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
 
 + Response 200 (application/json)
 
+    Customer is found by the parameters specified
+
+    + Body
+    
             {
                 "Personal": {
                     "Title": "Mr",
@@ -576,13 +581,13 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
                 },
                 "Verifications": [
                     {
-                        "IssuerDetails": "HM Passport Office",
-                        "DocumentExpiry": "2020-01-01T00:00:00",
+                        "VerificationType": "CustomerNotPresent",
+                        "VerificationPassed": true,
                         "VerificationDate": "2017-01-25T10:00:00",
                         "DocumentNumber": "435345345",
                         "DocumentType": "Passport",
-                        "Pass": true,
-                        "VerificationType": "CustomerNotPresent",
+                        "ExpiryDate": "2020-01-01T00:00:00",
+                        "IssuerDetails": "HM Passport Office",
                         "Nationality": "GB"
                     }
                 ],
@@ -624,6 +629,10 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
             }
 
 + Response 204 (application/json)
+
+    Not found
+    
+    + Headers
 
 + Response 500 (application/json)
 
@@ -810,8 +819,9 @@ This API is to update an existing customers information once they have been iden
     
             {
                 "PostConsentFrom": "2017-03-03T10:00:00",
-                "LandlinePhoneConsentFrom": null,
-                "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
+                "LandlineConsentFrom": null,
+                "MobileConsentFrom": "2017-01-25T10:00:00",
+                "SmsConsentFrom": "2017-01-25T10:00:00",
                 "EmailConsentFrom": "2017-01-25T10:00:00",
                 "PushConsentFrom":"2017-01-25T10:00:00"
             }
@@ -916,17 +926,17 @@ This API is to add new verifications to existing customer profile.
     + Body
 
             {
-                "IssuerDetails": "HM Passport Office",
-                "DocumentExpiry": "2020-01-01T00:00:00",
+                "VerificationType": "CustomerNotPresent",
+                "VerificationPassed": true,
                 "VerificationDate": "2017-01-25T10:00:00",
                 "DocumentNumber": "435345345",
                 "DocumentType": "Passport",
-                "Pass": true,
-                "VerificationType": "CustomerNotPresent",
+                "ExpiryDate": "2020-01-01T00:00:00",
+                "IssuerDetails": "HM Passport Office",
                 "Nationality": "GB"
             }
     
-+ Response 204 (application/json)
++ Response 201 (application/json)
 
 + Response 424 (application/json)
 
@@ -995,19 +1005,19 @@ This API will be called when a customer has had a new retail account created. Th
                     "PostConsentFrom": "2017-03-03T10:00:00",
                     "LandlineConsentFrom": null,
                     "MobileConsentFrom": "2017-01-25T10:00:00",
-                    "SMSConsentFrom": "2017-01-25T10:00:00",
+                    "SmsConsentFrom": "2017-01-25T10:00:00",
                     "EmailConsentFrom": "2017-01-25T10:00:00",
                     "PushConsentFrom":"2017-01-25T10:00:00"
                 },
                 "Verifications": [
                     {
-                        "IssuerDetails": "HM Passport Office",
-                        "DocumentExpiry": "2020-01-01T00:00:00",
+                        "VerificationType": "CustomerNotPresent",
+                        "VerificationPassed": true,
                         "VerificationDate": "2017-01-25T10:00:00",
                         "DocumentNumber": "435345345",
                         "DocumentType": "Passport",
-                        "Pass": true,
-                        "VerificationType": "CustomerNotPresent",
+                        "ExpiryDate": "2020-01-01T00:00:00",
+                        "IssuerDetails": "HM Passport Office",
                         "Nationality": "GB"
                     }
                 ],
@@ -1027,7 +1037,7 @@ This API will be called when a customer has had a new retail account created. Th
                     "CanCreateSaw": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffUpgradeCustomer" ]
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
                     }
                 }
             }
@@ -1107,31 +1117,32 @@ a retail account or both, digital and retail.
                     },
                     "MarketingConsents": {
                         "PostConsentFrom": "2017-03-03T10:00:00",
-                        "LandlinePhoneConsentFrom": null,
-                        "MobilePhoneConsentFrom": "2017-01-25T10:00:00",
+                        "LandlineConsentFrom": null,
+                        "MobileConsentFrom": "2017-01-25T10:00:00",
+                        "SmsConsentFrom": "2017-01-25T10:00:00",
                         "EmailConsentFrom": "2017-01-25T10:00:00",
-                        "PushConsentFrom":"2017-01-25T10:00:00",
+                        "PushConsentFrom":"2017-01-25T10:00:00"
                     },
                     "Verifications": [
                         {
-                            "IssuerDetails": "HM Passport Office",
-                            "DocumentExpiry": "2020-01-01T00:00:00",
+                            "VerificationType": "CustomerNotPresent",
+                            "VerificationPassed": true,
                             "VerificationDate": "2017-01-25T10:00:00",
                             "DocumentNumber": "435345345",
                             "DocumentType": "Passport",
-                            "Pass": true,
-                            "VerificationType": "CustomerNotPresent",
+                            "ExpiryDate": "2020-01-01T00:00:00",
+                            "IssuerDetails": "HM Passport Office",
                             "Nationality": "GB"
                         }
                     ],
                     "Memberships": [
-                        "Membership": {
+                        {
                             "MembershipId": "12345678",
                             "RegisteredClubNumber": "45611",
                             "MembershipCardNumber": "123123123"
-                            "Status" : "Active",
-                            "Channel" : "Retail",
-                            "Brand" : "Grosvenor",
+                            "Status": "Active",
+                            "Channel": "Retail",
+                            "Brand": "Grosvenor",
                             "DatePartOfSaw": null
                         } 
                     }]
@@ -1238,16 +1249,7 @@ digital account should be created from the customer's known email address.
                 "Pin": 1234
             }
 
-+ Response 200 (application/json)
-          
-            {
-                "_Links": {
-                    "Journeys": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
-                    }
-                }
-            }
++ Response 204 (application/json)
 
 + Response 400 (application/json)
 
@@ -1365,7 +1367,7 @@ Acceptable `Type` values: `PoPF`
 
 ### Get Suspensions [GET]
 
-**Allowed scopes**: `staffGetAccountSuspension`
+**Allowed scopes**: `staffGetSuspensions`
 
 Get all suspension information for a single customer
 
@@ -1394,12 +1396,12 @@ Get all suspension information for a single customer
                             "UpdateSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": [ "staffUpdateAccountSuspension" ]
+                                "AllowedScopes": [ "staffUpdateSuspension" ]
                             },
                             "RemoveSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "DELETE",
-                                "AllowedScopes": [ "staffRemoveAccountSuspension" ]
+                                "AllowedScopes": [ "staffRemoveSuspension" ]
                             }
                         }
                     },
@@ -1415,12 +1417,12 @@ Get all suspension information for a single customer
                             "UpdateSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "PUT",
-                                "AllowedScopes": [ "staffUpdateAccountSuspension" ]
+                                "AllowedScopes": [ "staffUpdateSuspension" ]
                             },
                             "RemoveSuspension": {
                                 "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                                 "Method": "DELETE",
-                                "AllowedScopes": [ "staffRemoveAccountSuspension" ]
+                                "AllowedScopes": [ "staffRemoveSuspension" ]
                             }
                         }
                     }
@@ -1429,12 +1431,12 @@ Get all suspension information for a single customer
                      "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "GET",
-                        "AllowedScopes": [ "staffGetAccountSuspension" ]
+                        "AllowedScopes": [ "staffGetSuspensions" ]
                     },
                     "AddSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                          "Method": "POST",
-                        "AllowedScopes": [ "staffAddAccountSuspension" ]
+                        "AllowedScopes": [ "staffAddSuspension" ]
                     }
                 }
             }
@@ -1447,7 +1449,7 @@ Get all suspension information for a single customer
 
 ### Add Suspension [POST]
 
-**Allowed scopes**: `staffAddAccountSuspension`
+**Allowed scopes**: `staffAddSuspension`
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
@@ -1500,24 +1502,24 @@ Acceptable `Type` values:
                 "Type": "Barred"
             }
            
-+ Response 200 (application/json)
++ Response 201 (application/json)
   
            {
                 "_Links": {
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
                         "Method": "POST",
-                        "AllowedScopes": [ "staffAddAccountSuspension" ]
+                        "AllowedScopes": [ "staffAddSuspension" ]
                     },
                     "UpdateSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateAccountSuspension" ]
+                        "AllowedScopes": [ "staffUpdateSuspension" ]
                     },
                     "RemoveSuspension": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "DELETE",
-                        "AllowedScopes": [ "staffRemoveAccountSuspension" ]
+                        "AllowedScopes": [ "staffRemoveSuspension" ]
                     }
                 }
             }
@@ -1530,7 +1532,7 @@ Acceptable `Type` values:
 
 ### Update Suspension [PUT /customers/suspensions/{identifier}]
 
-**Allowed scopes**: `staffSetAccountSuspension`
+**Allowed scopes**: `staffSetSuspension`
 
 To update customer profile as barred/suspended by the SAW staff member by selecting a reason, and noting the details on why the SAW customer has been barred/suspended, and how long the barring/suspension will exist for.
 
@@ -1581,7 +1583,12 @@ To update customer profile as barred/suspended by the SAW staff member by select
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
                         "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateAccountSuspension" ]
+                        "AllowedScopes": [ "staffUpdateSuspension" ]
+                    },
+                    "RemoveSuspension": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/suspensions/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                        "Method": "DELETE",
+                        "AllowedScopes": [ "staffRemoveSuspension" ]
                     }
                 }
             }
@@ -1594,7 +1601,7 @@ To update customer profile as barred/suspended by the SAW staff member by select
  
 ### Remove Suspension [DELETE /customers/suspensions/{identifier}]
 
-**Allowed scopes**: `staffRemoveAccountSuspension`
+**Allowed scopes**: `staffRemoveSuspension`
 
 To update customer profile by removing the barred/suspended status
 
@@ -1634,17 +1641,7 @@ Allows a member of staff to request a pin change on behalf of the customer. This
             Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
-+ Response 200 (application/json)
-
-           {
-                "_Links": {
-                    "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pin/requestChange",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffRequestPinChange" ]
-                    }
-                }
-            }
++ Response 204 (application/json)
 
 + Response 400 (application/json)
 
