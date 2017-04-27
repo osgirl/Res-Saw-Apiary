@@ -498,11 +498,11 @@ Model for the resource is defined below:
 |MarketingConsents.SmsConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                                       |"2017-01-25T10:00:00"      |
 |MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                                     |"2017-01-25T10:00:00"      |
 |MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                                      |"2017-01-25T10:00:00"      |
-|Verifications.VerificationType                         |string[?]  |**yes**            |                                                                                       |"CustomerNotPresent"       |
+|Verifications.VerificationType                         |string[?]  |**yes**            |Allowed values: "CustomerNotPresent", "CustomerPresent", "Electronic"                  |"CustomerNotPresent"       |
 |Verifications.VerificationPassed                       |string[?]  |**yes**            |True or False                                                                          |"False"                    |
 |Verifications.VerificationDate                         |datetime   |**yes**            |                                                                                       |"2017-01-25T10:00:00"      |
 |Verifications.DocumentNumber                           |string[6]  |**yes**            |                                                                                       |"50106"                    |
-|Verifications.DocumentType                             |string[?]  |**yes**            |                                                                                       |"Passport"                 |
+|Verifications.DocumentType                             |string[?]  |**yes**            |Allowed values: "Passport", "DrivingLicence", "MilitaryID"                                                                                       |"Passport"                 |
 |Verifications.ExpiryDate                               |datetime   |**optional**       |                                                                                       |"2030-01-25T00:00:00"      |
 |Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"GB passport"              |
 |Verifications.Nationality                              |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
@@ -912,6 +912,16 @@ Acceptable `Status` values:
 **Allowed scopes**: `staffAddCustomerVerification`
 
 This API is to add new verifications to existing customer profile.
+
+Acceptable `VerificationType` values:
+* `CustomerNotPresent`
+* `CustomerPresent`
+* `Electronic`
+
+Acceptable `DocumentType` values:
+* `Passport`
+* `DrivingLicence`
+* `MilitaryID`
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
