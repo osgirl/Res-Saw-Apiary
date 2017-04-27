@@ -1465,6 +1465,8 @@ Acceptable `Type` values:
 
 + Request
 
+    Suspension of "SelfExcluded" type is being added
+
     + Headers 
             
             Authorization: Bearer (client credentials token)
@@ -1477,6 +1479,25 @@ Acceptable `Type` values:
                 "To": "2016-01-30",
                 "ProposedTo": "2016-01-30",
                 "Type": "SelfExcluded"
+            }
+
++ Request
+
+    Suspension of "Barred" type is being added
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body  
+            
+            {
+                "Reason": "Bad behaviour",
+                "From": "2016-01-30",
+                "To": "2016-02-30",
+                "Site": "67891",
+                "Type": "Barred"
             }
            
 + Response 200 (application/json)
@@ -1517,6 +1538,26 @@ To update customer profile as barred/suspended by the SAW staff member by select
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
 
 + Request
+
+    Suspension of "SelfExcluded" type is being updated
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body  
+            
+            {
+                "From": "2016-01-30",
+                "To": "2016-01-30",
+                "ProposedTo": "2016-01-30",
+                "Type": "SelfExcluded"
+            }
+
++ Request
+
+    Suspension of "Barred" type is being updated
 
     + Headers 
             
