@@ -101,9 +101,21 @@ The following table explains what should be supplied as a part of auth server re
 ## Client Credentials Access Token
 The provided token is utilised for resources where no player session is required, currently this token flow is used for all API end points.
 
-**Example request**
+**Parameters**
 
 `client_id:client_secret` Base64 encoded, e.g. `YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==` and passed in the `Authorization` header
+
+**channel** - The parameter identifies the way **username** is interpreted. The following values are supported: `retail`, `digital`. If not specified then defaults to `retail`, where applicable.
+
+**username** - Username of the customer for `digital` or membership number for `retail`. Required when a member of staff performing an operation (see [Scopes](#scopes) table above).
+
+**venue_id** - Identifier of a venue where a call to RES comes from. Required when a member of staff performing an operation (see [Scopes](#scopes) table above).
+
+**location_id** - Identifier of a device/machine calling RES. Required when a member of staff performing an operation (see [Scopes](#scopes) table above).
+
+**staff_id** - Identifier of a member of staff calling RES. Required when a member of staff performing an operation (see [Scopes](#scopes) table above).
+
+**Example request #1**
 
 ```
 POST /connect/token
@@ -111,10 +123,36 @@ Content-Type: application/x-www-form-urlencoded
 Authorization: Basic YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==
 
 grant_type=client_credentials
-&scope=res
+&scope=readonlyCustomerSearch
 ```
 
-**Example response**
+**Example response #1**
+
+```
+{
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSIsImtpZCI6ImEzck1VZ01Gdjl0UGNsTGE2eUYzekFrZnF1RSJ9.eyJjbGllbnRfaWQiOiJiZWRlLWdyb3N2ZW5vci1jbXMiLCJzY29wZSI6InJlYWRfZ3Jvc3Zlbm9ybG95YWx0eSIsImlzcyI6Imh0dHBzOi8vaWRzcnYzLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRzcnYzLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE0MzU5Mzk5NzQsIm5iZiI6MTQzNTkzOTYxNH0.nGLoo8B_enlzdY2OX_sf0d1IEGbAUOL8E_-Dl94owI_rnxRrtvumz6fIGx8L5hTXzl8-GlM0Edfb3fe9cD49JDUbWuh0fYnBTjj4SnALv6DSmYSFHeDBkbbbzwI4QVuERblfeGB04ZAEDCjZlLoL4uly-lE8Oq2E150R83u43i8zDfYqKpPp1D5rvhOvdnOg4q3coICHqGkFzsg_0wfEwaYUgc2AWCuyy7ry4pEnV8cg7BVA3GOldkY5jsE062SP4T-N-UjzKd3Lz1KG0bBYZPfJ2CwV2oTgTnwEAkubIqdfYLm_bXMz8sQwm4I_V22qMDhavYwYBhFp1vQdWoYD2A",
+    "expires_in": 600,
+    "token_type": "bearer"
+}
+```
+
+**Example request #2**
+
+```
+POST /connect/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==
+
+grant_type=client_credentials
+&scope=staffUpgradeCustomer
+&channel=retail
+&username=<membershipNumber/username>
+&venue_id=50601
+&location_id=AR01
+&staff_id=cashier4
+```
+
+**Example response #2**
 
 ```
 {
@@ -156,8 +194,9 @@ requiring a client access token.
 <a name="resource-owner-access-token"></a>
 ## Resource Owner Access Token
 Resource owner access tokens are required to access resources where an authenticated customer is expected. Note that to generate a resource owner access token, client credentials should also be supplied using the Authorization header as shown. 
+In order to obtain a refresh token along with the access token where possible, the special scope `offline_access` should be specified in addition to the requested ones.
 
-**Example request**
+**Parameters**
 
 `client_id:client_secret` Base64 encoded, e.g. 98712389abc and passed in the Authorization header
 
@@ -169,11 +208,13 @@ Resource owner access tokens are required to access resources where an authentic
 
 **venue_id** - Identifier of a venue where a call to RES comes from. Always required.
 
-**game_category** - The game category (e.g. slots, table game). Required for certain scopes (see [Scopes](#scopes) table below).
+**game_category** - The game category (e.g. slots, table game). Required for certain scopes (see [Scopes](#scopes) table above).
 
 **location_id** - Identifier of a device/machine calling RES. Always required.
 
-**staff_id** - Identifier of a member of staff calling RES. Required only when a member of staff initiates an API call (see [Scopes](#scopes) table below).
+**staff_id** - Identifier of a member of staff calling RES. Required only when a member of staff initiates an API call (see [Scopes](#scopes) table above).
+
+**Example request #1**
 
 ```
 POST /connect/token
@@ -181,17 +222,43 @@ Content-Type: application/x-www-form-urlencoded
 Authorization: Basic YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==
 
 grant_type=password
-&scope=res
+&scope=onbehalfUpdateCustomerAgreementClient
 &channel=retail
 &username=<membershipNumber/username>
 &password=<pin/password>
 &venue_id=50601
-&game_category=slots
 &location_id=AR01
 &staff_id=cashier4
 ```
 
-**Example response**
+**Example response #1**
+
+```
+{
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.ew0KICAiY2xpZW50X2lkIjogInJlcyIsDQogICJzY29wZSI6IFsNCiAgICAic3BpbmUiLA0KICAgICJzaXRlY29kZSINCiAgXSwNCiAgInN1YiI6ICI2Mzk3MTk5MTk4MzUwMjU0MTIiLA0KICAiR2FtZVRva2VuIjogIldzMkY3a1NwMmRaWlZHWlRNWU1yRU1yYVJ5QXFwU1BDS2ZHWUl6SFhFbXVjNUM5dzdVYlM0dk5zZFIwa01LUlV1SDVpRWdwSWI2LVd0REpVMkMwQlliTDROZXlGRGpTVW9namtiMjY5RGF3MSIsDQogICJhbXIiOiAicGFzc3dvcmQiLA0KICAiYXV0aF90aW1lIjogMTQyOTI4NjE5NywNCiAgImlkcCI6ICJpZHNydiIsDQogICJpc3MiOiAiaHR0cDovL2V3MS1xYTAxLTUwMS5jbG91ZGFwcC5uZXQ6ODg4OC9jb3JlIiwNCiAgImF1ZCI6ICJodHRwOi8vZXcxLXFhMDEtNTAxLmNsb3VkYXBwLm5ldDo4ODg4L2NvcmUvcmVzb3VyY2VzIiwNCiAgImV4cCI6IDE0MjkyODY3OTgsDQogICJuYmYiOiAxNDI5Mjg2MTk4DQp9.eqvm-4vOF6s7Iwpqfd01qa4ZkwSMkQiVgNFNCqdjX-hX843pUtGTM2XdEIBwvwf4OxldptRtYl5gdAcChXJcZf2TLXhxnznP4uPMQsvEXlm3qy44uHXj8phlEsQELC2CydcVUa-C6sZV0RXJ-QNfUo2sGQQwnX7rWP19Byf-Z6QzmaJFkSWU8yOl45qxfSu3XDmf4GyQpBPnn5YBi8FWuK7R2QSBdK3JFlQ9VvHyk7QeDQhfMg1OJdP1JfbXbi_V3WN3cD700hx_f2f_mVS6o_VYEHBh9IPb7wsCcSfR33BKKlXFUraKdttIwYjQL-frEmpOzI2mQDGg2de_PodU-w",
+    "expires_in": 600,
+    "token_type": "bearer"
+}
+```
+
+**Example request #2**
+
+```
+POST /connect/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==
+
+grant_type=password
+&scope=clientWalletDeposit%20offline_access
+&channel=retail
+&username=<membershipNumber/username>
+&password=<pin/password>
+&venue_id=50601
+&location_id=AR01
+&game_category=slots
+```
+
+**Example response #2**
 
 ```
 {
@@ -230,9 +297,11 @@ If token is expired, compromised or revoked then the result will be negative, ot
 
 Resource owner access tokens have an expiration time defined both in the response above and inside the token claims, shown in seconds. Unlike the client credentials access token, resource owner tokens provide a specific refresh operation to allow the client application to extend the life of the session without requiring customer authentication details to be resupplied.
 
-**Example Request**
+**Parameters**
 
 `client_id:client_secret` Base64 encoded, e.g. `YmVkZS1ncm9zdmVub3ItY21zOnNlY3JldA==` and passed in the `Authorization` header
+
+**Example Request**
 
 ```
 POST /connect/token
