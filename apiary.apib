@@ -58,7 +58,8 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateCustomerAgreement|/customers/agreements/{identifier}|PUT|onbehalfUpdateCustomerAgreement|
 |UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|clientUpdateCustomerContactDetails|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
-|Transfer|/customers/{identifier}/finances/transfers/{transactionId}|POST|clientWalletTransfer<br/>onbehalfWalletTransfer|
+|Withdraw|/customers/{identifier}/finances/transfers/withdrawals/{transactionId}|POST|clientWalletWithdraw<br/>onbehalfWalletWithdraw|
+|Deposit|/customers/{identifier}/finances/transfers/deposits/{transactionId}|POST|clientWalletDeposit<br/>onbehalfWalletDeposit|
 |GetWalletTransactionStatus|/transactions/{transactionId}|GET|staffWalletGetTransactionStatus|
 
 # Authentication
@@ -94,8 +95,8 @@ The following table explains what should be supplied as a part of auth server re
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
 |Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffGetSuspensions <br/>staffAddSuspension <br/>staffUpdateSuspension <br/>staffRemoveSuspension <br/>staffRequestPinChange <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletTransfer <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletTransfer <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
 
 <a name="client-credentials-access-token"></a>
 ## Client Credentials Access Token
@@ -483,10 +484,15 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
-                    "Transfer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                    "Withdraw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
                         "Method": "POST",
-                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "Deposit": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
                     },
                     "UpdateCustomerContactDetails": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
@@ -513,10 +519,15 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Method": "POST",
                         "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
                     },
-                    "Transfer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                    "Withdraw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
                         "Method": "POST",
-                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "Deposit": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
                     }
                 }
             }
@@ -1787,10 +1798,15 @@ This API will be return amount of funds available in SAW wallets along with spec
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
-                    "Transfer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                    "Withdraw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
                         "Method": "POST",
-                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "Deposit": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
                     }
                 }
             }
@@ -1813,11 +1829,11 @@ This API will be return amount of funds available in SAW wallets along with spec
                 "Message": "Couldn't process the transaction. {System X} is unavailable."
             }
 
-### Transfer [POST /customers/{identifier}/finances/transfers/{transactionId}]
+### Withdraw [POST /customers/{identifier}/finances/transfers/withdrawals/{transactionId}]
 
-**Allowed scopes**: `clientWalletTransfer`, `onbehalfWalletTransfer`
+**Allowed scopes**: `clientWalletWithdraw`, `onbehalfWalletWithdraw`
 
-This API endpoint is used for transfers such as placing funds into SAW (deposits and cashouts from retail games) and removed funds from SAW (withdrawals and transfers to retail games).
+This API endpoint is used for transfers such as removing funds from SAW (withdrawals and transfers to retail games).
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
@@ -1835,10 +1851,138 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
     + Body
     
             {
-                "Withdraw": {
-                    "Amount": 100.99
+                "Amount": 100.99
+            }
+
++ Response 200 (application/json)
+
+    Transaction successfully processed
+    
+    + Body
+    
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/000000001-001",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "ViewBalance": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
+                    },
+                    "Withdraw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "Deposit": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
+                    },
+                    "GetWalletTransactionStatus": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
+                    }
                 }
             }
+
++ Response 202 (application/json)
+
+    Undetermined state of transaction
+    
+    + Body
+    
+            {
+                "_Links": {
+                    "Self": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/000000001-001",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "ViewBalance": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                        "Method": "GET",
+                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
+                    },
+                    "Withdraw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "Deposit": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
+                    },
+                    "GetWalletTransactionStatus": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
+                    }
+                }
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "The requested amount exceeds available funds"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "The specified amount exceeds tactical deposit limit"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "The requested amount exceeds tactical withdrawal limit"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "The specified amount is invalid"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer Not Found"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "The latest version of PoPF is not signed off"
+            }
+            
++ Response 500 (application/json)
+
+            {
+                "Message": "Couldn't process the transaction. {System X} is unavailable."
+            }
+
+### Deposit [POST /customers/{identifier}/finances/transfers/deposits/{transactionId}]
+
+**Allowed scopes**: `clientWalletDeposit`, `onbehalfWalletDeposit`
+
+This API endpoint is used for transfers such as placing funds into SAW (deposits and cashouts from retail games).
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
+    + transactionId: `000000001-001` (string, required)
 
 + Request (application/json)
 
@@ -1866,19 +2010,24 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/000000001-001",
                         "Method": "POST",
-                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
                     },
                     "ViewBalance": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
-                    "Transfer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                    "Withdraw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
                         "Method": "POST",
-                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "Deposit": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
                     },
                     "GetWalletTransactionStatus": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
@@ -1897,19 +2046,24 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/000000001-001",
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/000000001-001",
                         "Method": "POST",
-                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
                     },
                     "ViewBalance": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
                         "Method": "GET",
                         "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
                     },
-                    "Transfer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/{transactionId}",
+                    "Withdraw": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
                         "Method": "POST",
-                        "AllowedScopes": [ "clientWalletTransfer", "onbehalfWalletTransfer" ]
+                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    },
+                    "Deposit": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                        "Method": "POST",
+                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
                     },
                     "GetWalletTransactionStatus": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/transactions/000000001-001",
