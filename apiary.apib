@@ -280,6 +280,8 @@ The following diagram depicts the sequence of interactions between client and th
 (1) - The Client requests Resource Owner [Access Token](#tokens) from Identity Provider (IDP).
 The parameters to be supplied depend on the [scopes](#scopes) required to perform an operation
 over a resource. Customer's `username` and `password` are mandatory parameters for this type of authentication flow.
+In order to obtain a `refresh_token` along with the `access_token` where possible, the special scope
+`offline_access` should be supplied in addition to any other scopes.
 
 (2) - `access_token` of the requested token type along with `refresh_token` is issued by IDP and returned to the Client.
 It's Client's responsibility to save `refresh_token` if [Refresh Token Authentication Flow](#refresh-token) is going to be used for further RES API calls.
