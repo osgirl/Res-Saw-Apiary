@@ -370,7 +370,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
 
 + Response 200 (application/json)
 
-    Read-only operations
+    Read-only operations (no customer identifiers in JWT claims)
     
     + Body
 
@@ -390,145 +390,226 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
 
 + Response 200 (application/json)
 
-    Member of staff performing an operation
+    Customer has SAW account (RetailId, DigitalId and DigitalUsername are presented in JWT claims)
     
     + Body
 
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
+                      "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
+                      "Method": "GET"
                     },
                     "RegisterRetailCustomer": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffRegisterRetailCustomer" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffRegisterRetailCustomer"
+                      ]
                     },
                     "CanCreateSaw": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffUpgradeCustomer",
+                        "onbehalfUpgradeCustomer"
+                      ]
                     },
                     "GetSuspensions": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
-                        "Method": "GET",
-                        "AllowedScopes": [ "staffGetSuspensions" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "staffGetSuspensions"
+                      ]
                     },
                     "AddSuspension": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffAddSuspension" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffAddSuspension"
+                      ]
                     },
                     "UpdateCustomerPersonal": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateCustomerPersonal" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerPersonal"
+                      ]
                     },
                     "UpdateCustomerAddress": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/address",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateCustomerAddress" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/address",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerAddress"
+                      ]
                     },
                     "UpdateCustomerConsents": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/consents",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "staffUpdateCustomerConsents" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/consents",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerConsents"
+                      ]
                     },
                     "UpdateCustomerMembership": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/memberships/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
-                        "Method": "GET",
-                        "AllowedScopes": [ "staffUpdateCustomerMembership" ]
-                    },
-                    "RequestPinChange": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pin/requestChange",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffRequestPinChange" ]
-                    },
-                    "GetCustomerAgreements": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/agreements",
-                        "Method": "GET",
-                        "AllowedScopes": [ "staffGetCustomerAgreements" ]
-                    },
-                    "AddCustomerVerification": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/verifications",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffAddCustomerVerification" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/memberships/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerMembership"
+                      ]
                     },
                     "ViewBalance": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
-                        "Method": "GET",
-                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "clientWalletGetBalance",
+                        "staffWalletGetBalance"
+                      ]
+                    },
+                    "Withdraw": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "clientWalletWithdraw",
+                        "onbehalfWalletWithdraw"
+                      ]
+                    },
+                    "Deposit": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "clientWalletDeposit",
+                        "onbehalfWalletDeposit"
+                      ]
                     },
                     "GetWalletTransactionStatus": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
-                        "Method": "GET",
-                        "AllowedScopes": [ "staffWalletGetTransactionStatus" ]
-                    }
-                }
-            }
-            
-+ Response 200 (application/json)
-
-    Customer performing action themselves in a venue
-    
-    + Body
-
-            {
-                "_Links": {
-                    "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
+                      "Href": "http://dev01-resapi.rankgrouptech.net/transactions/{transactionId}",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "staffWalletGetTransactionStatus"
+                      ]
                     },
-                    "ViewBalance": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances",
-                        "Method": "GET",
-                        "AllowedScopes": [ "clientWalletGetBalance", "staffWalletGetBalance" ]
+                    "RequestPinChange": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/authentication/pin/requestChange",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffRequestPinChange"
+                      ]
                     },
-                    "Withdraw": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
-                        "Method": "POST",
-                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    "GetCustomerAgreements": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/agreements",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "staffGetCustomerAgreements"
+                      ]
                     },
-                    "Deposit": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
-                        "Method": "POST",
-                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
+                    "AddCustomerVerification": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/verifications",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffAddCustomerVerification"
+                      ]
                     },
                     "UpdateCustomerContactDetails": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
-                        "Method": "PUT",
-                        "AllowedScopes": [ "clientUpdateCustomerContactDetails" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "clientUpdateCustomerContactDetails"
+                      ]
                     }
                 }
             }
             
 + Response 200 (application/json)
 
-    Staff operating on behalf of a customer
+    Customer has Retail only account (only RetailId is presented in JWT claims)
     
     + Body
 
             {
                 "_Links": {
                     "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
-                        "Method": "GET"
+                      "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
+                      "Method": "GET"
+                    },
+                    "RegisterRetailCustomer": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffRegisterRetailCustomer"
+                      ]
                     },
                     "CanCreateSaw": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
-                        "Method": "POST",
-                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffUpgradeCustomer",
+                        "onbehalfUpgradeCustomer"
+                      ]
                     },
-                    "Withdraw": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/withdrawals/{transactionId}",
-                        "Method": "POST",
-                        "AllowedScopes": [ "clientWalletWithdraw", "onbehalfWalletWithdraw" ]
+                    "GetSuspensions": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "staffGetSuspensions"
+                      ]
                     },
-                    "Deposit": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/finances/transfers/deposits/{transactionId}",
-                        "Method": "POST",
-                        "AllowedScopes": [ "clientWalletDeposit", "onbehalfWalletDeposit" ]
+                    "AddSuspension": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffAddSuspension"
+                      ]
+                    },
+                    "UpdateCustomerPersonal": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerPersonal"
+                      ]
+                    },
+                    "UpdateCustomerAddress": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/address",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerAddress"
+                      ]
+                    },
+                    "UpdateCustomerConsents": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/consents",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerConsents"
+                      ]
+                    },
+                    "UpdateCustomerMembership": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/memberships/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerMembership"
+                      ]
+                    }
+                }
+            }
+            
++ Response 200 (application/json)
+
+    Customer has Digital only account (only DigitalId and DigitalUsername are presented in JWT claims)
+    
+    + Body
+
+            {
+                "_Links": {
+                    "Self": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
+                      "Method": "GET"
+                    },
+                    "CanCreateSaw": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffUpgradeCustomer",
+                        "onbehalfUpgradeCustomer"
+                      ]
                     }
                 }
             }
