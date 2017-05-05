@@ -56,7 +56,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |RequestPinChange|/customers/{identifier}/authentication/pin/requestChange|POST|staffRequestPinChange|
 |GetCustomerAgreements|/customers/{identifier}/agreements|GET|staffGetCustomerAgreements|
 |UpdateCustomerAgreement|/customers/agreements/{identifier}|PUT|onbehalfUpdateCustomerAgreement|
-|UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|clientUpdateCustomerContactDetails|
+|UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|onbehalfUpdateCustomerContactDetails|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
 |Withdraw|/customers/{identifier}/finances/transfers/withdrawals/{transactionId}|POST|clientWalletWithdraw<br/>onbehalfWalletWithdraw|
 |Deposit|/customers/{identifier}/finances/transfers/deposits/{transactionId}|POST|clientWalletDeposit<br/>onbehalfWalletDeposit|
@@ -95,8 +95,8 @@ The following table explains what should be supplied as a part of auth server re
 |-------------------|----------|-------------------|----------------|
 |Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
 |Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffGetSuspensions <br/>staffAddSuspension <br/>staffUpdateSuspension <br/>staffRemoveSuspension <br/>staffRequestPinChange <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance <br/>clientUpdateCustomerContactDetails|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement|
+|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
+|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfWalletWithdraw <br/>onbehalfWalletDeposit <br/>onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement <br/>onbehalfUpdateCustomerContactDetails|
 
 <a name="client-credentials-access-token"></a>
 ## Client Credentials Access Token
@@ -515,7 +515,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                       "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/contactDetails",
                       "Method": "PUT",
                       "AllowedScopes": [
-                        "clientUpdateCustomerContactDetails"
+                        "onbehalfUpdateCustomerContactDetails"
                       ]
                     }
                 }
@@ -915,7 +915,7 @@ This API is to update an existing customers information once they have been iden
 
 ### Update Contact Details [PUT /customers/{identifier}/contactDetails]
 
-**Allowed scopes**: `clientUpdateCustomerContactDetails`
+**Allowed scopes**: `onbehalfUpdateCustomerContactDetails`
 
 This API is to update an existing customers information once they have been identified as a SAW customer.
 
