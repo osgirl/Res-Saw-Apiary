@@ -834,7 +834,11 @@ This API is to update an existing customers information once they have been iden
                 "Occupation": "Clerk"
             }
             
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
             
 + Response 424 (application/json)
 
@@ -887,7 +891,11 @@ This API is to update an existing customers information once they have been iden
                 "Country": "GB"
             }
             
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
             
 + Response 424 (application/json)
 
@@ -937,7 +945,11 @@ This API is to update an existing customers information once they have been iden
                 "Email": "jack@rank.com"
             }
             
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
             
 + Response 424 (application/json)
 
@@ -990,7 +1002,11 @@ This API is to update an existing customers information once they have been iden
                 "PushConsentFrom":"2017-01-25T10:00:00"
             }
             
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
             
 + Response 424 (application/json)
 
@@ -1045,7 +1061,11 @@ Acceptable `Status` values:
                 "Status" : "Active"
             }
     
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
             
 + Response 424 (application/json)
 
@@ -1110,7 +1130,11 @@ Acceptable `DocumentType` values:
                 "Nationality": "GB"
             }
     
-+ Response 201 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
 
 + Response 424 (application/json)
 
@@ -1204,7 +1228,11 @@ This API will be called when a customer has had a new retail account created. Th
                 ]
             }
 
-+ Response 200 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Body
     
             {
                 "_Links": {
@@ -1423,7 +1451,11 @@ digital account should be created from the customer's known email address.
                 "Pin": 1234
             }
 
-+ Response 201 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
 
 + Response 400 (application/json)
 
@@ -1523,7 +1555,11 @@ Acceptable `Type` values: `PoPF`
                 "Type": "PoPF"
             }
 
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
 
 + Response 424 (application/json)
 
@@ -1672,9 +1708,13 @@ Acceptable `Type` values:
                 "Type": "Barred"
             }
            
-+ Response 201 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Body
   
-           {
+            {
                 "_Links": {
                     "Self": {
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
@@ -1746,7 +1786,11 @@ To update customer profile as barred/suspended by the SAW staff member by select
                 "Type": "Barred"
             }
            
-+ Response 200 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Body
   
             {
                 "_Links": {
@@ -1785,7 +1829,11 @@ To update customer profile by removing the barred/suspended status
             Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
 
 + Response 400 (application/json)
 
@@ -1811,7 +1859,11 @@ Allows a member of staff to request a pin change on behalf of the customer. This
             Authorization: Bearer (client credentials token)
             X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
 
-+ Response 204 (application/json)
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
 
 + Response 400 (application/json)
 
