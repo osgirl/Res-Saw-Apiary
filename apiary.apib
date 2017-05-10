@@ -975,16 +975,20 @@ This API is to update an existing customers information once they have been iden
                 "Message": "Internal Error"
             }
 
-### Update Consents [PUT /customers/{identifier}/consents]
+### Update Consents [PATCH /customers/{identifier}/consents]
 
 **Allowed scopes**: `staffUpdateCustomerConsents`
 
 This API is to update an existing customers information once they have been identified as a SAW customer.
 
+This endpoint supports partical requests (see examples).
+
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required)
 
 + Request (application/json)
+
+    Full request
 
     + Headers 
             
@@ -999,9 +1003,41 @@ This API is to update an existing customers information once they have been iden
                 "MobileConsentFrom": "2017-01-25T10:00:00",
                 "SmsConsentFrom": "2017-01-25T10:00:00",
                 "EmailConsentFrom": "2017-01-25T10:00:00",
-                "PushConsentFrom":"2017-01-25T10:00:00"
+                "PushConsentFrom": null
             }
+
++ Request (application/json)
+
+    Partial request: setting MobileConsent, cancelling EmailConsent
+
+    + Headers 
             
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "MobileConsentFrom": "2017-01-25T20:00:00",
+                "EmailConsentFrom": null
+            }
+
++ Request (application/json)
+
+    Partial request: setting MobileConsent as well as SmsConsent
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "MobileConsentFrom": "2017-01-25T10:00:00",
+                "SmsConsentFrom": "2017-01-25T10:00:00"
+            }
+
 + Response 202 (application/json)
 
     Accepted
