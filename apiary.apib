@@ -656,17 +656,17 @@ Model for the resource is defined below:
 |ContactDetails.LandlinePhone                           |string[20] |**optional**       |                                                                                       |"07886028945"              |
 |ContactDetails.MobilePhone                             |string[20] |**optional** (either Mobile or Email must be supplied)|                                                    |"07886028947"              |
 |ContactDetails.Email                                   |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"john@rank.com"            |
-|MarketingConsents.PostConsentFrom                      |datetime   |**optional**       |The date marketing contacts via post were allowed                                      |"2017-01-25T10:00:00"      |
-|MarketingConsents.LandlineConsentFrom                  |datetime   |**optional**       |The date marketing contacts via landline phone were allowed                            |"2017-01-25T10:00:00"      |
-|MarketingConsents.MobileConsentFrom                    |datetime   |**optional**       |The date marketing contacts via mobile phone were allowed                              |"2017-01-25T10:00:00"      |
-|MarketingConsents.SmsConsentFrom                       |datetime   |**optional**       |The date marketing contacts via SMS were allowed                                       |"2017-01-25T10:00:00"      |
-|MarketingConsents.EmailConsentFrom                     |datetime   |**optional**       |The date marketing contacts via email were allowed                                     |"2017-01-25T10:00:00"      |
-|MarketingConsents.PushConsentFrom                      |datetime   |**optional**       |The date marketing contacts via push were allowed                                      |"2017-01-25T10:00:00"      |
+|MarketingConsents.PostConsentFrom                      |boolean    |**yes**            |The flag defining if marketing contacts via post were allowed                          |true                       |
+|MarketingConsents.LandlineConsentFrom                  |boolean    |**yes**            |The flag defining if marketing contacts via landline phone were allowed                |true                       |
+|MarketingConsents.MobileConsentFrom                    |boolean    |**yes**            |The flag defining if marketing contacts via mobile phone were allowed                  |true                       |
+|MarketingConsents.SmsConsentFrom                       |boolean    |**yes**            |The flag defining if marketing contacts via SMS were allowed                           |true                       |
+|MarketingConsents.EmailConsentFrom                     |boolean    |**yes**            |The flag defining if marketing contacts via email were allowed                         |true                       |
+|MarketingConsents.PushConsentFrom                      |boolean    |**yes**            |The flag defining if marketing contacts via push were allowed                          |true                       |
 |Verifications.VerificationType                         |string[?]  |**yes**            |Allowed values: "CustomerNotPresent", "CustomerPresent", "Electronic"                  |"CustomerNotPresent"       |
 |Verifications.VerificationPassed                       |string[?]  |**yes**            |True or False                                                                          |"False"                    |
 |Verifications.VerificationDate                         |datetime   |**yes**            |                                                                                       |"2017-01-25T10:00:00"      |
 |Verifications.DocumentNumber                           |string[6]  |**yes**            |                                                                                       |"50106"                    |
-|Verifications.DocumentType                             |string[?]  |**yes**            |Allowed values: "Passport", "DrivingLicence", "MilitaryID"                                                                                       |"Passport"                 |
+|Verifications.DocumentType                             |string[?]  |**yes**            |Allowed values: "Passport", "DrivingLicence", "MilitaryID"                             |"Passport"                 |
 |Verifications.ExpiryDate                               |datetime   |**optional**       |                                                                                       |"2030-01-25T00:00:00"      |
 |Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"GB passport"              |
 |Verifications.Nationality                              |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
@@ -736,12 +736,12 @@ The endpoint for customer lookup from Bede using Membership Card Number and opti
                     "Email": "jack@rank.com"
                 },
                 "MarketingConsents": {
-                    "PostConsentFrom": "2017-03-03T10:00:00",
-                    "LandlineConsentFrom": null,
-                    "MobileConsentFrom": "2017-01-25T10:00:00",
-                    "SmsConsentFrom": "2017-01-25T10:00:00",
-                    "EmailConsentFrom": "2017-01-25T10:00:00",
-                    "PushConsentFrom":"2017-01-25T10:00:00"
+                    "PostConsentFrom": true,
+                    "LandlineConsentFrom": false,
+                    "MobileConsentFrom": true,
+                    "SmsConsentFrom": true,
+                    "EmailConsentFrom": true,
+                    "PushConsentFrom": false
                 },
                 "Verifications": [
                     {
@@ -975,7 +975,7 @@ This API is to update an existing customers information once they have been iden
                 "Message": "Internal Error"
             }
 
-### Update Consents [PATCH /customers/{identifier}/consents]
+### Update Consents [PUT /customers/{identifier}/consents]
 
 **Allowed scopes**: `staffUpdateCustomerConsents`
 
@@ -998,44 +998,12 @@ This endpoint supports partical requests (see examples).
     + Body
     
             {
-                "PostConsentFrom": "2017-03-03T10:00:00",
-                "LandlineConsentFrom": null,
-                "MobileConsentFrom": "2017-01-25T10:00:00",
-                "SmsConsentFrom": "2017-01-25T10:00:00",
-                "EmailConsentFrom": "2017-01-25T10:00:00",
-                "PushConsentFrom": null
-            }
-
-+ Request (application/json)
-
-    Partial request: setting MobileConsent, cancelling EmailConsent
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "MobileConsentFrom": "2017-01-25T20:00:00",
-                "EmailConsentFrom": null
-            }
-
-+ Request (application/json)
-
-    Partial request: setting MobileConsent as well as SmsConsent
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "MobileConsentFrom": "2017-01-25T10:00:00",
-                "SmsConsentFrom": "2017-01-25T10:00:00"
+                "PostConsentFrom": true,
+                "LandlineConsentFrom": false,
+                "MobileConsentFrom": true,
+                "SmsConsentFrom": true,
+                "EmailConsentFrom": true,
+                "PushConsentFrom": false
             }
 
 + Response 202 (application/json)
@@ -1236,12 +1204,12 @@ This API will be called when a customer has had a new retail account created. Th
                     "Email": "jack@rank.com"
                 },
                 "MarketingConsents": {
-                    "PostConsentFrom": "2017-03-03T10:00:00",
-                    "LandlineConsentFrom": null,
-                    "MobileConsentFrom": "2017-01-25T10:00:00",
-                    "SmsConsentFrom": "2017-01-25T10:00:00",
-                    "EmailConsentFrom": "2017-01-25T10:00:00",
-                    "PushConsentFrom":"2017-01-25T10:00:00"
+                    "PostConsentFrom": true,
+                    "LandlineConsentFrom": false,
+                    "MobileConsentFrom": true,
+                    "SmsConsentFrom": true,
+                    "EmailConsentFrom": true,
+                    "PushConsentFrom": false
                 },
                 "Verifications": [
                     {
@@ -1355,12 +1323,12 @@ a retail account or both, digital and retail.
                         "Email": "jack@rank.com"
                     },
                     "MarketingConsents": {
-                        "PostConsentFrom": "2017-03-03T10:00:00",
-                        "LandlineConsentFrom": null,
-                        "MobileConsentFrom": "2017-01-25T10:00:00",
-                        "SmsConsentFrom": "2017-01-25T10:00:00",
-                        "EmailConsentFrom": "2017-01-25T10:00:00",
-                        "PushConsentFrom":"2017-01-25T10:00:00"
+                        "PostConsentFrom": true,
+                        "LandlineConsentFrom": false,
+                        "MobileConsentFrom": true,
+                        "SmsConsentFrom": true,
+                        "EmailConsentFrom": true,
+                        "PushConsentFrom": false
                     },
                     "Verifications": [
                         {
