@@ -655,16 +655,16 @@ Model for the resource is defined below:
 |MarketingConsents.EmailConsent                         |boolean    |**yes**            |The flag defining if marketing contacts via email were allowed                         |true                       |
 |MarketingConsents.PushConsent                          |boolean    |**yes**            |The flag defining if marketing contacts via push were allowed                          |true                       |
 |Verifications.VerificationType                         |string[?]  |**yes**            |Allowed values: "CustomerNotPresent", "CustomerPresent", "Electronic"                  |"CustomerNotPresent"       |
-|Verifications.VerificationPassed                       |string[?]  |**yes**            |True or False                                                                          |"False"                    |
+|Verifications.VerificationPassed                       |boolean    |**yes**            |True or False                                                                          |true                       |
 |Verifications.VerificationDate                         |datetime   |**yes**            |                                                                                       |"2017-01-25T10:00:00"      |
-|Verifications.DocumentNumber                           |string[6]  |**yes**            |                                                                                       |"50106"                    |
+|Verifications.DocumentNumber                           |string[?]  |**yes**            |                                                                                       |"BB123456"                 |
 |Verifications.DocumentType                             |string[?]  |**yes**            |Allowed values: "Passport", "DrivingLicence", "MilitaryID"                             |"Passport"                 |
 |Verifications.ExpiryDate                               |datetime   |**optional**       |                                                                                       |"2030-01-25T00:00:00"      |
 |Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"GB passport"              |
 |Verifications.Nationality                              |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
 |Membership.MembershipId                                |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"4124681094"               |
 |Membership.Username                                    |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
-|Membership.RegisteredClubNumber                        |string[6]  |**yes**            |                                                                                       |"50106"                    |
+|Membership.RegisteredClubNumber                        |string[?]  |**yes**            |                                                                                       |"50106"                    |
 |Membership.MembershipCardNumber                        |string[?]  |**optional**       |                                                                                       |"123123123"                |
 |Membership.Status                                      |string[?]  |**optional**       |                                                                                       |"Active"                   |
 |Membership.Channel                                     |string[?]  |**optional**       |                                                                                       |"Retail"                   |
