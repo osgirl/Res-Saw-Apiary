@@ -91,12 +91,100 @@ In order to access any resource provided by RES, the client should provide a tok
 The relation between resources and allowed scopes is reflected in each endpoint's description.
 The following table explains what should be supplied as a part of auth server request in order to get a token with a particular scope issued.
 
-|Authentication type|Token type|Required parameters|Available scopes|
-|-------------------|----------|-------------------|----------------|
-|Read-only operations|Client Credentials Token|clientId <br/>clientSecret |readonlyCustomerSearch|
-|Member of staff performing an operation|Client Credentials Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username |staffRegisterRetailCustomer <br/>staffUpgradeCustomer <br/>staffUpdateCustomerPersonal <br/>staffUpdateCustomerAddress <br/>staffUpdateCustomerConsents <br/>staffUpdateCustomerMembership <br/>staffGetSuspensions <br/>staffAddSuspension <br/>staffUpdateSuspension <br/>staffRemoveSuspension <br/>staffRequestPinChange <br/>staffWalletGetBalance <br/>staffWalletGetTransactionStatus <br/>staffGetCustomerAgreements <br/> staffAddCustomerVerification|
-|Customer performing action themselves in a venue|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>game_category <br/>username <br/>password |clientWalletWithdraw <br/>clientWalletDeposit <br/>clientWalletGetBalance|
-|Staff operating on behalf of a customer|Resource Owner Token|clientId <br/>clientSecret <br/>venue_id <br/>location_id <br/>staff_id <br/>username <br/>password |onbehalfUpgradeCustomer <br/>onbehalfUpdateCustomerAgreement <br/>onbehalfUpdateCustomerContactDetails <br/>onbehalfWalletWithdraw <br/>onbehalfWalletDeposit|
+    <table>
+        <thead>
+            <tr>
+                <th>Authentication type</th>
+                <th>Token type</th>
+                <th>Required parameters</th>
+                <th>Available scopes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Read-only operations</td>
+                <td>Client Credentials Token</td>
+                <td>clientId clientSecret</td>
+                <td>readonlyCustomerSearch</td>
+            </tr>
+            <tr>
+                <td rowspan="2">Member of staff performing an operation</td>
+                <td rowspan="2">Client Credentials Token</td>
+                <td>
+                    clientId <br/>
+                    clientSecret <br/>
+                    venue_id <br/>
+                    location_id <br/>
+                    staff_id
+                </td>
+                <td>staffRegisterRetailCustomer</td>
+            </tr>
+            <tr>
+                <td>
+                    clientId <br/>
+                    clientSecret <br/>
+                    venue_id <br/>
+                    location_id <br/>
+                    staff_id <br/>
+                    username
+                </td>
+                <td>
+                    staffUpgradeCustomer <br/>
+                    staffUpdateCustomerPersonal <br/>
+                    staffUpdateCustomerAddress <br/>
+                    staffUpdateCustomerConsents <br/>
+                    staffUpdateCustomerMembership <br/>
+                    staffGetSuspensions <br/>
+                    staffAddSuspension <br/>
+                    staffUpdateSuspension <br/>
+                    staffRemoveSuspension <br/>
+                    staffRequestPinChange <br/>
+                    staffWalletGetBalance <br/>
+                    staffWalletGetTransactionStatus <br/>
+                    staffGetCustomerAgreements <br/>
+                    staffAddCustomerVerification
+                </td>
+            </tr>
+            <tr>
+                <td>Customer performing action themselves in a venue</td>
+                <td>Resource Owner Token</td>
+                <td>
+                    clientId <br/>
+                    clientSecret <br/>
+                    venue_id <br/>
+                    location_id <br/>
+                    game_category <br/>
+                    username <br/>
+                    password
+                </td>
+                <td>
+                    clientWalletWithdraw <br/>
+                    clientWalletDeposit <br/>
+                    clientWalletGetBalance
+                </td>
+            </tr>
+            <tr>
+                <td>Staff operating on behalf of a customer</td>
+                <td>Resource Owner Token</td>
+                <td>
+                    clientId <br/>
+                    clientSecret <br/>
+                    venue_id <br/>
+                    location_id <br/>
+                    staff_id <br/>
+                    username <br/>
+                    password
+                </td>
+                <td>
+                    onbehalfUpgradeCustomer <br/>
+                    onbehalfUpdateCustomerAgreement <br/>
+                    onbehalfUpdateCustomerContactDetails <br/>
+                    onbehalfWalletWithdraw <br/>
+                    onbehalfWalletDeposit
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 <a name="client-credentials-access-token"></a>
 ## Client Credentials Access Token
