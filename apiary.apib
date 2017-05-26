@@ -1236,6 +1236,48 @@ This API will be called when a customer has had a new retail account created. Th
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
                         "Method": "GET",
                         "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                    },
+                    "UpdateCustomerPersonal": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerPersonal"
+                      ]
+                    },
+                    "UpdateCustomerAddress": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/address",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerAddress"
+                      ]
+                    },
+                    "UpdateCustomerConsents": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/consents",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerConsents"
+                      ]
+                    },
+                    "UpdateCustomerMembership": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/memberships/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b",
+                      "Method": "PUT",
+                      "AllowedScopes": [
+                        "staffUpdateCustomerMembership"
+                      ]
+                    },
+                    "GetSuspensions": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                      "Method": "GET",
+                      "AllowedScopes": [
+                        "staffGetSuspensions"
+                      ]
+                    },
+                    "AddSuspension": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffAddSuspension"
+                      ]
                     }
                 }
             }
