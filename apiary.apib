@@ -460,7 +460,7 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
 
 + Response 200 (application/json)
 
-    Read-only operations (no customer identifiers in JWT claims)
+    Customer doesn't have any accounts (no identifiers presented in JWT claims)
     
     + Body
 
@@ -474,6 +474,13 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                         "Href": "http://dev01-resapi.rankgrouptech.net/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}",
                         "Method": "GET",
                         "AllowedScopes": [ "readonlyCustomerSearch" ]
+                    },
+                    "RegisterRetailCustomer": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers",
+                      "Method": "POST",
+                      "AllowedScopes": [
+                        "staffRegisterRetailCustomer"
+                      ]
                     }
                 }
             }
@@ -489,13 +496,6 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "Self": {
                       "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                       "Method": "GET"
-                    },
-                    "RegisterRetailCustomer": {
-                      "Href": "http://dev01-resapi.rankgrouptech.net/customers",
-                      "Method": "POST",
-                      "AllowedScopes": [
-                        "staffRegisterRetailCustomer"
-                      ]
                     },
                     "GetSuspensions": {
                       "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions",
@@ -612,13 +612,6 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                     "Self": {
                       "Href": "http://dev01-resapi.rankgrouptech.net/journeys",
                       "Method": "GET"
-                    },
-                    "RegisterRetailCustomer": {
-                      "Href": "http://dev01-resapi.rankgrouptech.net/customers",
-                      "Method": "POST",
-                      "AllowedScopes": [
-                        "staffRegisterRetailCustomer"
-                      ]
                     },
                     "CanCreateSaw": {
                       "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
@@ -1407,17 +1400,319 @@ a retail account or both, digital and retail.
 
 + Response 200 (application/json)
 
+    Digital upgrade journey (onbehalfUpgradeCustomer) - Existing retail accounts returned
+
+    + Body
+    
             {
                 "CanCreateSAW" : true,
                 "CanEnterClub" : true,
-                "DigitalAccountUsernames" : [
-                    "johnSilver777",
-                    "johnX91",
-                    "drwho91"
+                "DigitalAccounts" : [
+                    {
+                        "Username" : "johnSilver777"
+                    },
+                    {
+                        "Username" : "johnX91"
+                    },
+                    {
+                        "Username" : "drwho91"
+                    }
                 ],
-                "RetailAccountIds" : [
-                    "12345678", 
-                    "87654321"
+                "RetailAccounts" : [
+                    {
+                        "MembershipId" : "12345678",
+                        "_Links": {
+                            "UpgradeToSaw": {
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/2f5dc487-9d37-4407-af69-aa6ff7ef4218/upgradeToSaw",
+                                "Method": "POST",
+                                "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                            }
+                        }
+                    },
+                    {
+                        "MembershipId" : "87654321",
+                        "_Links": {
+                            "UpgradeToSaw": {
+                                "Href": "http://dev01-resapi.rankgrouptech.net/customers/564195ba-ae43-43b8-b69c-499585bebc27/upgradeToSaw",
+                                "Method": "POST",
+                                "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                            }
+                        }
+                    }
+                ],
+                "GoldenRecord" : {
+                    "Personal": {
+                        "Title": "Mr",
+                        "FirstName": "John",
+                        "MiddleName": "Dan",
+                        "LastName": "Jackson",
+                        "PreferredName": "Johnny",
+                        "DateOfBirth": "1955-01-30",
+                        "DateOfDeath": "2200-02-17",
+                        "Gender": "M",
+                        "Occupation": "Clerk"
+                    },
+                    "Address": {
+                        "Line1": "Flat 57",
+                        "Line2": "10 Downing Street",
+                        "Town": "London",
+                        "Postcode": "WC2B 4AA",
+                        "County": "Greater London",
+                        "Country": "GB"
+                    },
+                    "ContactDetails": {
+                        "LandlinePhone": "07886028945",
+                        "MobilePhone": "07886028947",
+                        "Email": "jack@rank.com"
+                    },
+                    "MarketingConsents": {
+                        "PostConsent": true,
+                        "LandlineConsent": false,
+                        "MobileConsent": true,
+                        "SmsConsent": true,
+                        "EmailConsent": true,
+                        "PushConsent": false
+                    },
+                    "Verifications": [
+                        {
+                            "VerificationType": "CustomerNotPresent",
+                            "VerificationPassed": true,
+                            "VerificationDate": "2017-01-25T10:00:00",
+                            "DocumentNumber": "435345345",
+                            "DocumentType": "Passport",
+                            "ExpiryDate": "2020-01-01T00:00:00",
+                            "IssuerDetails": "HM Passport Office",
+                            "Nationality": "GB"
+                        }
+                    ],
+                    "Memberships": [
+                        {
+                            "MembershipId": "12345678",
+                            "RegisteredClubNumber": "45611",
+                            "MembershipCardNumber": "123123123",
+                            "Status": "Active",
+                            "Channel": "Retail",
+                            "Brand": "Grosvenor",
+                            "DatePartOfSaw": null
+                        } 
+                    ]
+                },
+                "RejectionReasons" : [
+                    {
+                        "Reason" : "Already SAW"
+                    },
+                    {
+                        "Reason" : "Deceased"
+                    },
+                    {
+                        "Reason" : "Locally barred"
+                    },
+                    {
+                        "Reason" : "Nationally barred"
+                    },
+                    {
+                        "Reason" : "Refused membership"
+                    },
+                    {
+                        "Reason" : "Self-cancelled"
+                    },
+                    {
+                        "Reason" : "Suspended"
+                    },
+                    {
+                        "Reason" : "Self-excluded"
+                    },
+                    {
+                        "Reason" : "Take-a-break"
+                    },
+                    {
+                        "Reason" : "Closed"
+                    },
+                    {
+                        "Reason" : "Locked"
+                    },
+                    {
+                        "Reason" : "Missing email"
+                    },
+                    {
+                        "Reason" : "Missing mobile number"
+                    },
+                    {
+                        "Reason" : "Email in use"
+                    }
+                ],
+                "_Links": {
+                    "Self": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                    }
+                }
+            }
+
++ Response 200 (application/json)
+
+    Digital upgrade journey (onbehalfUpgradeCustomer) - No retail accounts returned
+
+    + Body
+    
+            {
+                "CanCreateSAW" : true,
+                "CanEnterClub" : true,
+                "DigitalAccounts" : [
+                    {
+                        "Username" : "johnSilver777"
+                    },
+                    {
+                        "Username" : "johnX91"
+                    },
+                    {
+                        "Username" : "drwho91"
+                    }
+                ],
+                "RetailAccounts" : [],
+                "GoldenRecord" : {
+                    "Personal": {
+                        "Title": "Mr",
+                        "FirstName": "John",
+                        "MiddleName": "Dan",
+                        "LastName": "Jackson",
+                        "PreferredName": "Johnny",
+                        "DateOfBirth": "1955-01-30",
+                        "DateOfDeath": "2200-02-17",
+                        "Gender": "M",
+                        "Occupation": "Clerk"
+                    },
+                    "Address": {
+                        "Line1": "Flat 57",
+                        "Line2": "10 Downing Street",
+                        "Town": "London",
+                        "Postcode": "WC2B 4AA",
+                        "County": "Greater London",
+                        "Country": "GB"
+                    },
+                    "ContactDetails": {
+                        "LandlinePhone": "07886028945",
+                        "MobilePhone": "07886028947",
+                        "Email": "jack@rank.com"
+                    },
+                    "MarketingConsents": {
+                        "PostConsent": true,
+                        "LandlineConsent": false,
+                        "MobileConsent": true,
+                        "SmsConsent": true,
+                        "EmailConsent": true,
+                        "PushConsent": false
+                    },
+                    "Verifications": [
+                        {
+                            "VerificationType": "CustomerNotPresent",
+                            "VerificationPassed": true,
+                            "VerificationDate": "2017-01-25T10:00:00",
+                            "DocumentNumber": "435345345",
+                            "DocumentType": "Passport",
+                            "ExpiryDate": "2020-01-01T00:00:00",
+                            "IssuerDetails": "HM Passport Office",
+                            "Nationality": "GB"
+                        }
+                    ],
+                    "Memberships": [
+                        {
+                            "MembershipId": "12345678",
+                            "RegisteredClubNumber": "45611",
+                            "MembershipCardNumber": "123123123",
+                            "Status": "Active",
+                            "Channel": "Retail",
+                            "Brand": "Grosvenor",
+                            "DatePartOfSaw": null
+                        } 
+                    ]
+                },
+                "RejectionReasons" : [
+                    {
+                        "Reason" : "Already SAW"
+                    },
+                    {
+                        "Reason" : "Deceased"
+                    },
+                    {
+                        "Reason" : "Locally barred"
+                    },
+                    {
+                        "Reason" : "Nationally barred"
+                    },
+                    {
+                        "Reason" : "Refused membership"
+                    },
+                    {
+                        "Reason" : "Self-cancelled"
+                    },
+                    {
+                        "Reason" : "Suspended"
+                    },
+                    {
+                        "Reason" : "Self-excluded"
+                    },
+                    {
+                        "Reason" : "Take-a-break"
+                    },
+                    {
+                        "Reason" : "Closed"
+                    },
+                    {
+                        "Reason" : "Locked"
+                    },
+                    {
+                        "Reason" : "Missing email"
+                    },
+                    {
+                        "Reason" : "Missing mobile number"
+                    },
+                    {
+                        "Reason" : "Email in use"
+                    }
+                ],
+                "_Links": {
+                    "Self": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/sawEligible",
+                        "Method": "GET",
+                        "AllowedScopes": [ "staffUpgradeCustomer", "onbehalfUpgradeCustomer" ]
+                    },
+                    "RegisterRetailCustomer": {
+                      "Href": "http://dev01-resapi.rankgrouptech.net/customers",
+                      "Method": "POST",
+                      "AllowedScopes": [ "staffRegisterRetailCustomer" ]
+                    }
+                }
+            }
+
++ Response 200 (application/json)
+
+    Retail upgrade journey (staffUpgradeCustomer)
+
+    + Body
+    
+            {
+                "CanCreateSAW" : true,
+                "CanEnterClub" : true,
+                "DigitalAccounts" : [
+                    {
+                        "Username" : "johnSilver777"
+                    },
+                    {
+                        "Username" : "johnX91"
+                    },
+                    {
+                        "Username" : "drwho91"
+                    }
+                ],
+                "RetailAccounts" : [
+                    {
+                        "MembershipId" : "12345678"
+                    },
+                    {
+                        "MembershipId" : "87654321"
+                    }
                 ],
                 "GoldenRecord" : {
                     "Personal": {
