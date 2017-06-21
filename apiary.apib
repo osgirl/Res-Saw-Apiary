@@ -734,8 +734,8 @@ Model for the resource is defined below:
 |Address.County                                         |string[20] |**optional**       |                                                                                       |"Greater London"           |
 |Address.Country                                        |string[2]  |**yes**            |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"GB"                       |
 |ContactDetails.LandlinePhone                           |string[20] |**optional**       |                                                                                       |"07886028945"              |
-|ContactDetails.MobilePhone                             |string[20] |**optional** (either Mobile or Email must be supplied)|                                                    |"07886028947"              |
-|ContactDetails.Email                                   |string[?]  |**optional** (either Mobile or Email must be supplied)|                                                    |"john@rank.com"            |
+|ContactDetails.MobilePhone                             |string[20] |**yes**            |                                                    |"07886028947"              |
+|ContactDetails.Email                                   |string[?]  |**yes**            |                                                    |"john@rank.com"            |
 |MarketingConsents.PostConsent                          |boolean    |**yes**            |The flag defining if marketing contacts via post were allowed                          |true                       |
 |MarketingConsents.LandlineConsent                      |boolean    |**yes**            |The flag defining if marketing contacts via landline phone were allowed                |true                       |
 |MarketingConsents.MobileConsent                        |boolean    |**yes**            |The flag defining if marketing contacts via mobile phone were allowed                  |true                       |
