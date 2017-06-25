@@ -41,6 +41,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |Self|Refers to the resource it's attached to|
 |Journeys|/journeys|GET|any|
 |SearchCustomerByMembershipCard|/customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}|GET|readonlyCustomerSearch|
+|RequestRetailSelfExclusion|/customers/{identifier}/suspensions/requestSelfExclusion|POST|onlineRequestRetailSelfExclusion|
 |RegisterRetailCustomer|/customers|POST|staffRegisterRetailCustomer|
 |CanCreateSaw|/customers/{identifier}/sawEligible|GET|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
 |UpgradeToSaw|/customers/{identifier}/upgradeToSaw|POST|staffUpgradeCustomer<br/>onbehalfUpgradeCustomer|
@@ -106,6 +107,12 @@ The following table explains what should be supplied as a part of auth server re
                 <td>Client Credentials Token</td>
                 <td>clientId clientSecret</td>
                 <td>readonlyCustomerSearch</td>
+            </tr>
+            <tr>
+                <td>Operations initiated by the Digital platform</td>
+                <td>Client Credentials Token</td>
+                <td>clientId clientSecret</td>
+                <td>onlineRequestRetailSelfExclusion</td>
             </tr>
             <tr>
                 <td rowspan="2">Member of staff performing an operation</td>
@@ -510,6 +517,13 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
                       "AllowedScopes": [
                         "staffAddSuspension"
                       ]
+                    },
+                    "RequestRetailSelfExclusion": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/suspensions/requestSelfExclusion",
+                        "Method": "POST",
+                        "AllowedScopes": [
+                            "onlineRequestRetailSelfExclusion"
+                        ]
                     },
                     "UpdateCustomerPersonal": {
                       "Href": "http://dev01-resapi.rankgrouptech.net/customers/86e018ce-ef7d-4c92-ae54-8f0c41d46c7b/personal",
@@ -2092,7 +2106,7 @@ Get all suspension information for a single customer
 **Allowed scopes**: `staffAddSuspension`
 
 To update customer profile as suspended by the SAW staff member by selecting a reason,
-and noting the details on why the SAW customer has been suspended, and how long the
+and nothing the details on why the SAW customer has been suspended, and how long the
 suspension will exist for.
 
 Required fields: `From`, `Type`
@@ -2278,7 +2292,39 @@ To update customer profile by removing the barred/suspended status
             {
                 "Message": "Not a SAW customer"
             }
+
+
+### Request Retail SelfExclusion [POST /customers/{identifier}/suspensions/requestSelfExclusion/]
+
+**Allowed scopes**: `onlineRequestRetailSelfExclusion`
+
+This endpoint to be used by Digital channel only, in order to request Retail self-exclusion for the customer.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request
+
+    + Headers 
             
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body  
+            
+            {
+                "From": "2016-01-30",
+                "ProposedTo": "2016-01-30"
+            }
+           
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
 ## Security [/customers/{identifier}/authentication/pin/requestChange]
 
 ### Request PIN Change [POST]
