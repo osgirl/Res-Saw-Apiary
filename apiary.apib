@@ -55,7 +55,7 @@ The following is a table of all possible URIs with the corresponding HTTP verbs 
 |UpdateSuspension|/customers/suspensions/{identifier}|PUT|staffUpdateSuspension|
 |RemoveSuspension|/customers/suspensions/{identifier}|DELETE|staffRemoveSuspension|
 |RequestPinChange|/customers/{identifier}/authentication/pin/requestChange|POST|staffRequestPinChange|
-|GetCustomerAgreements|/customers/{identifier}/agreements|GET|staffGetCustomerAgreements|
+|GetCustomerAgreements|/customers/{identifier}/agreements|GET|staffGetCustomerAgreements<br/>clientGetCustomerAgreements|
 |UpdateCustomerAgreement|/customers/agreements/{identifier}|PUT|onbehalfUpdateCustomerAgreement|
 |UpdateCustomerContactDetails|/customers/{identifier}/contactDetails|PUT|onbehalfUpdateCustomerContactDetails|
 |ViewBalance|/customers/{identifier}/finances|GET|clientWalletGetBalance<br/>staffWalletGetBalance|
@@ -167,7 +167,8 @@ The following table explains what should be supplied as a part of auth server re
                 <td>
                     clientWalletWithdraw <br/>
                     clientWalletDeposit <br/>
-                    clientWalletGetBalance
+                    clientWalletGetBalance <br/>
+                    clientGetCustomerAgreements
                 </td>
             </tr>
             <tr>
@@ -2059,7 +2060,7 @@ digital account should be created from the customer's known email address.
 
 ### Get Agreements [GET]
 
-**Allowed scopes**: `staffGetCustomerAgreements`
+**Allowed scopes**: `staffGetCustomerAgreements`, `clientGetCustomerAgreements`
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
