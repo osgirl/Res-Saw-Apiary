@@ -141,6 +141,7 @@ The following table explains what should be supplied as a part of auth server re
                     staffUpdateCustomerAddress <br/>
                     staffUpdateCustomerConsents <br/>
                     staffUpdateCustomerMembership <br/>
+                    staffUpdateCustomerVipStatus <br/>
                     staffGetSuspensions <br/>
                     staffAddSuspension <br/>
                     staffUpdateSuspension <br/>
@@ -1188,6 +1189,52 @@ Acceptable `Status` values:
 
             {
                 "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+### Update Vip Status [PUT /customers/{identifier}/vipstatus]
+
+**Allowed scopes**: `staffUpdateCustomerVipStatus`
+
+The endpoint for updating the customer's vip status.
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "RetailVipTierStatus": "Black",
+            }
+            
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
             }
 
 + Response 500 (application/json)
