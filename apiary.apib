@@ -732,50 +732,54 @@ This endpoint provides HATEOAS-centric set of links to resources and actions ava
 ## Customers [/customers]
 
 Model for the resource is defined below:
-| Name                                                  | Type      | Required          | Description                                                                           |Example                    |
-|:---                                                   |:---       |:--:               |:---                                                                                   |:---                       |
-|Personal.Title                                         |string[?]  |**yes**            |Allowed values: "Mr", "Mrs", "Miss", ...                                               |"Mr"                       |
-|Personal.FirstName                                     |string[25] |**yes**            |                                                                                       |"John"                     |
-|Personal.MiddleName                                    |string[25] |**optional**       |                                                                                       |"Dan"                      |
-|Personal.LastName                                      |string[25] |**yes**            |                                                                                       |"Jackson"                  |
-|Personal.PreferredName                                 |string[25] |**optional**       |                                                                                       |"Johnny"                   |
-|Personal.DateOfBirth                                   |date       |**yes**            |                                                                                       |"1955-01-30"               |
-|Personal.DateOfDeath                                   |date       |**optional**       |                                                                                       |"1975-01-30"               |
-|Personal.Gender                                        |string[1]  |**yes**            |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
-|Personal.Occupation                                    |string[40] |**optional**       |                                                                                       |"Clerk"                    |
-|Address.Line1                                          |string[400]|**yes**            |                                                                                       |"Flat 2"                   |
-|Address.Line2                                          |string[400]|**optional**       |                                                                                       |"10 Downing Street"        |
-|Address.Town                                           |string[100]|**yes**            |                                                                                       |"London"                   |
-|Address.Postcode                                       |string[10] |**yes**            |                                                                                       |"WC2B 4AA"                 |
-|Address.County                                         |string[20] |**optional**       |                                                                                       |"Greater London"           |
-|Address.Country                                        |string[2]  |**yes**            |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"GB"                       |
-|ContactDetails.LandlinePhone                           |string[20] |**optional**       |                                                                                       |"07886028945"              |
-|ContactDetails.MobilePhone                             |string[20] |**yes**            |                                                    |"07886028947"              |
-|ContactDetails.Email                                   |string[?]  |**yes**            |                                                    |"john@rank.com"            |
-|MarketingConsents.PostConsent                          |boolean    |**yes**            |The flag defining if marketing contacts via post were allowed                          |true                       |
-|MarketingConsents.LandlineConsent                      |boolean    |**yes**            |The flag defining if marketing contacts via landline phone were allowed                |true                       |
-|MarketingConsents.MobileConsent                        |boolean    |**yes**            |The flag defining if marketing contacts via mobile phone were allowed                  |true                       |
-|MarketingConsents.SmsConsent                           |boolean    |**yes**            |The flag defining if marketing contacts via SMS were allowed                           |true                       |
-|MarketingConsents.EmailConsent                         |boolean    |**yes**            |The flag defining if marketing contacts via email were allowed                         |true                       |
-|MarketingConsents.PushConsent                          |boolean    |**yes**            |The flag defining if marketing contacts via push were allowed                          |true                       |
-|Verifications.VerificationType                         |string[?]  |**yes**            |Allowed values: "CustomerNotPresent", "CustomerPresent", "Electronic"                  |"CustomerNotPresent"       |
-|Verifications.VerificationPassed                       |boolean    |**yes**            |True or False                                                                          |true                       |
-|Verifications.VerificationDate                         |datetime   |**yes**            |                                                                                       |"2017-01-25T10:00:00"      |
-|Verifications.DocumentNumber                           |string[?]  |**yes**            |                                                                                       |"BB123456"                 |
-|Verifications.DocumentType                             |string[?]  |**yes**            |Allowed values: "Passport", "DrivingLicence", "MilitaryID"                             |"Passport"                 |
-|Verifications.ExpiryDate                               |datetime   |**optional**       |                                                                                       |"2030-01-25T00:00:00"      |
-|Verifications.IssuerDetails                            |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"GB passport"              |
-|Verifications.Nationality                              |string[2]  |**optional**       |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
-|Membership.MembershipId                                |string[?]  |**yes**            |The Retail or Digital customer identifier                                              |"4124681094"               |
-|Membership.Username                                    |string[15] |**optional**       |                                                                                       |"johnSilver777"            |
-|Membership.RegisteredClubNumber                        |string[?]  |**yes**            |                                                                                       |"50106"                    |
-|Membership.MembershipCardNumber                        |string[?]  |**optional**       |                                                                                       |"123123123"                |
-|Membership.Status                                      |string[?]  |**optional**       |                                                                                       |"Active"                   |
-|Membership.Channel                                     |string[?]  |**optional**       |                                                                                       |"Retail"                   |
-|Membership.Brand                                       |string[?]  |**optional**       |                                                                                       |"Grosvenor"                |
-|Membership.DatePartOfSaw                               |datetime   |**optional**       | Date the membership became part of a single account and wallet                        |"2017-01-25T10:00:00"      |
+| Name                                                  | Type      | Description                                                                           |Example                    |
+|:---                                                   |:---       |:---                                                                                   |:---                       |
+|Personal.Title                                         |string[?]  |Allowed values: "Mr", "Mrs", "Miss", ...                                               |"Mr"                       |
+|Personal.FirstName                                     |string[25] |                                                                                       |"John"                     |
+|Personal.MiddleName                                    |string[25] |                                                                                       |"Dan"                      |
+|Personal.LastName                                      |string[25] |                                                                                       |"Jackson"                  |
+|Personal.PreferredName                                 |string[25] |                                                                                       |"Johnny"                   |
+|Personal.DateOfBirth                                   |date       |                                                                                       |"1955-01-30"               |
+|Personal.DateOfDeath                                   |date       |                                                                                       |"1975-01-30"               |
+|Personal.Gender                                        |string[1]  |Allowed values: "U" for Undisclosed, "F" for Female, "M" for Male                      |"M"                        |
+|Personal.Occupation                                    |string[40] |                                                                                       |"Clerk"                    |
+|Address.Line1                                          |string[400]|                                                                                       |"Flat 2"                   |
+|Address.Line2                                          |string[400]|                                                                                       |"10 Downing Street"        |
+|Address.Town                                           |string[100]|                                                                                       |"London"                   |
+|Address.Postcode                                       |string[10] |                                                                                       |"WC2B 4AA"                 |
+|Address.County                                         |string[20] |                                                                                       |"Greater London"           |
+|Address.Country                                        |string[2]  |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"GB"                       |
+|ContactDetails.LandlinePhone                           |string[20] | |"07886028945"|
+|ContactDetails.MobilePhone                             |string[20] | |"07886028947"|
+|ContactDetails.Email                                   |string[?]  | |"john@rank.com"            |
+|MarketingConsents.PostConsent                          |boolean    |The flag defining if marketing contacts via post were allowed                          |true                       |
+|MarketingConsents.LandlineConsent                      |boolean    |The flag defining if marketing contacts via landline phone were allowed                |true                       |
+|MarketingConsents.MobileConsent                        |boolean    |The flag defining if marketing contacts via mobile phone were allowed                  |true                       |
+|MarketingConsents.SmsConsent                           |boolean    |The flag defining if marketing contacts via SMS were allowed                           |true                       |
+|MarketingConsents.EmailConsent                         |boolean    |The flag defining if marketing contacts via email were allowed                         |true                       |
+|MarketingConsents.PushConsent                          |boolean    |The flag defining if marketing contacts via push were allowed                          |true                       |
+|Verifications.VerificationType                         |string[?]  |Allowed values: "CustomerNotPresent", "CustomerPresent", "Electronic"                  |"CustomerNotPresent"       |
+|Verifications.VerificationPassed                       |boolean    |True or False                                                                          |true                       |
+|Verifications.VerificationDate                         |datetime   |                                                                                       |"2017-01-25T10:00:00"      |
+|Verifications.DocumentNumber                           |string[?]  |                                                                                       |"BB123456"                 |
+|Verifications.DocumentType                             |string[?]  |Allowed values: "Passport", "DrivingLicence", "MilitaryID"                             |"Passport"                 |
+|Verifications.ExpiryDate                               |datetime   |                                                                                       |"2030-01-25T00:00:00"      |
+|Verifications.IssuerDetails                            |string[?]  |The Retail or Digital customer identifier                                              |"GB passport"              |
+|Verifications.Nationality                              |string[2]  |ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.             |"US"                       |
+|Membership.MembershipId                                |string[?]  |The Retail or Digital customer identifier                                              |"4124681094"               |
+|Membership.Username                                    |string[15] |                                                                                       |"johnSilver777"            |
+|Membership.RegisteredClubNumber                        |string[?]  |                                                                                       |"50106"                    |
+|Membership.MembershipCardNumber                        |string[?]  |                                                                                       |"123123123"                |
+|Membership.Status                                      |string[?]  |                                                                                       |"Active"                   |
+|Membership.Channel                                     |string[?]  |                                                                                       |"Retail"                   |
+|Membership.Brand                                       |string[?]  |                                                                                       |"Grosvenor"                |
+|Membership.DatePartOfSaw                               |datetime   | Date the membership became part of a single account and wallet                        |"2017-01-25T10:00:00"      |
 
-For registration following input validation in place
+### Register Retail Customer [POST]
+
+**Allowed scopes**: `staffRegisterRetailCustomer`
+
+This API will be called when a customer has had a new retail account created. This will create a record within Rank systems except digital
 
 **Following fields must follow a valid format:**
 - `ContactDetails.Email` address - valid email format
@@ -783,544 +787,44 @@ For registration following input validation in place
 - `Address.Postcode` - valid UK postcode for UK addresses
 - `Personal.DateOfBirth` - must be of legal age (18)
 
-### Search by Membership Card [GET /customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}]
-
-**Allowed scopes**: `readonlyCustomerSearch`
-
-The endpoint for customer lookup from Bede using Membership Card Number and optionally Date of Birth.
-
-+ Parameters
-    + cardNo: `123456` (string, required)
-    + dateOfBirth: `2001-12-12` (date, optional)
-    
-+ Request
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-+ Response 200 (application/json)
-
-    Customer is found by the parameters specified
-
-    + Body
-    
-            {
-                "Personal": {
-                    "Title": "Mr",
-                    "FirstName": "John",
-                    "MiddleName": "Dan",
-                    "LastName": "Jackson",
-                    "PreferredName": "Johnny",
-                    "DateOfBirth": "1955-01-30",
-                    "DateOfDeath": "2200-02-17",
-                    "Gender": "M",
-                    "Occupation": "Clerk"
-                },
-                "Address": {
-                    "Line1": "Flat 57",
-                    "Line2": "10 Downing Street",
-                    "Town": "London",
-                    "Postcode": "WC2B 4AA",
-                    "County": "Greater London",
-                    "Country": "GB"
-                },
-                "ContactDetails": {
-                    "LandlinePhone": "07886028945",
-                    "MobilePhone": "07886028947",
-                    "Email": "jack@rank.com"
-                },
-                "MarketingConsents": {
-                    "PostConsent": true,
-                    "LandlineConsent": false,
-                    "MobileConsent": true,
-                    "SmsConsent": true,
-                    "EmailConsent": true,
-                    "PushConsent": false
-                },
-                "Verifications": [
-                    {
-                        "VerificationType": "CustomerNotPresent",
-                        "VerificationPassed": true,
-                        "VerificationDate": "2017-01-25T10:00:00",
-                        "DocumentNumber": "435345345",
-                        "DocumentType": "Passport",
-                        "ExpiryDate": "2020-01-01T00:00:00",
-                        "IssuerDetails": "HM Passport Office",
-                        "Nationality": "GB"
-                    }
-                ],
-                "Memberships": [
-                    {
-                        "MembershipId": "12345678",
-                        "RegisteredClubNumber": "50601",
-                        "MembershipCardNumber": "123123123",
-                        "Status" : "Closed",
-                        "Channel" : "Retail",
-                        "Brand" : "Grosvenor",
-                        "DatePartOfSaw": null
-                    },
-                    {
-                        "MembershipId": "67890123",
-                        "RegisteredClubNumber": "50602",
-                        "MembershipCardNumber": "456456456",
-                        "Status" : "Active",
-                        "Channel" : "Retail",
-                        "Brand" : "Grosvenor",
-                        "DatePartOfSaw": "2017-01-25T10:00:00"
-                    },
-                    {
-                        "MembershipId": "908070605",
-                        "Username": "johnSilver777",
-                        "Status" : "Active",
-                        "Channel" : "Digital",
-                        "Brand" : "Grosvenor",
-                        "DatePartOfSaw": "2017-01-25T10:00:00"
-                    }
-                ],
-                "_Links": {
-                    "Self": {
-                        "Href": "http://dev01-resapi.rankgrouptech.net/customers?cardNo=123456",
-                        "Method": "GET",
-                        "AllowedScopes": [ "readonlyCustomerSearch" ]
-                    }
-                }
-            }
-
-+ Response 204 (application/json)
-
-    Not found
-    
-    + Headers
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "More than one individual found associated with the specified membership card number."
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Update Personal Information [PUT /customers/{identifier}/personal]
-
-**Allowed scopes**: `staffUpdateCustomerPersonal`
-
-This API is to update an existing customers information once they have been identified as a SAW customer.
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "Title": "Mr",
-                "FirstName": "John",
-                "MiddleName": "Dan",
-                "LastName": "Jackson",
-                "PreferredName": "Johnny",
-                "DateOfBirth": "1955-01-30",
-                "DateOfDeath": "2200-02-17",
-                "Gender": "M",
-                "Occupation": "Clerk"
-            }
-            
-+ Response 202 (application/json)
-
-    Accepted
-    
-    + Headers
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Update Address [PUT /customers/{identifier}/address]
-
-**Allowed scopes**: `staffUpdateCustomerAddress`
-
-This API is to update an existing customers information once they have been identified as a SAW customer.
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "Line1": "Flat 57",
-                "Line2": "10 Downing Street",
-                "Town": "London",
-                "Postcode": "WC2B 4AA",
-                "County": "Greater London",
-                "Country": "GB"
-            }
-            
-+ Response 202 (application/json)
-
-    Accepted
-    
-    + Headers
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Update Contact Details [PUT /customers/{identifier}/contactDetails]
-
-**Allowed scopes**: `onbehalfUpdateCustomerContactDetails`
-
-This API is to update an existing customers information once they have been identified as a SAW customer.
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (resource owner token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "LandlinePhone": "07886028945",
-                "MobilePhone": "07886028947",
-                "Email": "jack@rank.com"
-            }
-            
-+ Response 202 (application/json)
-
-    Accepted
-    
-    + Headers
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Update Consents [PUT /customers/{identifier}/consents]
-
-**Allowed scopes**: `staffUpdateCustomerConsents`
-
-This API is to update an existing customers information once they have been identified as a SAW customer.
-
-This endpoint supports partical requests (see examples).
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
-
-+ Request (application/json)
-
-    Full request
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "PostConsent": true,
-                "LandlineConsent": false,
-                "MobileConsent": true,
-                "SmsConsent": true,
-                "EmailConsent": true,
-                "PushConsent": false
-            }
-
-+ Response 202 (application/json)
-
-    Accepted
-    
-    + Headers
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-           
-### Update Membership [PUT /customers/memberships/{identifier}]
-
-**Allowed scopes**: `staffUpdateCustomerMembership`
-
-This API is to update an existing customers information once they have been identified as a SAW customer.
-
-Acceptable `Status` values:
-* `Active` - The account may be used normally.
-* `Locked` - Authentication failed 5 times, the account locked.
-* `Closed` - The account has been closed for any reason, such as it was a duplicate, the customer requested it closed, etc.
-* `Void` - The account was created in error. Accounts in this state are ignored completely.
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "MembershipCardNumber": "456456456",
-                "Status" : "Active"
-            }
-    
-+ Response 202 (application/json)
-
-    Accepted
-    
-    + Headers
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-            
-### Update Vip Status [PUT /customers/{identifier}/vipstatus]
-
-**Allowed scopes**: `staffUpdateCustomerVipStatus`
-
-The endpoint for updating the customer's vip status.
-
-Acceptable `RetailVipTierStatus` values:
-* `Black` - Black VIP retail tier.
-* `Blue` - Blue VIP retail tier.
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-    
-            {
-                "RetailVipTierStatus": "Black",
-            }
-            
-+ Response 202 (application/json)
-
-    Accepted
-    
-    + Headers
-            
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Add Verification [POST /customers/{identifier}/verifications]
-
-**Allowed scopes**: `staffAddCustomerVerification`
-
-This API is to add new verifications to existing customer profile.
-
-Acceptable `VerificationType` values:
-* `CustomerNotPresent`
-* `CustomerPresent`
-* `Electronic`
-
-Acceptable `DocumentType` values:
-* `Passport`
-* `DrivingLicence`
-* `MilitaryID`
-
-+ Parameters
-    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
-
-+ Request (application/json)
-
-    + Headers 
-            
-            Authorization: Bearer (client credentials token)
-            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
-
-    + Body
-
-            {
-                "VerificationType": "CustomerNotPresent",
-                "VerificationPassed": true,
-                "VerificationDate": "2017-01-25T10:00:00",
-                "DocumentNumber": "435345345",
-                "DocumentType": "Passport",
-                "ExpiryDate": "2020-01-01T00:00:00",
-                "IssuerDetails": "HM Passport Office",
-                "Nationality": "GB"
-            }
-    
-+ Response 202 (application/json)
-
-    Accepted
-    
-    + Headers
-
-+ Response 424 (application/json)
-
-            {
-                "Message": "Customer not found"
-            }
-            
-+ Response 400 (application/json)
-
-            {
-                "Message": "Invalid fields"
-            }
-
-+ Response 400 (application/json)
-
-            {
-                "Message": "Not a SAW customer"
-            }
-
-+ Response 500 (application/json)
-
-            {
-                "Message": "Internal Error"
-            }
-
-### Register Retail Customer [POST]
-
-**Allowed scopes**: `staffRegisterRetailCustomer`
-
-This API will be called when a customer has had a new retail account created. This will create a record within Rank systems except digital
+| Name                                                  | Required          |Example                    |
+|:---                                                   |:--:               |:---                       |
+|Personal.Title                                         |**yes**            |"Mr"                       |
+|Personal.FirstName                                     |**yes**            |"John"                     |
+|Personal.MiddleName                                    |no                 |"Dan"                      |
+|Personal.LastName                                      |**yes**            |"Jackson"                  |
+|Personal.PreferredName                                 |no                 |"Johnny"                   |
+|Personal.DateOfBirth                                   |no                 |"1955-01-30"               |
+|Personal.DateOfDeath                                   |no                 |"1975-01-30"               |
+|Personal.Gender                                        |**yes**            |"M"                        |
+|Personal.Occupation                                    |no                 |"Clerk"                    |
+|Address.Line1                                          |**yes**            |"Flat 2"                   |
+|Address.Line2                                          |no                 |"10 Downing Street"        |
+|Address.Town                                           |**yes**            |"London"                   |
+|Address.Postcode                                       |no                 |"WC2B 4AA"                 |
+|Address.County                                         |no                 |"Greater London"           |
+|Address.Country                                        |**yes**            |"GB"                       |
+|ContactDetails.LandlinePhone                           |no                 |"07886028945"              |
+|ContactDetails.MobilePhone                             |no                 |"07886028945"              |
+|ContactDetails.Email                                   |no                 |"jack@rank.com"            |
+|MarketingConsents.PostConsent                          |no                 |true                       |
+|MarketingConsents.LandlineConsent                      |no                 |true                       |
+|MarketingConsents.MobileConsent                        |no                 |true                       |
+|MarketingConsents.SmsConsent                           |no                 |true                       |
+|MarketingConsents.EmailConsent                         |no                 |true                       |
+|MarketingConsents.PushConsent                          |no                 |true                       |
+|Verifications.VerificationType                         |**yes**            |"CustomerNotPresent"       |
+|Verifications.VerificationPassed                       |**yes**            |true                       |
+|Verifications.VerificationDate                         |**yes**            |"2017-01-25T10:00:00"      |
+|Verifications.DocumentNumber                           |no                 |"BB123456"                 |
+|Verifications.DocumentType                             |no                 |"Passport"                 |
+|Verifications.ExpiryDate                               |no                 |"2030-01-25T00:00:00"      |
+|Verifications.IssuerDetails                            |**yes**            |"GB passport"              |
+|Verifications.Nationality                              |no                 |"US"                       |
+|Membership.MembershipId                                |**yes**            |"4124681094"               |
+|Membership.RegisteredClubNumber                        |**yes**            |"50106"                    |
+|Membership.MembershipCardNumber                        |**yes**            |"123123123"                |
+|Membership.RetailVipStatus                             |no                 |"Black "                   |
 
 + Request (application/json)
 
@@ -1453,6 +957,589 @@ This API will be called when a customer has had a new retail account created. Th
                 "Message": "Invalid fields"
             }
             
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Search by Membership Card [GET /customers?cardNo={cardNo}&dateOfBirth={dateOfBirth}]
+
+**Allowed scopes**: `readonlyCustomerSearch`
+
+The API endpoint is for customer lookup using Membership Card Number and optionally Date of Birth.
+
++ Parameters
+    + cardNo: `123456` (string, required)
+    + dateOfBirth: `2001-12-12` (date, optional)
+    
++ Request
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
++ Response 200 (application/json)
+
+    Customer is found by the parameters specified
+
+    + Body
+    
+            {
+                "Personal": {
+                    "Title": "Mr",
+                    "FirstName": "John",
+                    "MiddleName": "Dan",
+                    "LastName": "Jackson",
+                    "PreferredName": "Johnny",
+                    "DateOfBirth": "1955-01-30",
+                    "DateOfDeath": "2200-02-17",
+                    "Gender": "M",
+                    "Occupation": "Clerk"
+                },
+                "Address": {
+                    "Line1": "Flat 57",
+                    "Line2": "10 Downing Street",
+                    "Town": "London",
+                    "Postcode": "WC2B 4AA",
+                    "County": "Greater London",
+                    "Country": "GB"
+                },
+                "ContactDetails": {
+                    "LandlinePhone": "07886028945",
+                    "MobilePhone": "07886028947",
+                    "Email": "jack@rank.com"
+                },
+                "MarketingConsents": {
+                    "PostConsent": true,
+                    "LandlineConsent": false,
+                    "MobileConsent": true,
+                    "SmsConsent": true,
+                    "EmailConsent": true,
+                    "PushConsent": false
+                },
+                "Verifications": [
+                    {
+                        "VerificationType": "CustomerNotPresent",
+                        "VerificationPassed": true,
+                        "VerificationDate": "2017-01-25T10:00:00",
+                        "DocumentNumber": "435345345",
+                        "DocumentType": "Passport",
+                        "ExpiryDate": "2020-01-01T00:00:00",
+                        "IssuerDetails": "HM Passport Office",
+                        "Nationality": "GB"
+                    }
+                ],
+                "Memberships": [
+                    {
+                        "MembershipId": "12345678",
+                        "RegisteredClubNumber": "50601",
+                        "MembershipCardNumber": "123123123",
+                        "Status" : "Closed",
+                        "Channel" : "Retail",
+                        "Brand" : "Grosvenor",
+                        "DatePartOfSaw": null
+                    },
+                    {
+                        "MembershipId": "67890123",
+                        "RegisteredClubNumber": "50602",
+                        "MembershipCardNumber": "456456456",
+                        "Status" : "Active",
+                        "Channel" : "Retail",
+                        "Brand" : "Grosvenor",
+                        "DatePartOfSaw": "2017-01-25T10:00:00"
+                    },
+                    {
+                        "MembershipId": "908070605",
+                        "Username": "johnSilver777",
+                        "Status" : "Active",
+                        "Channel" : "Digital",
+                        "Brand" : "Grosvenor",
+                        "DatePartOfSaw": "2017-01-25T10:00:00"
+                    }
+                ],
+                "_Links": {
+                    "Self": {
+                        "Href": "http://dev01-resapi.rankgrouptech.net/customers?cardNo=123456",
+                        "Method": "GET",
+                        "AllowedScopes": [ "readonlyCustomerSearch" ]
+                    }
+                }
+            }
+
++ Response 204 (application/json)
+
+    Not found
+    
+    + Headers
+
++ Response 500 (application/json)
+
+            {
+                "Message": "More than one individual found associated with the specified membership card number."
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Update Personal Information [PUT /customers/{identifier}/personal]
+
+**Allowed scopes**: `staffUpdateCustomerPersonal`
+
+This API is to update an existing customer's personal information. The API is available for all customers.
+| Property     | Required  |Example|
+|:---          |:---       |:---   |
+|DateOfBirth   |**Yes** |1955-01-30 |
+|DateOfDeath   | No |2009-07-22 |
+|FirstName     |**Yes** |John |
+|LastName      |**Yes**|Jackson |
+|MiddleName    | No |Dan |
+|PreferredName | No |Johnny |
+|Gender        |**Yes** |M |
+|Title         |**Yes**|Mr |
+|Occupation    | No |Clerk |
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "Title": "Mr",
+                "FirstName": "John",
+                "MiddleName": "Dan",
+                "LastName": "Jackson",
+                "PreferredName": "Johnny",
+                "DateOfBirth": "1955-01-30",
+                "DateOfDeath": "2200-02-17",
+                "Gender": "M",
+                "Occupation": "Clerk"
+            }
+            
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Update Address [PUT /customers/{identifier}/address]
+
+**Allowed scopes**: `staffUpdateCustomerAddress`
+
+This API is to update an existing customer's address information. The API is for all customers.
+
+`Postcode` - valid UK postcode for UK addresses
+
+`Country` - ISO two-letter country codes. Allowed values: "AU", "NZ", "GB", "US", etc.
+| Property     | Required  |Example|
+|:---          |:---       |:---   |
+|Country   |**Yes** |GB |
+|County   | No |Greater London |
+|Line1     |**Yes** |Flat 57 |
+|Line2      |No|10 Downing Street |
+|Postcode    | No |WC2B 4AA |
+|Town |**Yes** |London |
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "Line1": "Flat 57",
+                "Line2": "10 Downing Street",
+                "Town": "London",
+                "Postcode": "WC2B 4AA",
+                "County": "Greater London",
+                "Country": "GB"
+            }
+            
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Update Contact Details [PUT /customers/{identifier}/contactDetails]
+
+**Allowed scopes**: `onbehalfUpdateCustomerContactDetails`
+
+This API is to update an existing customer's contanct information. This API is for all customers.
+
+`Email` - valid email format.
+
+`Phone numbers` - starts with 0 or +, followed by 9/10 digits, it allows optional spacing between digits to conform the popular/acceptable format (i.e. 07886028945, +447886029845, etc.)
+
+**None of the properties are required alone, but at least ONE of them has to be filled.**
+| Property     | Required  |Example|
+|:---          |:---       |:---   |
+|LandlinePhone   |No|07886028945 |
+|MobilePhone   | No |07886028945 |
+|Email     |No |jack@rank.com |
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (resource owner token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "LandlinePhone": "07886028945",
+                "MobilePhone": "07886028947",
+                "Email": "jack@rank.com"
+            }
+            
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Update Consents [PUT /customers/{identifier}/consents]
+
+**Allowed scopes**: `staffUpdateCustomerConsents`
+
+This API is to update an existing customer's consent information. This API is for all customers.
+
+| Property     | Required  |Example|
+|:---          |:---       |:---   |
+|EmailConsent   |No|true |
+|LandlineConsent   | No |false |
+|MobileConsent     |No |false |
+|PostConsent| No | true |
+|PushConsent | No | false |
+|SmsConsent | No | true |
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    Full request
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "PostConsent": true,
+                "LandlineConsent": false,
+                "MobileConsent": true,
+                "SmsConsent": true,
+                "EmailConsent": true,
+                "PushConsent": false
+            }
+
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+           
+### Update Membership [PUT /customers/memberships/{identifier}]
+
+**Allowed scopes**: `staffUpdateCustomerMembership`
+
+This API is to update an existing customer's membership information. This API is for all customers.
+
+Acceptable `Status` values:
+* `Active` - The account may be used normally.
+* `Locked` - Authentication failed 5 times, the account locked.
+* `Closed` - The account has been closed for any reason, such as it was a duplicate, the customer requested it closed, etc.
+* `Void` - The account was created in error. Accounts in this state are ignored completely.
+
+| Property     | Required  |Example|
+|:---          |:---       |:---   |
+|MembershipCardNumber   |No|456456456 |
+|Status   | No |Active |
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "MembershipCardNumber": "456456456",
+                "Status" : "Active"
+            }
+    
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+            
+### Update Vip Status [PUT /customers/{identifier}/vipstatus]
+
+**Allowed scopes**: `staffUpdateCustomerVipStatus`
+
+This API is to update an existing customer's vip status information. This API is for all customers.
+
+Acceptable `RetailVipTierStatus` values:
+* `Black` - Black VIP retail tier.
+* `Blue` - Blue VIP retail tier.
+
+| Property     | Required  |Example|
+|:---          |:---       |:---   |
+|RetailVipTierStatus   |**Yes**|Black |
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+    
+            {
+                "RetailVipTierStatus": "Black",
+            }
+            
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+            
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 500 (application/json)
+
+            {
+                "Message": "Internal Error"
+            }
+
+### Add Verification [POST /customers/{identifier}/verifications]
+
+**Allowed scopes**: `staffAddCustomerVerification`
+
+This API is to add new verifications to existing customer profile.
+
+Acceptable `VerificationType` values:
+* `CustomerNotPresent`
+* `CustomerPresent`
+* `Electronic`
+
+Acceptable `DocumentType` values:
+* `Passport`
+* `DrivingLicence`
+* `MilitaryID`
+
++ Parameters
+    + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
+
++ Request (application/json)
+
+    + Headers 
+            
+            Authorization: Bearer (client credentials token)
+            X-Correlation-Token: 049651ef-2a37-4b13-88c8-4ebb4faa072e
+
+    + Body
+
+            {
+                "VerificationType": "CustomerNotPresent",
+                "VerificationPassed": true,
+                "VerificationDate": "2017-01-25T10:00:00",
+                "DocumentNumber": "435345345",
+                "DocumentType": "Passport",
+                "ExpiryDate": "2020-01-01T00:00:00",
+                "IssuerDetails": "HM Passport Office",
+                "Nationality": "GB"
+            }
+    
++ Response 202 (application/json)
+
+    Accepted
+    
+    + Headers
+
++ Response 424 (application/json)
+
+            {
+                "Message": "Customer not found"
+            }
+            
++ Response 400 (application/json)
+
+            {
+                "Message": "Invalid fields"
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "Not a SAW customer"
+            }
+
 + Response 500 (application/json)
 
             {
