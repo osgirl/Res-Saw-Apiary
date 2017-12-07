@@ -1481,17 +1481,27 @@ Acceptable `RetailVipTierStatus` values:
 
 **Allowed scopes**: `staffAddCustomerVerification`
 
-This API is to add new verifications to existing customer profile.
+This API is to add new verifications to existing customer profile. This API is for all customers.
 
-Acceptable `VerificationType` values:
-* `CustomerNotPresent`
-* `CustomerPresent`
-* `Electronic`
+Acceptable VerificationType values: `CustomerNotPresent` , `CustomerPresent` , `Electronic`
 
-Acceptable `DocumentType` values:
-* `Passport`
-* `DrivingLicence`
-* `MilitaryID`
+Acceptable DocumentType values: `Passport` , `DrivingLicence` , `MilitaryID`
+
+If the VerificationType is `CustomerPresent` then the following fields must be also filled:
+* `DocumentNumber`
+* `DocumentType`
+* `IssuerDetails`
+
+| Property          | Required  |Example|
+|:---               |:---       |:---   |
+|VerificationType   |**Yes**    |CustomerPresent |
+|VerificationPassed |**Yes**    |true |
+|VerificationDate   |**Yes**    |2007-12-03 |
+|DocumentNumber     | No        |123456 |
+|DocumentType       | No        |Passport |
+|ExpiryDate         | No        |2020-08-05 |
+|IssuerDetails      | No        |956234 |
+|Nationality        | No        |GB |
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
