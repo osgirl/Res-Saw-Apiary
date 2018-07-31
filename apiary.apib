@@ -2740,7 +2740,7 @@ This API will be return amount of funds available in SAW wallets along with spec
 
 **Allowed scopes**: `clientWalletWithdraw`, `onbehalfWalletWithdraw`
 
-This API endpoint is used for transfers such as removing funds from SAW (withdrawals and transfers to retail games).
+This API endpoint is used for transfers such as removing funds from SAW (withdrawals and transfers to retail games). PoPF is not checked!
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
@@ -2860,19 +2860,13 @@ This API endpoint is used for transfers such as removing funds from SAW (withdra
 + Response 400 (application/json)
 
             {
-                "Message": "Not a SAW customer"
+                "Message": "Account is not a SAW account."
             }
 
 + Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "The latest version of PoPF is not signed off"
             }
             
 + Response 500 (application/json)
@@ -2885,7 +2879,7 @@ This API endpoint is used for transfers such as removing funds from SAW (withdra
 
 **Allowed scopes**: `clientWalletDeposit`, `onbehalfWalletDeposit`
 
-This API endpoint is used for transfers such as placing funds into SAW (deposits and cashouts from retail games).
+This API endpoint is used for transfers such as placing funds into SAW (deposits and cashouts from retail games). PoPF is checked.
 
 + Parameters
     + identifier: `86e018ce-ef7d-4c92-ae54-8f0c41d46c7b` (string, required) - The identifier obtained from Journey service or other HATEOAS payloads.
@@ -3005,19 +2999,19 @@ This API endpoint is used for transfers such as placing funds into SAW (deposits
 + Response 400 (application/json)
 
             {
-                "Message": "Not a SAW customer"
+                "Message": "Account is not a SAW account."
+            }
+
++ Response 400 (application/json)
+
+            {
+                "Message": "The latest version of PoPF is not signed off"
             }
 
 + Response 424 (application/json)
 
             {
                 "Message": "Customer Not Found"
-            }
-            
-+ Response 500 (application/json)
-
-            {
-                "Message": "The latest version of PoPF is not signed off"
             }
             
 + Response 500 (application/json)
