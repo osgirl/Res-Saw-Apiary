@@ -2863,6 +2863,13 @@ This API endpoint is used for transfers such as removing funds from SAW (withdra
                 "Message": "Account is not a SAW account."
             }
 
++ Response 412 (application/json)
+
+            {
+                "Message": "Unable to process your withdrawal request, please contact Customer Services on 01200 309 162 and quote \"error code 01\"",
+                "TransferStatusCode": "FeedzaiRejected"
+            }
+            
 + Response 424 (application/json)
 
             {
